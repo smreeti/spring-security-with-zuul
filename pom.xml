@@ -17,6 +17,14 @@
     <properties>
         <java.version>1.8</java.version>
     </properties>
+         
+   <modules>
+        <module>eureka-server</module>
+        <module>config-server</module>
+        <module>admin-service</module>
+        <module>login-service</module>
+        <module>auth-service</module>
+    </modules>
 
     <dependencies>
         <dependency>
