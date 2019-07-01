@@ -127,14 +127,19 @@ public class NetworkUtils {
     public static Function<HttpServletRequest, NetworkResponseDTO> getDeviceAddresses = (request) -> {
         NetworkResponseDTO network = new NetworkResponseDTO();
 
-        /*GETS IP ADDRESS OF CLIENT MACHINE*/
-        String ipAddress = request.getRemoteAddr();
+        String remoteAddr = "";
 
-        if (ipAddress.equals(NetworkConstants.LOCALHOST_IPV6_ADDRESS)) {
+        if (!Objects.isNull(request)) {
+            remoteAddr = request.getHeader(NetworkConstants.REQUEST_HEADER);
+            if (remoteAddr == null || "".equals(remoteAddr))
+                remoteAddr = request.getRemoteAddr();
+        }
+
+        if (remoteAddr.equals(NetworkConstants.LOCALHOST_IPV6_ADDRESS)) {
             getLocalHostAddress.apply(network);
         } else {
-            network.setIpAddress(ipAddress);
-            network.setMacAddress(getClientMACAddress.apply(network.getIpAddress()));
+            network.setIpAddress(remoteAddr);
+            network.setMacAddress(getClientMACAddress.apply(remoteAddr));
         }
 
         return network;
