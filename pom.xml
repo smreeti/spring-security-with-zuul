@@ -24,6 +24,7 @@
         <module>admin-service</module>
         <module>login-service</module>
         <module>auth-service</module>
+       <module>profile-service</module>
     </modules>
 
     <dependencies>
