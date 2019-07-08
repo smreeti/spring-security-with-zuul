@@ -2,12 +2,14 @@ package com.f1soft.departmentservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @SpringBootApplication
-public class DepartmentServiceApplication {
+@EnableEurekaClient
+public class DepartmentserviceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DepartmentServiceApplication.class, args);
+		SpringApplication.run(DepartmentserviceApplication.class, args);
 	}
 
 }
