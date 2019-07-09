@@ -22,7 +22,6 @@ public class ProfileMenuServiceImpl implements ProfileMenuService {
 
     @Override
     public List<ProfileMenu> saveProfileMenu(List<ProfileMenu> profileMenus) {
-        System.out.println(profileMenus);
         return profileMenuRepository.saveAll(profileMenus);
     }
 }

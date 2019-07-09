@@ -86,8 +86,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Admin fetchAdminByUsername(String username) {
         return adminRepository.getAdminByUsername(username).orElseThrow(() ->
-                new NoContentFoundException(AdminNotFoundException.MESSAGE,
-                        AdminNotFoundException.DEVELOPER_MESSAGE));
+                new NoContentFoundException(AdminNotFoundException.MESSAGE, AdminNotFoundException.DEVELOPER_MESSAGE));
     }
 
 

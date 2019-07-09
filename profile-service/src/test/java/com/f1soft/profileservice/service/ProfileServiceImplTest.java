@@ -11,6 +11,7 @@ import com.f1soft.profileservice.requestDTO.ProfileMenuRequestDTO;
 import com.f1soft.profileservice.service.serviceImpl.ProfileMenuServiceImpl;
 import com.f1soft.profileservice.service.serviceImpl.ProfileServiceImpl;
 import com.f1soft.profileservice.utility.ProfileUtils;
+import com.f1soft.profileservice.utility.QueryCreator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,6 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -158,6 +160,22 @@ public class ProfileServiceImplTest {
 
         assertThat(profileMenuService.saveProfileMenu(expectedProfileMenus),
                 hasSize(requestDTO.getProfileMenuRequestDTO().size()));
+    }
+
+    @Test
+    public void searchProfile() {
+
+
+    }
+
+    public void Should_ThrowException_When_ProfileIsEmpty(){
+
+//        Query query = QueryCreator.createQueryToSearchProfile(ProfileDTO profileDTO);
+
+        given(profileRepository.fetchAllProfiles()).willReturn(new ArrayList<>());
+        thrown.expect(NoContentFoundException.class);
+
+//        profileService.fetchAllProfileInfo();
     }
 
 
