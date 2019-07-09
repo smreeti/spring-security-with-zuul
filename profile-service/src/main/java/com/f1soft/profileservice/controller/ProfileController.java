@@ -1,12 +1,9 @@
 package com.f1soft.profileservice.controller;
 
-import com.f1soft.profileservice.ProfileRequestDTO;
+import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
 import com.f1soft.profileservice.service.ProfileService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.f1soft.profileservice.constants.WebResourceKeyConstants.BASE_API;
 import static com.f1soft.profileservice.constants.WebResourceKeyConstants.SAVE;
@@ -26,8 +23,13 @@ public class ProfileController {
     }
 
     @PostMapping(value = SAVE)
-    public ResponseEntity<?> saveProfile(@RequestBody ProfileRequestDTO requestDTO){
-        return ok(profileService.saveProfile(requestDTO));
+    public ResponseEntity<?> saveProfile(@RequestBody ProfileRequestDTO requestDTO) {
+        profileService.createProfile(requestDTO);
+        return ok().build();
     }
 
+    @GetMapping("/hello")
+    public String shhsb(){
+        return "cdsc";
+    }
 }

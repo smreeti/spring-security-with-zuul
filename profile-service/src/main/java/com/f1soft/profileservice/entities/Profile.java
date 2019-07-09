@@ -10,25 +10,24 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "profile")
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@Builder
+@Data
 public class Profile implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "active")
-    private Character active;
+    @Column(name = "profile_name")
+    private String profileName;
 
     @Column(name = "profile_description")
     private String profileDescription;
 
-    @Column(name = "profile_name")
-    private String profileName;
+    @Column(name = "status")
+    private Character status;
 
     @Column(name = "department_id")
     private Long departmentId;
