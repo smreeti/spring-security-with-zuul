@@ -55,7 +55,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     private void validateProfileName(String name) {
-        if (!Objects.isNull(profileRepository.findByProfileName(name)))
+        if (!Objects.isNull(profileRepository.findByName(name)))
             throw new DataDuplicationException(ProfileNameDuplication.MESSAGE, ProfileNameDuplication.DEVELOPER_MESSAGE);
     }
 

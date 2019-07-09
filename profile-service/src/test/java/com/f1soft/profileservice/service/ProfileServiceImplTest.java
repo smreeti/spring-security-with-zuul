@@ -99,7 +99,7 @@ public class ProfileServiceImplTest {
                 .name("admin")
                 .build();
 
-        given(profileRepository.findByProfileName(requestDTO.getProfileDTO().getName()))
+        given(profileRepository.findByName(requestDTO.getProfileDTO().getName()))
                 .willReturn(profile);
 
         thrown.expect(DataDuplicationException.class);
@@ -124,7 +124,7 @@ public class ProfileServiceImplTest {
 
         ProfileRequestDTO requestDTO = getProfileRequestDTO();
 
-        given(profileRepository.findByProfileName(requestDTO.getProfileDTO().getName())).willReturn(null);
+        given(profileRepository.findByName(requestDTO.getProfileDTO().getName())).willReturn(null);
 
         assertFalse(requestDTO.getProfileMenuRequestDTO().isEmpty());
 
@@ -143,7 +143,7 @@ public class ProfileServiceImplTest {
 
         Profile profile = getProfileInfo();
 
-        given(profileRepository.findByProfileName(requestDTO.getProfileDTO().getName())).willReturn(null);
+        given(profileRepository.findByName(requestDTO.getProfileDTO().getName())).willReturn(null);
 
         assertFalse(requestDTO.getProfileMenuRequestDTO().isEmpty());
 
