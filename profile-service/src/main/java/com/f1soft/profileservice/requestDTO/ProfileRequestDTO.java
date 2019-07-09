@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ProfileRequestDTO implements Serializable {
 
-    private ProfileGeneralInfoRequestDTO generalInfoRequestDTO;
+    private ProfileDTO profileDTO;
 
-    private List<ProfileRolesRequestDTO> rolesRequestDTOS;
+    private List<ProfileMenuRequestDTO> profileMenuRequestDTO;
 }

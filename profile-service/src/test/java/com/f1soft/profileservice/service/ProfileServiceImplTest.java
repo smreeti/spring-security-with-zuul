@@ -5,9 +5,9 @@ import com.f1soft.profileservice.entities.ProfileMenu;
 import com.f1soft.profileservice.exceptions.DataDuplicationException;
 import com.f1soft.profileservice.exceptions.NoContentFoundException;
 import com.f1soft.profileservice.repository.ProfileRepository;
-import com.f1soft.profileservice.requestDTO.ProfileGeneralInfoRequestDTO;
+import com.f1soft.profileservice.requestDTO.ProfileDTO;
 import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
-import com.f1soft.profileservice.requestDTO.ProfileRolesRequestDTO;
+import com.f1soft.profileservice.requestDTO.ProfileMenuRequestDTO;
 import com.f1soft.profileservice.service.serviceImpl.ProfileMenuServiceImpl;
 import com.f1soft.profileservice.service.serviceImpl.ProfileServiceImpl;
 import com.f1soft.profileservice.utility.ProfileUtils;
@@ -67,16 +67,16 @@ public class ProfileServiceImplTest {
     public ProfileRequestDTO getProfileRequestDTOThatThrowsException() {
 
         return new ProfileRequestDTO(
-                new ProfileGeneralInfoRequestDTO("admin", "This is super admin profile",
+                new ProfileDTO("admin", "This is super admin profile",
                         'Y', 1L, 1L), new ArrayList<>());
     }
 
     public ProfileRequestDTO getProfileRequestDTO() {
         return new ProfileRequestDTO(
-                new ProfileGeneralInfoRequestDTO("Superadmin", "This is super admin profile",
+                new ProfileDTO("Superadmin", "This is super admin profile",
                         'Y', 1L, 1L),
-                Arrays.asList(new ProfileRolesRequestDTO(1L, 10L),
-                        (new ProfileRolesRequestDTO(2L, 11L))
+                Arrays.asList(new ProfileMenuRequestDTO(1L, 10L),
+                        (new ProfileMenuRequestDTO(2L, 11L))
                 ));
     }
 
@@ -96,10 +96,10 @@ public class ProfileServiceImplTest {
         ProfileRequestDTO requestDTO = getProfileRequestDTOThatThrowsException();
 
         Profile profile = Profile.builder()
-                .profileName("admin")
+                .name("admin")
                 .build();
 
-        given(profileRepository.findByProfileName(requestDTO.getGeneralInfoRequestDTO().getProfileName()))
+        given(profileRepository.findByProfileName(requestDTO.getProfileDTO().getName()))
                 .willReturn(profile);
 
         thrown.expect(DataDuplicationException.class);
@@ -112,7 +112,7 @@ public class ProfileServiceImplTest {
 
         ProfileRequestDTO profileRequestDTO = getProfileRequestDTOThatThrowsException();
 
-        assertTrue(profileRequestDTO.getRolesRequestDTOS().isEmpty());
+        assertTrue(profileRequestDTO.getProfileMenuRequestDTO().isEmpty());
 
         thrown.expect(NoContentFoundException.class);
 
@@ -124,11 +124,11 @@ public class ProfileServiceImplTest {
 
         ProfileRequestDTO requestDTO = getProfileRequestDTO();
 
-        given(profileRepository.findByProfileName(requestDTO.getGeneralInfoRequestDTO().getProfileName())).willReturn(null);
+        given(profileRepository.findByProfileName(requestDTO.getProfileDTO().getName())).willReturn(null);
 
-        assertFalse(requestDTO.getRolesRequestDTOS().isEmpty());
+        assertFalse(requestDTO.getProfileMenuRequestDTO().isEmpty());
 
-        Profile expected = ProfileUtils.convertToProfileInfo(requestDTO.getGeneralInfoRequestDTO());
+        Profile expected = ProfileUtils.convertToProfileInfo(requestDTO.getProfileDTO());
 
         given(profileService.saveProfile(expected)).willReturn(getProfileInfo());
 
@@ -143,20 +143,21 @@ public class ProfileServiceImplTest {
 
         Profile profile = getProfileInfo();
 
-        given(profileRepository.findByProfileName(requestDTO.getGeneralInfoRequestDTO().getProfileName())).willReturn(null);
+        given(profileRepository.findByProfileName(requestDTO.getProfileDTO().getName())).willReturn(null);
 
-        assertFalse(requestDTO.getRolesRequestDTOS().isEmpty());
+        assertFalse(requestDTO.getProfileMenuRequestDTO().isEmpty());
 
         given(profileService.saveProfile(profile)).willReturn(profile);
 
         List<ProfileMenu> expectedProfileMenus = ProfileUtils.convertToProfileMenu(profile.getId(),
-                requestDTO.getRolesRequestDTOS());
+                requestDTO.getProfileMenuRequestDTO());
 
         given(profileMenuService.saveProfileMenu(expectedProfileMenus)).willReturn(getProfileMenu());
 
         profileService.createProfile(requestDTO);
 
-        assertThat(profileMenuService.saveProfileMenu(expectedProfileMenus), hasSize(requestDTO.getRolesRequestDTOS().size()));
+        assertThat(profileMenuService.saveProfileMenu(expectedProfileMenus),
+                hasSize(requestDTO.getProfileMenuRequestDTO().size()));
     }
 
 

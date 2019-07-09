@@ -12,11 +12,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ProfileGeneralInfoRequestDTO implements Serializable {
+public class ProfileDTO implements Serializable {
 
-    private String profileName;
+    private String name;
 
-    private String profileDescription;
+    private String description;
 
     private Character status;
 

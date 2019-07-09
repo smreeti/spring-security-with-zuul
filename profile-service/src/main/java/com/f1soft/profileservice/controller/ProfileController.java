@@ -2,6 +2,8 @@ package com.f1soft.profileservice.controller;
 
 import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
 import com.f1soft.profileservice.service.ProfileService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,7 @@ import static org.springframework.http.ResponseEntity.*;
  */
 @RestController
 @RequestMapping(value = BASE_API)
+@Api(value = "This is profile controller")
 public class ProfileController {
 
     private final ProfileService profileService;
@@ -23,13 +26,9 @@ public class ProfileController {
     }
 
     @PostMapping(value = SAVE)
+    @ApiOperation(value = "Save new profile")
     public ResponseEntity<?> saveProfile(@RequestBody ProfileRequestDTO requestDTO) {
         profileService.createProfile(requestDTO);
         return ok().build();
-    }
-
-    @GetMapping("/hello")
-    public String shhsb(){
-        return "cdsc";
     }
 }

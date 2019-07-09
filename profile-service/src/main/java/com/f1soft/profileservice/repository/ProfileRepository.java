@@ -10,6 +10,6 @@ import org.springframework.data.repository.query.Param;
  */
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
-    @Query(value = "SELECT * FROM profile WHERE profile_name =:name", nativeQuery = true)
+    @Query(value = "SELECT * FROM profile WHERE name =:name", nativeQuery = true)
     Profile findByProfileName(@Param("name") String name);
 }

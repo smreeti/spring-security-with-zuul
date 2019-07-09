@@ -6,7 +6,7 @@ import com.f1soft.profileservice.exceptions.DataDuplicationException;
 import com.f1soft.profileservice.exceptions.NoContentFoundException;
 import com.f1soft.profileservice.repository.ProfileRepository;
 import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
-import com.f1soft.profileservice.requestDTO.ProfileRolesRequestDTO;
+import com.f1soft.profileservice.requestDTO.ProfileMenuRequestDTO;
 import com.f1soft.profileservice.service.ProfileMenuService;
 import com.f1soft.profileservice.service.ProfileService;
 import com.f1soft.profileservice.utility.ProfileUtils;
@@ -35,14 +35,14 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public void createProfile(ProfileRequestDTO profileRequestDTO) {
-        validateProfileName(profileRequestDTO.getGeneralInfoRequestDTO().getProfileName());
+        validateProfileName(profileRequestDTO.getProfileDTO().getName());
 
-        validateRolesRequestSize(profileRequestDTO.getRolesRequestDTOS());
+        validateRolesRequestSize(profileRequestDTO.getProfileMenuRequestDTO());
 
-        Profile savedProfile = saveProfile(ProfileUtils.convertToProfileInfo(profileRequestDTO.getGeneralInfoRequestDTO()));
+        Profile savedProfile = saveProfile(ProfileUtils.convertToProfileInfo(profileRequestDTO.getProfileDTO()));
 
         List<ProfileMenu> profileMenus = ProfileUtils.convertToProfileMenu(savedProfile.getId(),
-                profileRequestDTO.getRolesRequestDTOS());
+                profileRequestDTO.getProfileMenuRequestDTO());
 
         profileMenuService.saveProfileMenu(profileMenus);
     }
@@ -57,7 +57,7 @@ public class ProfileServiceImpl implements ProfileService {
                     "Profile entity returned not null");
     }
 
-    private void validateRolesRequestSize(List<ProfileRolesRequestDTO> rolesRequestDTOS) {
+    private void validateRolesRequestSize(List<ProfileMenuRequestDTO> rolesRequestDTOS) {
         if (ObjectUtils.isEmpty(rolesRequestDTOS))
             throw new NoContentFoundException("Invalid request data. User Menus cannot be left empty.",
                     "User menu list returned null");

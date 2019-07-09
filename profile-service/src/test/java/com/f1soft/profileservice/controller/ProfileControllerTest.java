@@ -1,8 +1,8 @@
 package com.f1soft.profileservice.controller;
 
-import com.f1soft.profileservice.requestDTO.ProfileGeneralInfoRequestDTO;
+import com.f1soft.profileservice.requestDTO.ProfileDTO;
 import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
-import com.f1soft.profileservice.requestDTO.ProfileRolesRequestDTO;
+import com.f1soft.profileservice.requestDTO.ProfileMenuRequestDTO;
 import com.f1soft.profileservice.service.ProfileService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -58,10 +58,10 @@ public class ProfileControllerTest {
     private ProfileRequestDTO getProfileRequestDTO() {
 
         return new ProfileRequestDTO(
-                new ProfileGeneralInfoRequestDTO("Superadmin",
+                new ProfileDTO("Superadmin",
                         "This is super admin profile", 'Y', 1L, 1L),
-                Arrays.asList(new ProfileRolesRequestDTO(1L, 10L),
-                        new ProfileRolesRequestDTO(2L, 11L))
+                Arrays.asList(new ProfileMenuRequestDTO(1L, 10L),
+                        new ProfileMenuRequestDTO(2L, 11L))
         );
     }
 }

@@ -12,7 +12,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class ProfileRolesRequestDTO implements Serializable{
+public class ProfileMenuRequestDTO implements Serializable{
 
     private Long userMenuId;
 

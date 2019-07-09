@@ -20,11 +20,11 @@ public class Profile implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "profile_name")
-    private String profileName;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "profile_description")
-    private String profileDescription;
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "status")
     private Character status;
