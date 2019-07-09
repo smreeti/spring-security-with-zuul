@@ -3,6 +3,7 @@ package com.f1soft.departmentservice.unittest;
 import com.f1soft.departmentservice.entities.Department;
 import com.f1soft.departmentservice.exception.BadRequestDataException;
 import com.f1soft.departmentservice.exception.DataAlreadyExistsException;
+import com.f1soft.departmentservice.exception.DataNotFoundException;
 import com.f1soft.departmentservice.repository.DepartmentRepository;
 import com.f1soft.departmentservice.requestDTO.DepartmentSetupDTO;
 import com.f1soft.departmentservice.service.serviceimpl.DepartmentServiceImpl;
@@ -14,6 +15,9 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -33,8 +37,6 @@ public class DepartmentServiceImplTest {
 
     private DepartmentSetupDTO departmentSetupDTO;
 
-    private Department department;
-
     private Department savedDepartment;
 
     @Before
@@ -46,18 +48,11 @@ public class DepartmentServiceImplTest {
                 .status('Y')
                 .build();
 
-        department = new Department();
-        department.setId(1L);
-        department.setDepartmentName("Surgical");
-        department.setCode("SRG");
-        department.setStatus('Y');
-
         savedDepartment = new Department();
         savedDepartment.setId(1L);
         savedDepartment.setDepartmentName("Surgical");
         savedDepartment.setCode("SRG");
         savedDepartment.setStatus('Y');
-
     }
 
     @Test
@@ -68,6 +63,18 @@ public class DepartmentServiceImplTest {
         addDepartment_ShhouldReturnBadRequest();
     }
 
+    @Test
+    public void fetchAllDepartment(){
+        fetchAllDepartment_ShouldReturnEmptyList();
+        fetchAllDepartment_ShouldReturnDepartments();
+    }
+
+    @Test
+    public void deleteDeparment(){
+        deleteDepartment_ShouldReturnDataNotFound();
+        deleteDepartment_ShouldDeleteData();
+    }
+
 
     @Test
     public void addDepartment_ShouldReturnNameExists() {
@@ -75,7 +82,7 @@ public class DepartmentServiceImplTest {
         thrown.expect(DataAlreadyExistsException.class);
         thrown.expectMessage("DEPARTMENT WITH NAME :" + " " + departmentSetupDTO.getDepartmentName() + " " + " ALREADY EXISTS");
 
-        given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(department);
+        given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(savedDepartment);
 
         departmentService.addDepartment(departmentSetupDTO);
 
@@ -87,7 +94,7 @@ public class DepartmentServiceImplTest {
         thrown.expectMessage("DEPARTMENT WITH CODE :" + " " + departmentSetupDTO.getCode() + " " + " ALREADY EXISTS");
 
         given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(null);
-        given(departmentRepository.findByCode(departmentSetupDTO.getCode())).willReturn(department);
+        given(departmentRepository.findByCode(departmentSetupDTO.getCode())).willReturn(savedDepartment);
 
         departmentService.addDepartment(departmentSetupDTO);
     }
@@ -101,7 +108,7 @@ public class DepartmentServiceImplTest {
         given(departmentRepository.save(department)).willReturn(savedDepartment);
 
         assertThat(departmentService.addDepartment(departmentSetupDTO)).isEqualTo(savedDepartment);
-        verify(departmentRepository, times(2)).save(department);
+        verify(departmentRepository).save(department);
     }
 
     @Test
@@ -110,8 +117,47 @@ public class DepartmentServiceImplTest {
         thrown.expectMessage("Bad Request.");
 
         departmentService.addDepartment(null);
-
     }
 
+    @Test
+    public void fetchAllDepartment_ShouldReturnEmptyList(){
+        thrown.expect(DataNotFoundException.class);
+        thrown.expectMessage("SORRY, DEPARTMENT NOT FOUND");
+
+        given(departmentRepository.fetchAllDepartment()).willReturn(null);
+
+        departmentService.fetchAllDepartment();
+    }
+
+    @Test
+    public void fetchAllDepartment_ShouldReturnDepartments(){
+        List<Department> departmentList=new ArrayList<>();
+        departmentList.add(savedDepartment);
+
+        given(departmentRepository.fetchAllDepartment()).willReturn(departmentList);
+
+        assertThat(departmentService.fetchAllDepartment()).isEqualTo(departmentList);
+    }
+
+    @Test
+    public void deleteDepartment_ShouldReturnDataNotFound(){
+        thrown.expect(DataNotFoundException.class);
+        thrown.expectMessage("SORRY, DEPARTMENT NOT FOUND");
+
+        given(departmentRepository.findByDepartmentId(1L)).willReturn(null);
+
+        departmentService.deleteDepartment(1L);
+    }
+
+    @Test
+    public void deleteDepartment_ShouldDeleteData(){
+        Department departmentToSave=DepartmentUtils.convertDepartmentToDelete(savedDepartment);
+
+        given(departmentRepository.findByDepartmentId(1L)).willReturn(savedDepartment);
+        given(departmentRepository.save(departmentToSave)).willReturn(departmentToSave);
+
+        assertThat(departmentService.deleteDepartment(savedDepartment.getId())).isEqualTo(departmentToSave);
+        verify(departmentRepository).save(departmentToSave);
+    }
 
 }
