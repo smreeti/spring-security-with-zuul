@@ -4,8 +4,10 @@ import com.f1soft.departmentservice.entities.Department;
 import com.f1soft.departmentservice.exception.BadRequestDataException;
 import com.f1soft.departmentservice.exception.DataAlreadyExistsException;
 import com.f1soft.departmentservice.exception.DataNotFoundException;
+import com.f1soft.departmentservice.exception.NoChangeFoundException;
 import com.f1soft.departmentservice.repository.DepartmentRepository;
 import com.f1soft.departmentservice.requestDTO.DepartmentSetupDTO;
+import com.f1soft.departmentservice.requestDTO.UpdatedDepartmentDTO;
 import com.f1soft.departmentservice.service.serviceimpl.DepartmentServiceImpl;
 import com.f1soft.departmentservice.utils.DepartmentUtils;
 import org.junit.Before;
@@ -39,6 +41,8 @@ public class DepartmentServiceImplTest {
 
     private Department savedDepartment;
 
+    private UpdatedDepartmentDTO updatedDepartmentDTO;
+
     @Before
     public void setUp() {
         departmentService = new DepartmentServiceImpl(departmentRepository);
@@ -48,11 +52,19 @@ public class DepartmentServiceImplTest {
                 .status('Y')
                 .build();
 
+        updatedDepartmentDTO=new UpdatedDepartmentDTO();
+        updatedDepartmentDTO.setId(1L);
+        updatedDepartmentDTO.setDepartmentName("Sugery");
+        updatedDepartmentDTO.setCode("SRG");
+        updatedDepartmentDTO.setStatus('Y');
+
+
         savedDepartment = new Department();
         savedDepartment.setId(1L);
         savedDepartment.setDepartmentName("Surgical");
         savedDepartment.setCode("SRG");
         savedDepartment.setStatus('Y');
+
     }
 
     @Test
@@ -73,6 +85,13 @@ public class DepartmentServiceImplTest {
     public void deleteDeparment(){
         deleteDepartment_ShouldReturnDataNotFound();
         deleteDepartment_ShouldDeleteData();
+    }
+
+    @Test
+    public void updateDepartment(){
+        updateDepartment_ShouldReturnDataNotFound();
+        updateDepartment_ShouldReturnNoChangeFound();
+        updateDepartment_ShouldUpdateDepartment();
     }
 
 
@@ -160,4 +179,39 @@ public class DepartmentServiceImplTest {
         verify(departmentRepository).save(departmentToSave);
     }
 
+    @Test
+    public void updateDepartment_ShouldReturnDataNotFound(){
+        thrown.expect(DataNotFoundException.class);
+        thrown.expectMessage("SORRY, DEPARTMENT NOT FOUND");
+
+        given(departmentRepository.findByDepartmentId(updatedDepartmentDTO.getId())).willReturn(null);
+
+        departmentService.updateDepartment(updatedDepartmentDTO);
+    }
+
+    @Test
+    public void updateDepartment_ShouldReturnNoChangeFound(){
+        thrown.expect(NoChangeFoundException.class);
+        thrown.expectMessage("SORRY, NO CHANGES FOUND");
+
+        given(departmentRepository.findByDepartmentId(updatedDepartmentDTO.getId())).willReturn(savedDepartment);
+        given(departmentRepository.searchDepartment(updatedDepartmentDTO.getId(),
+                updatedDepartmentDTO.getDepartmentName(),updatedDepartmentDTO.getCode(),updatedDepartmentDTO.getStatus())).willReturn(savedDepartment);
+
+        departmentService.updateDepartment(updatedDepartmentDTO);
+
+    }
+
+    @Test
+    public void updateDepartment_ShouldUpdateDepartment(){
+        Department departmentToSave=DepartmentUtils.convertDepartmentToUpdate(updatedDepartmentDTO,savedDepartment);
+        given(departmentRepository.findByDepartmentId(updatedDepartmentDTO.getId())).willReturn(savedDepartment);
+        given(departmentRepository.searchDepartment(updatedDepartmentDTO.getId(),
+                updatedDepartmentDTO.getDepartmentName(),updatedDepartmentDTO.getCode(),updatedDepartmentDTO.getStatus())).willReturn(null);
+        given(departmentRepository.save(departmentToSave)).willReturn(departmentToSave);
+
+        assertThat(departmentService.updateDepartment(updatedDepartmentDTO)).isEqualTo(departmentToSave);
+        verify(departmentRepository).save(departmentToSave);
+
+    }
 }

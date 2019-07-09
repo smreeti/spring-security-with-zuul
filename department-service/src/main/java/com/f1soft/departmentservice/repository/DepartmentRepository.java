@@ -21,6 +21,10 @@ public interface DepartmentRepository extends CrudRepository<Department,Long> {
     @Query(value = "SELECT * FROM department WHERE status=:'Y'",nativeQuery = true)
    List<Department> fetchAllDepartment();
 
-    @Query(value="SELECT * FROM department WHERE id=:id status=:'Y'",nativeQuery = true)
+    @Query(value="SELECT * FROM department WHERE id=:id AND status=:'Y'",nativeQuery = true)
     Department findByDepartmentId(@Param("id") Long id);
+
+    @Query(value="SELECT * FROM department WHERE id=:id AND department_name=:name AND code=:code AND status=:status",nativeQuery = true)
+    Department searchDepartment(@Param("id") Long id,@Param("name")  String name,@Param("code") String code,@Param("status") Character status);
+
 }
