@@ -32,14 +32,15 @@ public class DepartmentRepositoryTest extends AbstractDepartmentInfo {
     public void testSaveDepartment() {
         Department departmentToSave = getDepartmentInfo();
         Department department = testEntityManager.persist(departmentToSave);
-
+        System.out.println(department);
         assertThat(department).isNotNull();
     }
 
     @Test
     public void testfetchAllDepartment(){
         List<Department> departmentList=departmentRepository.fetchAllDepartment();
-        assertThat(departmentList).hasSize(1);
+        System.out.println(departmentList);
+        assertThat(departmentList).hasSize(2);
     }
 
     @Test
@@ -59,7 +60,7 @@ public class DepartmentRepositoryTest extends AbstractDepartmentInfo {
     @Test
     public void testfindByDepartmentId(){
         Department departmentSavedInDb=departmentRepository.findByDepartmentId(31L);
-
+        System.out.println(departmentSavedInDb);
         assertThat(departmentSavedInDb.getDepartmentName()).isEqualTo(getDepartmentInfo().getDepartmentName());
         assertThat(departmentSavedInDb.getCode()).isEqualTo(getDepartmentInfo().getCode());
     }
