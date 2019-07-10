@@ -8,7 +8,7 @@ public abstract class AbstractDepartmentInfo {
 
     public Department getDepartmentInfo(){
         return Department.builder()
-                .id(1L)
+                .id(null)
                 .departmentName("Surgical")
                 .code("SRG")
                 .status('Y')

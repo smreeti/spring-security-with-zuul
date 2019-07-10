@@ -30,16 +30,10 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public Department addDepartment(DepartmentSetupDTO departmentSetupDTO) {
         if (departmentSetupDTO != null) {
-            if (departmentRepository.findByName(departmentSetupDTO.getDepartmentName()) != null) {
-                throw new DataAlreadyExistsException("DEPARTMENT WITH NAME :" + " " + departmentSetupDTO.getDepartmentName()
-                        + " " + " ALREADY EXISTS");
-            }
-            if (departmentRepository.findByCode(departmentSetupDTO.getCode()) != null) {
-                throw new DataAlreadyExistsException("DEPARTMENT WITH CODE :" + " " + departmentSetupDTO.getCode()
-                        + " " + " ALREADY EXISTS");
-            }
+            validateDepartmentName(departmentSetupDTO.getDepartmentName());
+            validateDepartmentCode(departmentSetupDTO.getCode());
             Department department = DepartmentUtils.convertDepartmentSetupToDepartment(departmentSetupDTO);
-            return departmentRepository.save(department);
+            return saveDepartment(department);
         } else {
             throw new BadRequestDataException("Bad Request.");
         }
@@ -63,9 +57,8 @@ public class DepartmentServiceImpl implements DepartmentService {
             throw new DataNotFoundException("SORRY, DEPARTMENT NOT FOUND");
         } else {
             Department departmentToSave = DepartmentUtils.convertDepartmentToDelete(departmentToDelete);
-            return departmentRepository.save(departmentToSave);
+            return saveDepartment(departmentToSave);
         }
-
 
     }
 
@@ -75,12 +68,38 @@ public class DepartmentServiceImpl implements DepartmentService {
         if (savedDepartment == null) {
             throw new DataNotFoundException("SORRY, DEPARTMENT NOT FOUND");
         } else {
-            if (departmentRepository.searchDepartment(updatedDepartmentDTO.getId(), updatedDepartmentDTO.getDepartmentName(),
-                    updatedDepartmentDTO.getCode(), updatedDepartmentDTO.getStatus()) != null) {
-                throw new NoChangeFoundException("SORRY, NO CHANGES FOUND");
-            }
+            searchDepartment(updatedDepartmentDTO);
             Department departmentToSave = DepartmentUtils.convertDepartmentToUpdate(updatedDepartmentDTO, savedDepartment);
-            return departmentRepository.save(departmentToSave);
+            return saveDepartment(departmentToSave);
         }
     }
+
+    public void validateDepartmentName(String name) {
+        if (departmentRepository.findByName(name) != null) {
+            throw new DataAlreadyExistsException("DEPARTMENT WITH NAME :" + " " + name
+                    + " " + " ALREADY EXISTS");
+        }
+
+    }
+
+    public void validateDepartmentCode(String code) {
+        if (departmentRepository.findByCode(code) != null) {
+            throw new DataAlreadyExistsException("DEPARTMENT WITH CODE :" + " " + code
+                    + " " + " ALREADY EXISTS");
+        }
+    }
+
+    public void searchDepartment(UpdatedDepartmentDTO updatedDepartmentDTO) {
+        if (departmentRepository.searchDepartment(updatedDepartmentDTO.getId(), updatedDepartmentDTO.getDepartmentName(),
+                updatedDepartmentDTO.getCode(), updatedDepartmentDTO.getStatus()) != null) {
+            throw new NoChangeFoundException("SORRY, NO CHANGES FOUND");
+        }
+
+    }
+
+    public Department saveDepartment(Department department) {
+        return departmentRepository.save(department);
+    }
+
+
 }

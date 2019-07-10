@@ -29,11 +29,9 @@ public class Department  implements Serializable{
     private Character status;
 
     @Column(name = "created_date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDate createdDate;
 
     @Column(name = "last_modified_date")
-    @Temporal(TemporalType.DATE)
     private LocalDate lastModifiedDate;
 
     @Column(name="created_by_id")
