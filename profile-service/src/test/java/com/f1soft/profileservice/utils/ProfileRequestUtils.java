@@ -43,4 +43,5 @@ public class ProfileRequestUtils {
         return Arrays.asList(new ProfileMenu(null, 1L, 1L, 10L, 'Y'),
                 (new ProfileMenu(null, 2L, 2L, 11L, 'Y')));
     }
+
 }

@@ -4,6 +4,7 @@ import com.f1soft.profileservice.requestDTO.ProfileDTO;
 import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
 import com.f1soft.profileservice.requestDTO.ProfileMenuRequestDTO;
 import com.f1soft.profileservice.service.ProfileService;
+import com.f1soft.profileservice.utils.ProfileRequestUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -20,6 +21,7 @@ import java.util.Arrays;
 
 import static com.f1soft.profileservice.constants.WebResourceKeyConstants.BASE_API;
 import static com.f1soft.profileservice.constants.WebResourceKeyConstants.SAVE;
+import static com.f1soft.profileservice.utils.ProfileRequestUtils.getProfileRequestDTO;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -53,15 +55,5 @@ public class ProfileControllerTest {
     private String writeObjectToJson(ProfileRequestDTO requestDTO) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(requestDTO);
-    }
-
-    private ProfileRequestDTO getProfileRequestDTO() {
-
-        return new ProfileRequestDTO(
-                new ProfileDTO("Superadmin",
-                        "This is super admin profile", 'Y', 1L, 1L),
-                Arrays.asList(new ProfileMenuRequestDTO(1L, 10L),
-                        new ProfileMenuRequestDTO(2L, 11L))
-        );
     }
 }

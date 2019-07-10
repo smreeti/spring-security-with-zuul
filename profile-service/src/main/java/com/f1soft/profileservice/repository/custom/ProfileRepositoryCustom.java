@@ -1,15 +1,14 @@
 package com.f1soft.profileservice.repository.custom;
 
-import com.f1soft.profileservice.requestDTO.ProfileDTO;
-import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
-
-import java.util.List;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author smriti on 7/10/19
  */
-
+@Repository
 public interface ProfileRepositoryCustom {
 
-    List<ProfileMinimalResponseDTO> searchProfile(ProfileDTO profile);
+    void test();
+
+//    List<ProfileMinimalResponseDTO> searchProfile(ProfileDTO profile);
 }

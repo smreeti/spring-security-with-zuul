@@ -1,6 +1,5 @@
 package com.f1soft.profileservice.controller;
 
-import com.f1soft.profileservice.requestDTO.ProfileDTO;
 import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
 import com.f1soft.profileservice.service.ProfileService;
 import io.swagger.annotations.Api;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.f1soft.profileservice.constants.WebResourceKeyConstants.BASE_API;
 import static com.f1soft.profileservice.constants.WebResourceKeyConstants.SAVE;
-import static org.springframework.http.ResponseEntity.*;
+import static org.springframework.http.ResponseEntity.ok;
 
 /**
  * @author smriti on 7/2/19
@@ -26,6 +25,7 @@ public class ProfileController {
         this.profileService = profileService;
     }
 
+
     @PostMapping(value = SAVE)
     @ApiOperation(value = "Save new profile")
     public ResponseEntity<?> saveProfile(@RequestBody ProfileRequestDTO requestDTO) {
@@ -35,7 +35,7 @@ public class ProfileController {
 
     @GetMapping("/test")
     public String sayhello(){
-    profileService.searchProfile(new ProfileDTO());
+//    profileService.searchProfile(new ProfileDTO());
     return "sdvd";
     }
 
