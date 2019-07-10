@@ -11,6 +11,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -27,8 +29,42 @@ public class DepartmentRepositoryTest extends AbstractDepartmentInfo {
     public void testSaveDepartment() {
         Department departmentToSave = getDepartmentInfo();
         Department department = testEntityManager.persist(departmentToSave);
-        assertThat(department).isEqualTo(departmentToSave);
+
+        assertThat(department).isNotNull();
     }
 
+    @Test
+    public void testfetchAllDepartment(){
+        List<Department> departmentList=departmentRepository.fetchAllDepartment();
+        assertThat(departmentList).hasSize(1);
+    }
 
+    @Test
+    public void testfindByName(){
+        Department departmentSavedInDb=departmentRepository.findByName(getDepartmentInfo().getDepartmentName());
+
+        assertThat(departmentSavedInDb.getDepartmentName()).isEqualTo(getDepartmentInfo().getDepartmentName());
+    }
+
+    @Test
+    public void testfindByCode(){
+        Department departmentSavedInDb=departmentRepository.findByCode(getDepartmentInfo().getCode());
+
+        assertThat(departmentSavedInDb.getCode()).isEqualTo(getDepartmentInfo().getCode());
+    }
+
+    @Test
+    public void testfindByDepartmentId(){
+        Department departmentSavedInDb=departmentRepository.findByDepartmentId(31L);
+
+        assertThat(departmentSavedInDb.getDepartmentName()).isEqualTo(getDepartmentInfo().getDepartmentName());
+        assertThat(departmentSavedInDb.getCode()).isEqualTo(getDepartmentInfo().getCode());
+    }
+
+    @Test
+    public void testsearchDepartment(){
+        Department departmentSavedInDb=departmentRepository.searchDepartment(31L,getDepartmentInfo().getDepartmentName(),getDepartmentInfo().getCode(),getDepartmentInfo().getStatus());
+
+        assertThat(departmentSavedInDb).isNotNull();
+    }
 }
