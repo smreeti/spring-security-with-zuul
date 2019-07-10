@@ -5,8 +5,6 @@ import com.f1soft.profileservice.entities.ProfileMenu;
 import com.f1soft.profileservice.exceptions.DataDuplicationException;
 import com.f1soft.profileservice.exceptions.NoContentFoundException;
 import com.f1soft.profileservice.repository.ProfileRepository;
-import com.f1soft.profileservice.requestDTO.ProfileDTO;
-import com.f1soft.profileservice.requestDTO.ProfileMenuRequestDTO;
 import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
 import com.f1soft.profileservice.service.serviceImpl.ProfileMenuServiceImpl;
 import com.f1soft.profileservice.service.serviceImpl.ProfileServiceImpl;
@@ -21,10 +19,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import static com.f1soft.profileservice.utils.ProfileRequestUtils.*;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
@@ -41,16 +38,17 @@ public class ProfileServiceImplTest {
     private ProfileServiceImpl profileService;
 
     @Mock
-    private ProfileMenuServiceImpl profileMenuService;
+    private ProfileRepository profileRepository;
 
     @Mock
-    private ProfileRepository profileRepository;
+    private ProfileMenuServiceImpl profileMenuService;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @Before
     public void setup() {
+
     }
 
     @Test
@@ -63,36 +61,6 @@ public class ProfileServiceImplTest {
         Should_Successfully_SaveProfile();
 
         Should_Successfully_SaveProfileMenu();
-    }
-
-    public ProfileRequestDTO getProfileRequestDTOThatThrowsException() {
-        return new ProfileRequestDTO(
-                new ProfileDTO("admin", "This is super admin profile",
-                        'Y', 1L, 1L), new ArrayList<>());
-    }
-
-    public ProfileRequestDTO getProfileRequestDTO() {
-        return new ProfileRequestDTO(getProfileDTO(), getProfileMenuRequestDTO());
-    }
-
-    public ProfileDTO getProfileDTO() {
-        return new ProfileDTO("Superadmin", "This is super admin profile",
-                'Y', 1L, 1L);
-    }
-
-    public List<ProfileMenuRequestDTO> getProfileMenuRequestDTO() {
-        return Arrays.asList(new ProfileMenuRequestDTO(1L, 10L),
-                (new ProfileMenuRequestDTO(2L, 11L)));
-    }
-
-    public Profile getProfileInfo() {
-        return new Profile(1L, "Superadmin", "This is super admin profile", 'Y',
-                1L, 1L);
-    }
-
-    public List<ProfileMenu> getProfileMenu() {
-        return Arrays.asList(new ProfileMenu(null, 1L, 1L, 10L, 'Y'),
-                (new ProfileMenu(null, 2L, 2L, 11L, 'Y')));
     }
 
     @Test
@@ -163,25 +131,6 @@ public class ProfileServiceImplTest {
 
         assertThat(profileMenuService.saveProfileMenu(expectedProfileMenus),
                 hasSize(requestDTO.getProfileMenuRequestDTO().size()));
-    }
-
-    @Test
-    public void searchProfile() {
-
-
-    }
-
-    public void Should_ThrowException_When_ProfileIsEmpty() {
-
-        ProfileDTO profileDTO = getProfileDTO();
-
-        given(profileService.getQueryToSearchProfile(profileDTO)).willReturn(new ArrayList<>());
-
-        thrown.expect(NoContentFoundException.class);
-
-        profileService.searchProfile(profileDTO);
-
-
     }
 
 

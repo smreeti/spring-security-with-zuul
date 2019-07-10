@@ -33,4 +33,12 @@ public class ProfileController {
         return ok().build();
     }
 
+    @GetMapping("/test")
+    public String sayhello(){
+    profileService.searchProfile(new ProfileDTO());
+    return "sdvd";
+    }
+
+
+
 }

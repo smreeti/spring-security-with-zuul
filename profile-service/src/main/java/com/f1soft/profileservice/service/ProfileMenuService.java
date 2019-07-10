@@ -10,4 +10,6 @@ import java.util.List;
 public interface ProfileMenuService {
 
     List<ProfileMenu> saveProfileMenu(List<ProfileMenu> profileMenus);
+
+     String hello();
 }
