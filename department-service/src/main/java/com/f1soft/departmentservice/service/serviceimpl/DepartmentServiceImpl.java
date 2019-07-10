@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 public class DepartmentServiceImpl implements DepartmentService {
 
-   private  DepartmentRepository departmentRepository;
+    private DepartmentRepository departmentRepository;
 
     public DepartmentServiceImpl(DepartmentRepository departmentRepository) {
         this.departmentRepository = departmentRepository;
@@ -29,20 +29,19 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Department addDepartment(DepartmentSetupDTO departmentSetupDTO) {
-        if(departmentSetupDTO != null){
-            if(departmentRepository.findByName(departmentSetupDTO.getDepartmentName()) !=null){
+        if (departmentSetupDTO != null) {
+            if (departmentRepository.findByName(departmentSetupDTO.getDepartmentName()) != null) {
                 throw new DataAlreadyExistsException("DEPARTMENT WITH NAME :" + " " + departmentSetupDTO.getDepartmentName()
                         + " " + " ALREADY EXISTS");
             }
-            if (departmentRepository.findByCode(departmentSetupDTO.getCode()) != null){
+            if (departmentRepository.findByCode(departmentSetupDTO.getCode()) != null) {
                 throw new DataAlreadyExistsException("DEPARTMENT WITH CODE :" + " " + departmentSetupDTO.getCode()
                         + " " + " ALREADY EXISTS");
             }
-            Department department= DepartmentUtils.convertDepartmentSetupToDepartment(departmentSetupDTO);
+            Department department = DepartmentUtils.convertDepartmentSetupToDepartment(departmentSetupDTO);
             return departmentRepository.save(department);
-        }
-        else {
-          throw new BadRequestDataException("Bad Request.");
+        } else {
+            throw new BadRequestDataException("Bad Request.");
         }
 
     }
@@ -50,21 +49,20 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public List<Department> fetchAllDepartment() {
 //        return departmentRepository.fetchAllDepartment().orElseThrow(()-> new DataNotFoundException("SORRY, DATA NOT FOUND"));
-        if(departmentRepository.fetchAllDepartment() ==null){
+        if (departmentRepository.fetchAllDepartment() == null) {
             throw new DataNotFoundException("SORRY, DEPARTMENT NOT FOUND");
-        }else{
+        } else {
             return departmentRepository.fetchAllDepartment();
         }
     }
 
     @Override
     public Department deleteDepartment(Long id) {
-        Department departmentToDelete=departmentRepository.findByDepartmentId(id);
-        if(departmentToDelete == null){
+        Department departmentToDelete = departmentRepository.findByDepartmentId(id);
+        if (departmentToDelete == null) {
             throw new DataNotFoundException("SORRY, DEPARTMENT NOT FOUND");
-        }
-        else {
-            Department departmentToSave=DepartmentUtils.convertDepartmentToDelete(departmentToDelete);
+        } else {
+            Department departmentToSave = DepartmentUtils.convertDepartmentToDelete(departmentToDelete);
             return departmentRepository.save(departmentToSave);
         }
 
@@ -73,16 +71,16 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Department updateDepartment(UpdatedDepartmentDTO updatedDepartmentDTO) {
-        Department savedDepartment=departmentRepository.findByDepartmentId(updatedDepartmentDTO.getId());
-        if(savedDepartment==null){
+        Department savedDepartment = departmentRepository.findByDepartmentId(updatedDepartmentDTO.getId());
+        if (savedDepartment == null) {
             throw new DataNotFoundException("SORRY, DEPARTMENT NOT FOUND");
-        }else{
-          if(departmentRepository.searchDepartment(updatedDepartmentDTO.getId(),updatedDepartmentDTO.getDepartmentName(),
-                  updatedDepartmentDTO.getCode(),updatedDepartmentDTO.getStatus()) != null){
-              throw new NoChangeFoundException("SORRY, NO CHANGES FOUND");
-          }
-          Department departmentToSave=DepartmentUtils.convertDepartmentToUpdate(updatedDepartmentDTO,savedDepartment);
-          return departmentRepository.save(departmentToSave);
+        } else {
+            if (departmentRepository.searchDepartment(updatedDepartmentDTO.getId(), updatedDepartmentDTO.getDepartmentName(),
+                    updatedDepartmentDTO.getCode(), updatedDepartmentDTO.getStatus()) != null) {
+                throw new NoChangeFoundException("SORRY, NO CHANGES FOUND");
+            }
+            Department departmentToSave = DepartmentUtils.convertDepartmentToUpdate(updatedDepartmentDTO, savedDepartment);
+            return departmentRepository.save(departmentToSave);
         }
     }
 }

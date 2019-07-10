@@ -9,8 +9,8 @@ import java.util.Date;
 
 public class DepartmentUtils {
 
-    public static Department convertDepartmentSetupToDepartment(DepartmentSetupDTO departmentSetupDTO){
-        Department department=Department.builder()
+    public static Department convertDepartmentSetupToDepartment(DepartmentSetupDTO departmentSetupDTO) {
+        Department department = Department.builder()
                 .departmentName(departmentSetupDTO.getDepartmentName())
                 .code(departmentSetupDTO.getCode())
                 .status(departmentSetupDTO.getStatus())
@@ -20,8 +20,8 @@ public class DepartmentUtils {
         return department;
     }
 
-    public static Department convertDepartmentToDelete(Department departmentToDelete){
-        Department department=Department.builder()
+    public static Department convertDepartmentToDelete(Department departmentToDelete) {
+        Department department = Department.builder()
                 .id(departmentToDelete.getId())
                 .departmentName(departmentToDelete.getDepartmentName())
                 .code(departmentToDelete.getCode())
@@ -34,8 +34,8 @@ public class DepartmentUtils {
         return department;
     }
 
-    public static Department convertDepartmentToUpdate(UpdatedDepartmentDTO updatedDepartmentDTO,Department savedDepartment){
-        Department department=Department.builder()
+    public static Department convertDepartmentToUpdate(UpdatedDepartmentDTO updatedDepartmentDTO, Department savedDepartment) {
+        Department department = Department.builder()
                 .id(savedDepartment.getId())
                 .departmentName(updatedDepartmentDTO.getDepartmentName())
                 .code(updatedDepartmentDTO.getCode())
