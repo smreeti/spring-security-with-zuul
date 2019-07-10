@@ -3,6 +3,9 @@ package com.f1soft.departmentservice;
 import com.f1soft.departmentservice.entities.Department;
 
 import java.time.LocalDate;
+/**
+ * @author Sauravi
+ */
 
 public abstract class AbstractDepartmentInfo {
 

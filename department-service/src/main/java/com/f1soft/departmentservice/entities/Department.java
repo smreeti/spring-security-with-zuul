@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+/**
+ * @author Sauravi
+ */
 
 @Entity
 @Table(name = "department")

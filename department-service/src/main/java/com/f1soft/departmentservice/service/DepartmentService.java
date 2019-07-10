@@ -5,6 +5,9 @@ import com.f1soft.departmentservice.requestDTO.DepartmentSetupDTO;
 import com.f1soft.departmentservice.requestDTO.UpdatedDepartmentDTO;
 
 import java.util.List;
+/**
+ * @author Sauravi
+ */
 
 public interface DepartmentService {
     Department addDepartment(DepartmentSetupDTO departmentSetupDTO);
