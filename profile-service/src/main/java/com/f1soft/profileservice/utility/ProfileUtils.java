@@ -1,13 +1,10 @@
 package com.f1soft.profileservice.utility;
 
 import com.f1soft.profileservice.entities.Profile;
-import com.f1soft.profileservice.entities.ProfileMenu;
 import com.f1soft.profileservice.requestDTO.ProfileDTO;
-import com.f1soft.profileservice.requestDTO.ProfileMenuRequestDTO;
+import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
 
-import java.util.List;
-import java.util.function.BiFunction;
-import java.util.stream.Collectors;
+import java.util.function.Function;
 
 /**
  * @author smriti on 7/8/19
@@ -18,20 +15,20 @@ public class ProfileUtils {
         return MapperUtility.map(profileDTO, Profile.class);
     }
 
-    private static BiFunction<ProfileMenuRequestDTO, Long, ProfileMenu> convertToProfileMenuResponse =
-            (rolesRequestDTO, profileId) -> ProfileMenu.builder()
-                    .profileId(profileId)
-                    .userMenuId(rolesRequestDTO.getUserMenuId())
-                    .roleId(rolesRequestDTO.getRoleId())
-                    .status('Y')
-                    .build();
+    public static Function<Object[], ProfileMinimalResponseDTO> convertObjectToProfileResponseDTO = (objects) -> {
 
-    public static List<ProfileMenu> convertToProfileMenu(Long profileId, List<ProfileMenuRequestDTO> requestDTO) {
+        final Integer ID = 0;
+        final Integer NAME = 1;
+        final Integer STATUS = 2;
+        final Integer DEPARTMENT_ID = 3;
+        final Integer SUB_DEPARTMENT_ID = 4;
 
-        List<ProfileMenu> profileMenus = requestDTO.stream()
-                .map(roles -> convertToProfileMenuResponse.apply(roles, profileId))
-                .collect(Collectors.toList());
-
-        return profileMenus;
-    }
+        return ProfileMinimalResponseDTO.builder()
+                .id(Long.parseLong(objects[ID].toString()))
+                .name(objects[NAME].toString())
+                .status(objects[STATUS].toString().charAt(0))
+                .departmentId(Long.parseLong(objects[DEPARTMENT_ID].toString()))
+                .subDepartmentId(Long.parseLong(objects[SUB_DEPARTMENT_ID].toString()))
+                .build();
+    };
 }

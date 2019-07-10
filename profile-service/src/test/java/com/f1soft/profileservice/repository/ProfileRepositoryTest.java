@@ -31,6 +31,8 @@ public class ProfileRepositoryTest {
         Profile profile = testEntityManager.persist(new Profile(null, "Superadmin",
                 "This is super admin profile", 'Y', 1L, 1L));
 
+        assertNotNull(profile);
+
         assertThat(profile).hasFieldOrPropertyWithValue("name", "Superadmin");
         assertThat(profile).hasFieldOrPropertyWithValue("description", "This is super admin profile");
         assertThat(profile).hasFieldOrPropertyWithValue("departmentId", 1L);
@@ -50,6 +52,7 @@ public class ProfileRepositoryTest {
 
         assertNotNull(profile.getName());
     }
+
 
 }
 

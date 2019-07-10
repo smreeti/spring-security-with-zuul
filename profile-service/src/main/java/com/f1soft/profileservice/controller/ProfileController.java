@@ -1,5 +1,6 @@
 package com.f1soft.profileservice.controller;
 
+import com.f1soft.profileservice.requestDTO.ProfileDTO;
 import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
 import com.f1soft.profileservice.service.ProfileService;
 import io.swagger.annotations.Api;
@@ -31,4 +32,5 @@ public class ProfileController {
         profileService.createProfile(requestDTO);
         return ok().build();
     }
+
 }

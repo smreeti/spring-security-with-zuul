@@ -6,12 +6,12 @@ import com.f1soft.profileservice.exceptions.DataDuplicationException;
 import com.f1soft.profileservice.exceptions.NoContentFoundException;
 import com.f1soft.profileservice.repository.ProfileRepository;
 import com.f1soft.profileservice.requestDTO.ProfileDTO;
-import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
 import com.f1soft.profileservice.requestDTO.ProfileMenuRequestDTO;
+import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
 import com.f1soft.profileservice.service.serviceImpl.ProfileMenuServiceImpl;
 import com.f1soft.profileservice.service.serviceImpl.ProfileServiceImpl;
+import com.f1soft.profileservice.utility.ProfileMenuUtils;
 import com.f1soft.profileservice.utility.ProfileUtils;
-import com.f1soft.profileservice.utility.QueryCreator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,7 +21,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -67,19 +66,23 @@ public class ProfileServiceImplTest {
     }
 
     public ProfileRequestDTO getProfileRequestDTOThatThrowsException() {
-
         return new ProfileRequestDTO(
                 new ProfileDTO("admin", "This is super admin profile",
                         'Y', 1L, 1L), new ArrayList<>());
     }
 
     public ProfileRequestDTO getProfileRequestDTO() {
-        return new ProfileRequestDTO(
-                new ProfileDTO("Superadmin", "This is super admin profile",
-                        'Y', 1L, 1L),
-                Arrays.asList(new ProfileMenuRequestDTO(1L, 10L),
-                        (new ProfileMenuRequestDTO(2L, 11L))
-                ));
+        return new ProfileRequestDTO(getProfileDTO(), getProfileMenuRequestDTO());
+    }
+
+    public ProfileDTO getProfileDTO() {
+        return new ProfileDTO("Superadmin", "This is super admin profile",
+                'Y', 1L, 1L);
+    }
+
+    public List<ProfileMenuRequestDTO> getProfileMenuRequestDTO() {
+        return Arrays.asList(new ProfileMenuRequestDTO(1L, 10L),
+                (new ProfileMenuRequestDTO(2L, 11L)));
     }
 
     public Profile getProfileInfo() {
@@ -151,7 +154,7 @@ public class ProfileServiceImplTest {
 
         given(profileService.saveProfile(profile)).willReturn(profile);
 
-        List<ProfileMenu> expectedProfileMenus = ProfileUtils.convertToProfileMenu(profile.getId(),
+        List<ProfileMenu> expectedProfileMenus = ProfileMenuUtils.convertToProfileMenu(profile.getId(),
                 requestDTO.getProfileMenuRequestDTO());
 
         given(profileMenuService.saveProfileMenu(expectedProfileMenus)).willReturn(getProfileMenu());
@@ -168,14 +171,17 @@ public class ProfileServiceImplTest {
 
     }
 
-    public void Should_ThrowException_When_ProfileIsEmpty(){
+    public void Should_ThrowException_When_ProfileIsEmpty() {
 
-//        Query query = QueryCreator.createQueryToSearchProfile(ProfileDTO profileDTO);
+        ProfileDTO profileDTO = getProfileDTO();
 
-        given(profileRepository.fetchAllProfiles()).willReturn(new ArrayList<>());
+        given(profileService.getQueryToSearchProfile(profileDTO)).willReturn(new ArrayList<>());
+
         thrown.expect(NoContentFoundException.class);
 
-//        profileService.fetchAllProfileInfo();
+        profileService.searchProfile(profileDTO);
+
+
     }
 
 
