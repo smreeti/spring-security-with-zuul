@@ -1,5 +1,6 @@
 package com.f1soft.departmentservice.entities;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Department  implements Serializable{
 
     @Id
