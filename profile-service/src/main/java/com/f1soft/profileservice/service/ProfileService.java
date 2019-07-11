@@ -8,6 +8,4 @@ import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
 public interface ProfileService {
 
     void createProfile(ProfileRequestDTO profileRequestDTO);
-
-//    List<ProfileMinimalResponseDTO> searchProfile(ProfileDTO profileDTO);
 }

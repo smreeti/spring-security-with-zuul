@@ -19,6 +19,7 @@ import static org.springframework.http.ResponseEntity.ok;
 @Api(value = "This is profile controller")
 public class ProfileController {
 
+
     private final ProfileService profileService;
 
     public ProfileController(ProfileService profileService) {
@@ -34,11 +35,10 @@ public class ProfileController {
     }
 
     @GetMapping("/test")
-    public String sayhello(){
-//    profileService.searchProfile(new ProfileDTO());
-    return "sdvd";
+    public String sayhello() {
+//        custom.refresh();
+        return "sdvd";
     }
-
 
 
 }

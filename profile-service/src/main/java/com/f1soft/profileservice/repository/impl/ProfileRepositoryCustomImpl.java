@@ -1,11 +1,12 @@
 package com.f1soft.profileservice.repository.impl;
 
-import com.f1soft.profileservice.repository.custom.ProfileRepositoryCustom;
+import com.f1soft.profileservice.repository.ProfileRepositoryCustom;
+import com.f1soft.profileservice.requestDTO.ProfileDTO;
+import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import java.util.List;
 
 /**
  * @author smriti on 7/10/19
@@ -13,33 +14,9 @@ import javax.persistence.PersistenceContext;
 @Service
 @Transactional
 public class ProfileRepositoryCustomImpl implements ProfileRepositoryCustom {
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
+   
     @Override
-    @Transactional
-    public void test() {
-
+    public List<ProfileMinimalResponseDTO> searchProfile(ProfileDTO profileDTO) {
+        return null;
     }
-
-//    @Override
-//    public List<ProfileMinimalResponseDTO> searchProfile(ProfileDTO profile) {
-//
-//        Query query = entityManager.createNativeQuery(QueryCreator.createQueryToSearchProfile.apply(null));
-//
-//        List<Objects[]> results = query.getResultList();
-//
-//
-//        System.out.println(results);
-////        entityManager.refresh(profile);
-//        return null;
-//    }
-
-//    @Override
-//    public void test(){
-//        System.out.println("vdsvs");
-//
-//    }
-
 }
