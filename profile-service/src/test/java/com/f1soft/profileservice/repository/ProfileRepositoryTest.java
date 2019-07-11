@@ -24,9 +24,6 @@ public class ProfileRepositoryTest {
     @Autowired
     private TestEntityManager testEntityManager;
 
-    @Autowired
-    private ProfileRepository profileRepository;
-
     @Test
     public void saveProfile() {
 
