@@ -14,7 +14,7 @@ import java.util.Optional;
  */
 
 @Repository
-public interface DepartmentRepository extends JpaRepository<Department,Long> {
+public interface DepartmentRepository extends JpaRepository<Department,Long>, DepartmentRepositoryCustom {
 
     @Query(value ="SELECT * FROM department WHERE department_name=:name AND status='Y'",nativeQuery = true)
     Department findByName(@Param("name") String name);

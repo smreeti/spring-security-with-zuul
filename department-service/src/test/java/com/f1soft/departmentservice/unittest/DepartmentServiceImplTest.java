@@ -19,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -146,7 +147,7 @@ public class DepartmentServiceImplTest {
         thrown.expect(DataNotFoundException.class);
         thrown.expectMessage("SORRY, DEPARTMENT NOT FOUND");
 
-        given(departmentRepository.fetchAllDepartment()).willReturn(null);
+        given(departmentRepository.fetchAllDepartment()).willReturn(Collections.emptyList());
 
         departmentService.fetchAllDepartment();
     }
@@ -159,6 +160,7 @@ public class DepartmentServiceImplTest {
         given(departmentRepository.fetchAllDepartment()).willReturn(departmentList);
 
         assertThat(departmentService.fetchAllDepartment()).isEqualTo(departmentList);
+        assertThat(departmentService.fetchAllDepartment()).hasSize(1);
     }
 
     @Test

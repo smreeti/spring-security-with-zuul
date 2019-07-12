@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+
 /**
  * @author Sauravi
  */
@@ -37,37 +38,37 @@ public class DepartmentRepositoryTest extends AbstractDepartmentInfo {
     }
 
     @Test
-    public void testfetchAllDepartment(){
-        List<Department> departmentList=departmentRepository.fetchAllDepartment();
+    public void testfetchAllDepartment() {
+        List<Department> departmentList = departmentRepository.fetchAllDepartment();
         System.out.println(departmentList);
         assertThat(departmentList).hasSize(2);
     }
 
     @Test
-    public void testfindByName(){
-        Department departmentSavedInDb=departmentRepository.findByName(getDepartmentInfo().getDepartmentName());
+    public void testfindByName() {
+        Department departmentSavedInDb = departmentRepository.findByName(getDepartmentInfo().getDepartmentName());
 
         assertThat(departmentSavedInDb.getDepartmentName()).isEqualTo(getDepartmentInfo().getDepartmentName());
     }
 
     @Test
-    public void testfindByCode(){
-        Department departmentSavedInDb=departmentRepository.findByCode(getDepartmentInfo().getCode());
+    public void testfindByCode() {
+        Department departmentSavedInDb = departmentRepository.findByCode(getDepartmentInfo().getCode());
 
         assertThat(departmentSavedInDb.getCode()).isEqualTo(getDepartmentInfo().getCode());
     }
 
     @Test
-    public void testfindByDepartmentId(){
-        Department departmentSavedInDb=departmentRepository.findByDepartmentId(31L);
+    public void testfindByDepartmentId() {
+        Department departmentSavedInDb = departmentRepository.findByDepartmentId(31L);
         System.out.println(departmentSavedInDb);
         assertThat(departmentSavedInDb.getDepartmentName()).isEqualTo(getDepartmentInfo().getDepartmentName());
         assertThat(departmentSavedInDb.getCode()).isEqualTo(getDepartmentInfo().getCode());
     }
 
     @Test
-    public void testsearchDepartment(){
-        Department departmentSavedInDb=departmentRepository.searchDepartment(31L,getDepartmentInfo().getDepartmentName(),getDepartmentInfo().getCode(),getDepartmentInfo().getStatus());
+    public void testsearchDepartment() {
+        Department departmentSavedInDb = departmentRepository.searchDepartment(31L, getDepartmentInfo().getDepartmentName(), getDepartmentInfo().getCode(), getDepartmentInfo().getStatus());
 
         assertThat(departmentSavedInDb).isNotNull();
     }

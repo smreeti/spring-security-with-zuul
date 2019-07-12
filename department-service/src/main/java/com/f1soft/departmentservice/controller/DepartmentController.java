@@ -2,6 +2,7 @@ package com.f1soft.departmentservice.controller;
 
 
 import com.f1soft.departmentservice.requestDTO.DepartmentSetupDTO;
+import com.f1soft.departmentservice.requestDTO.UpdatedDepartmentDTO;
 import com.f1soft.departmentservice.service.DepartmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -9,11 +10,12 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URL;
+
 import static com.f1soft.departmentservice.constants.WebResourceConstants.BASE_API;
 import static com.f1soft.departmentservice.constants.WebResourceConstants.DepartmentController.BASE_API_DEPARTMENT;
-import static com.f1soft.departmentservice.constants.WebResourceConstants.DepartmentController.DEPARTMENTCRUD.DELETE;
-import static com.f1soft.departmentservice.constants.WebResourceConstants.DepartmentController.DEPARTMENTCRUD.RETRIEVE;
-import static com.f1soft.departmentservice.constants.WebResourceConstants.DepartmentController.DEPARTMENTCRUD.SAVE;
+import static com.f1soft.departmentservice.constants.WebResourceConstants.DepartmentController.DEPARTMENTCRUD.*;
+import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -44,4 +46,12 @@ public class DepartmentController {
     public ResponseEntity<?> delete(@ApiParam(value = "contains the department id to delete")@PathVariable Long id) {
         return ok(departmentService.deleteDepartment(id));
     }
+
+    @PostMapping(value = UPDATE)
+    @ApiOperation("Api to update department")
+    public ResponseEntity<?> update(UpdatedDepartmentDTO updatedDepartmentDTO){
+        System.out.println(departmentService.updateDepartment(updatedDepartmentDTO));
+        return ok(departmentService.updateDepartment(updatedDepartmentDTO));
+    }
+
 }
