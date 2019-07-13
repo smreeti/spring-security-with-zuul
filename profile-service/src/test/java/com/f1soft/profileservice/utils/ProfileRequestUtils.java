@@ -73,4 +73,10 @@ public class ProfileRequestUtils {
                 new ProfileMenu(2L, 1L, 2L, 11L, 'Y'),
                 new ProfileMenu(3L, 1L, 3L, 10L, 'Y'));
     }
+
+    /*FOR DELETE*/
+    public static Profile getDeletedProfileInfo(){
+        return new Profile(1L, "Updated name", "updated description", 'D',
+                1L, 1L);
+    }
 }

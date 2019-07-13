@@ -10,4 +10,6 @@ public interface ProfileService {
     void createProfile(ProfileRequestDTO profileRequestDTO);
 
     void updateProfile(ProfileRequestDTO requestDTO);
+
+    void deleteProfile(Long id);
 }

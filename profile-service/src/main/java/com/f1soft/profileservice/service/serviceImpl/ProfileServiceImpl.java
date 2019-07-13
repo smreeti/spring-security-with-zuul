@@ -31,8 +31,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     private ProfileMenuService profileMenuService;
 
-    public ProfileServiceImpl(ProfileRepository profileRepository,
-                              ProfileMenuService profileMenuService) {
+    public ProfileServiceImpl(ProfileRepository profileRepository, ProfileMenuService profileMenuService) {
         this.profileRepository = profileRepository;
         this.profileMenuService = profileMenuService;
     }
@@ -54,8 +53,8 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public void updateProfile(ProfileRequestDTO requestDTO) {
-        Profile profile = profileRepository.findById(requestDTO.getProfileDTO().getId())
-                .orElseThrow(() -> new NoContentFoundException(ProfileNotFound.MESSAGE, ProfileNotFound.DEVELOPER_MESSAGE));
+        Profile profile = profileRepository.findById(requestDTO.getProfileDTO().getId()).orElseThrow(() ->
+                new NoContentFoundException(ProfileNotFound.MESSAGE, ProfileNotFound.DEVELOPER_MESSAGE));
 
         validateProfileName(profileRepository.findProfileByIdAndName(requestDTO.getProfileDTO().getId(),
                 requestDTO.getProfileDTO().getName()));
@@ -68,7 +67,6 @@ public class ProfileServiceImpl implements ProfileService {
                 requestDTO.getProfileMenuRequestDTO());
 
         profileMenuService.saveProfileMenu(profileMenus);
-
     }
 
     private void validateProfileName(BigInteger profileCount) {
@@ -83,6 +81,16 @@ public class ProfileServiceImpl implements ProfileService {
 
     public Profile saveProfile(Profile profile) {
         return profileRepository.save(profile);
+    }
+
+    @Override
+    public void deleteProfile(Long id) {
+        Profile profile = profileRepository.findById(id).orElseThrow(() ->
+                new NoContentFoundException(ProfileNotFound.MESSAGE, ProfileNotFound.DEVELOPER_MESSAGE));
+
+        profile.setStatus('D');
+
+        saveProfile(profile);
     }
 
 }

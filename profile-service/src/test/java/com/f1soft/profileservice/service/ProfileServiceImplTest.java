@@ -50,9 +50,6 @@ public class ProfileServiceImplTest {
     @Mock
     private ProfileMenuServiceImpl profileMenuService;
 
-    @Mock
-    private ProfileMenuRepository profileMenuRepository;
-
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -83,6 +80,11 @@ public class ProfileServiceImplTest {
         Should_Successfully_UpdateProfile();
 
         Should_Successfully_UpdateProfileMenu();
+    }
+
+    @Test
+    public void deleteProfile() {
+        Should_ThrowException_When_ProfileIsNotFound();
     }
 
     @Test
@@ -226,4 +228,34 @@ public class ProfileServiceImplTest {
         assertThat(profileMenuService.saveProfileMenu(expectedProfileMenus).get(0).getStatus())
                 .isEqualTo(requestDTO.getProfileMenuRequestDTO().get(0).getStatus());
     }
+
+    @Test
+    public void Should_ThrowException_When_ProfileIsNull() {
+        Long id = 1L;
+
+        given(profileRepository.findById(id)).willReturn(Optional.ofNullable(null));
+
+        thrown.expect(NoContentFoundException.class);
+
+        profileService.deleteProfile(id);
+    }
+
+    @Test
+    public void Should_SuccessFully_DeleteProfile() {
+        Long id = 1L;
+
+        Profile profile = getProfileInfo();
+
+        given(profileRepository.findById(id)).willReturn(Optional.of(profile));
+
+        profile.setStatus('D');
+
+        given(profileRepository.save(profile)).willReturn(getDeletedProfileInfo());
+
+        profileService.deleteProfile(id);
+
+        assertThat(profileRepository.save(profile).getStatus()).isEqualTo('D');
+    }
+
+
 }

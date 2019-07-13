@@ -1,7 +1,6 @@
 package com.f1soft.profileservice.repository;
 
 import com.f1soft.profileservice.entities.Profile;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.math.BigInteger;
 
 import static com.f1soft.profileservice.utils.ProfileRequestUtils.getProfileInfo;
-import static java.math.BigInteger.*;
+import static java.math.BigInteger.ONE;
+import static java.math.BigInteger.ZERO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 
