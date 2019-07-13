@@ -44,6 +44,9 @@ public class ProfileControllerTest {
 
         ProfileRequestDTO requestDTO = getProfileRequestDTO();
 
+
+        profileService.createProfile(requestDTO);
+
         doNothing().when(profileService).createProfile(requestDTO);
 
         mockMvc.perform(post(URL)

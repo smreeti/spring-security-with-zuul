@@ -27,7 +27,7 @@ public class ProfileRepositoryTest {
     @Test
     public void saveProfile() {
 
-        Profile expected = new Profile(null, "F1soft", "This is f1soft profile", 'Y',
+        Profile expected = new Profile(null, "Cogent123", "This is f1soft profile", 'Y',
                 1L, 1L);
 
         Profile actual = testEntityManager.persist(expected);

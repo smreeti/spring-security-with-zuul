@@ -1,11 +1,15 @@
 package com.f1soft.profileservice.repository;
 
+import com.f1soft.profileservice.constants.ErrorMessageConstants;
 import com.f1soft.profileservice.exceptions.NoContentFoundException;
 import com.f1soft.profileservice.repository.impl.ProfileRepositoryCustomImpl;
 import com.f1soft.profileservice.requestDTO.ProfileDTO;
+import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
 import com.f1soft.profileservice.service.serviceImpl.ProfileServiceImpl;
+import com.f1soft.profileservice.utility.ProfileUtils;
 import com.f1soft.profileservice.utility.QueryCreator;
 import com.f1soft.profileservice.utils.ProfileRequestUtils;
+import com.f1soft.profileservice.utils.ProfileResponseUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -18,16 +22,17 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.ObjectUtils;
 
 import javax.persistence.EntityManager;
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import javax.persistence.Query;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.f1soft.profileservice.utils.ProfileRequestUtils.*;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 /**
@@ -40,41 +45,34 @@ import static org.springframework.test.util.AssertionErrors.assertTrue;
 public class ProfileRepositoryCustomTest {
 
     @Autowired
-     EntityManager entityManager;
+    EntityManager entityManager;
 
     @Autowired
-     ProfileRepositoryCustomImpl profileRepositoryCustom;
+    ProfileRepositoryCustomImpl profileRepositoryCustom;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-
     @Test
-    public void Should_ThrowException_When_ProfileIsEmpty() {
+    public void searchProfile() {
 
-        ProfileDTO profileDTO = getProfileDTO();
+        Query query = entityManager.createNativeQuery(QueryCreator.createQueryToSearchProfile.apply(null));
 
-//        assertTrue(profileRepositoryCustom.);
+        List<Object[]> list = query.getResultList();
 
-        given(profileRepositoryCustom.getQueryToSearchProfile(profileDTO)).willReturn(new AbstractList<Object[]>() {
-            @Override
-            public Object[] get(int index) {
-                return new Object[0];
-            }
+        List<ProfileMinimalResponseDTO> responseDTOS = list.stream().map(
+                ProfileUtils.convertObjectToProfileResponseDTO)
+                .collect(Collectors.toList());
 
-            @Override
-            public int size() {
-                return 0;
-            }
-        });
+        given(profileRepositoryCustom.searchProfile(null)).willReturn(responseDTOS);
+//
+//        Assertions.assertThat()
+
+
         thrown.expect(NoContentFoundException.class);
 
-        profileRepositoryCustom.searchProfile(profileDTO);
+        profileRepositoryCustom.searchProfile(null);
 
-        List results = entityManager.createNativeQuery
-                (QueryCreator.createQueryToSearchProfile.apply(null)).getResultList();
-
-        System.out.println(results);
 
 //        profileRepository.refresh(new ProfileDTO());
 

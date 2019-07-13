@@ -10,15 +10,13 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Setter
+@ToString
 public class ProfileMinimalResponseDTO implements Serializable {
 
     private Long id;
 
     private String name;
-
-    private String description;
 
     private Character status;
 

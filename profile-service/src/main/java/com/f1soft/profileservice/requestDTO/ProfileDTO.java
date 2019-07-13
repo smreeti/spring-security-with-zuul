@@ -14,6 +14,8 @@ import java.io.Serializable;
 @ToString
 public class ProfileDTO implements Serializable {
 
+    private Long id;
+
     private String name;
 
     private String description;

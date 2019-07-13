@@ -6,10 +6,13 @@ import com.f1soft.profileservice.exceptions.DataDuplicationException;
 import com.f1soft.profileservice.exceptions.NoContentFoundException;
 import com.f1soft.profileservice.repository.ProfileRepository;
 import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
+import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
 import com.f1soft.profileservice.service.serviceImpl.ProfileMenuServiceImpl;
 import com.f1soft.profileservice.service.serviceImpl.ProfileServiceImpl;
 import com.f1soft.profileservice.utility.ProfileMenuUtils;
 import com.f1soft.profileservice.utility.ProfileUtils;
+import com.f1soft.profileservice.utils.ProfileResponseUtils;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,7 +21,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.EntityManager;
+import java.util.Collections;
 import java.util.List;
 
 import static com.f1soft.profileservice.utils.ProfileRequestUtils.*;
@@ -27,6 +33,7 @@ import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author smriti on 7/2/19
@@ -53,7 +60,6 @@ public class ProfileServiceImplTest {
 
     @Test
     public void saveProfile() {
-
         Should_ThrowException_When_ProfileNameExists();
 
         Should_ThrowException_When_UserMenusIsEmpty();
@@ -61,6 +67,11 @@ public class ProfileServiceImplTest {
         Should_Successfully_SaveProfile();
 
         Should_Successfully_SaveProfileMenu();
+    }
+
+    @Test
+    public void updateProfile() {
+        Should_ThrowException_When_ProfileIsNotFound();
     }
 
     @Test
@@ -85,8 +96,6 @@ public class ProfileServiceImplTest {
 
         ProfileRequestDTO profileRequestDTO = getProfileRequestDTOThatThrowsException();
 
-        assertTrue(profileRequestDTO.getProfileMenuRequestDTO().isEmpty());
-
         thrown.expect(NoContentFoundException.class);
 
         profileService.createProfile(profileRequestDTO);
@@ -99,15 +108,16 @@ public class ProfileServiceImplTest {
 
         given(profileRepository.findByName(requestDTO.getProfileDTO().getName())).willReturn(null);
 
-        assertFalse(requestDTO.getProfileMenuRequestDTO().isEmpty());
-
         Profile expected = ProfileUtils.convertToProfileInfo(requestDTO.getProfileDTO());
 
         given(profileService.saveProfile(expected)).willReturn(getProfileInfo());
 
         profileService.createProfile(requestDTO);
 
+//        Assertions.assertThat(profileService.saveProfile(expected)).isEqualTo(getProfileInfo());
+
         verify(profileRepository, times(1)).save(expected);
+
     }
 
     @Test
@@ -117,8 +127,6 @@ public class ProfileServiceImplTest {
         Profile profile = getProfileInfo();
 
         given(profileRepository.findByName(requestDTO.getProfileDTO().getName())).willReturn(null);
-
-        assertFalse(requestDTO.getProfileMenuRequestDTO().isEmpty());
 
         given(profileService.saveProfile(profile)).willReturn(profile);
 
@@ -131,6 +139,18 @@ public class ProfileServiceImplTest {
 
         assertThat(profileMenuService.saveProfileMenu(expectedProfileMenus),
                 hasSize(requestDTO.getProfileMenuRequestDTO().size()));
+    }
+
+    @Test
+    public void Should_ThrowException_When_ProfileIsNotFound() {
+
+        ProfileRequestDTO requestDTO = getProfileRequestDTO();
+
+        given(profileRepository.findByName(requestDTO.getProfileDTO().getName())).willReturn(null);
+
+        thrown.expect(NoContentFoundException.class);
+
+        profileService.updateProfile(requestDTO);
     }
 
 

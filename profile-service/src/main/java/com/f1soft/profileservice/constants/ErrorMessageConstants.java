@@ -33,9 +33,14 @@ public class ErrorMessageConstants {
     //M
 
     //N
-    public interface NoContentFound{
+    public interface ProfileMenusNotFound {
         String DEVELOPER_MESSAGE = "Invalid request data. User Menus cannot be left empty.";
         String MESSAGE = "User menu list is empty.";
+    }
+
+    public interface NoRecordsFound {
+        String DEVELOPER_MESSAGE = "No profile(s) found.";
+        String MESSAGE = "Profile list returned empty.";
     }
 
     //O
@@ -45,6 +50,12 @@ public class ErrorMessageConstants {
         String DEVELOPER_MESSAGE = "Profile with given name already exists.";
         String MESSAGE = "Profile entity returned not null.";
     }
+
+    public interface ProfileNameNotFound{
+        String DEVELOPER_MESSAGE = "Profile with given name doesn't exists.";
+        String MESSAGE = "Profile entity returned null.";
+    }
+
 
     //Q
 

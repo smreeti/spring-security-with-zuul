@@ -16,7 +16,7 @@ import java.util.List;
 public class ProfileRequestUtils {
     public static ProfileRequestDTO getProfileRequestDTOThatThrowsException() {
         return new ProfileRequestDTO(
-                new ProfileDTO("admin", "This is super admin profile",
+                new ProfileDTO(null, "admin", "This is super admin profile",
                         'Y', 1L, 1L), new ArrayList<>());
     }
 
@@ -25,7 +25,7 @@ public class ProfileRequestUtils {
     }
 
     public static ProfileDTO getProfileDTO() {
-        return new ProfileDTO("Superadmin", "This is super admin profile",
+        return new ProfileDTO(null,"Superadmin", "This is super admin profile",
                 'Y', 1L, 1L);
     }
 
@@ -43,5 +43,6 @@ public class ProfileRequestUtils {
         return Arrays.asList(new ProfileMenu(null, 1L, 1L, 10L, 'Y'),
                 (new ProfileMenu(null, 2L, 2L, 11L, 'Y')));
     }
+
 
 }

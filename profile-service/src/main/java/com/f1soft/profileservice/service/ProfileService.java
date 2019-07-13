@@ -8,4 +8,6 @@ import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
 public interface ProfileService {
 
     void createProfile(ProfileRequestDTO profileRequestDTO);
+
+    void updateProfile(ProfileRequestDTO requestDTO);
 }

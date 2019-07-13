@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface ProfileRepositoryCustom {
 
-   List<ProfileMinimalResponseDTO> searchProfile(ProfileDTO profileDTO);
+    List<ProfileMinimalResponseDTO> searchProfile(ProfileDTO profileDTO);
 
 
 }
