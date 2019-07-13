@@ -48,6 +48,7 @@ public class WebResourceKeyConstants {
     //T
 
     //U
+    public static final String UPDATE = "/update";
 
     //V
 

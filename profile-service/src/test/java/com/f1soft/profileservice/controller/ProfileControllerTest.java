@@ -7,8 +7,10 @@ import com.f1soft.profileservice.service.ProfileService;
 import com.f1soft.profileservice.utils.ProfileRequestUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -16,11 +18,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 
 import static com.f1soft.profileservice.constants.WebResourceKeyConstants.BASE_API;
 import static com.f1soft.profileservice.constants.WebResourceKeyConstants.SAVE;
+import static com.f1soft.profileservice.constants.WebResourceKeyConstants.UPDATE;
 import static com.f1soft.profileservice.utils.ProfileRequestUtils.getProfileRequestDTO;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -42,21 +46,24 @@ public class ProfileControllerTest {
     public void saveProfile() throws Exception {
         String URL = BASE_API + SAVE;
 
-        ProfileRequestDTO requestDTO = getProfileRequestDTO();
-
-
-        profileService.createProfile(requestDTO);
-
-        doNothing().when(profileService).createProfile(requestDTO);
-
         mockMvc.perform(post(URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(writeObjectToJson(requestDTO)))
+                .content(writeObjectToJson(getProfileRequestDTO())))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
     }
 
     private String writeObjectToJson(ProfileRequestDTO requestDTO) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(requestDTO);
+    }
+
+    @Test
+    public void updateProfile() throws Exception {
+        String URL = BASE_API + UPDATE;
+
+        mockMvc.perform(post(URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(writeObjectToJson(getProfileRequestDTO())))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.f1soft.profileservice.constants.WebResourceKeyConstants.BASE_API;
 import static com.f1soft.profileservice.constants.WebResourceKeyConstants.SAVE;
+import static com.f1soft.profileservice.constants.WebResourceKeyConstants.UPDATE;
 import static org.springframework.http.ResponseEntity.ok;
 
 /**
@@ -32,10 +33,11 @@ public class ProfileController {
         return ok().build();
     }
 
-    @PostMapping("/test")
-    public String sayhello(@RequestBody ProfileRequestDTO requestDTO) {
-profileService.updateProfile(requestDTO);
-        return "sdvd";
+    @PostMapping(value = UPDATE)
+    @ApiOperation(value = "Update existing profile")
+    public ResponseEntity<?> sayhello(@RequestBody ProfileRequestDTO requestDTO) {
+        profileService.updateProfile(requestDTO);
+        return ok().build();
     }
 
 
