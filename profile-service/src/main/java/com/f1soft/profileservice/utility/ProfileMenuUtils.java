@@ -12,18 +12,19 @@ import java.util.stream.Collectors;
  */
 public class ProfileMenuUtils {
 
-    private static BiFunction<ProfileMenuRequestDTO, Long, ProfileMenu> convertToProfileMenuResponse =
-            (rolesRequestDTO, profileId) -> ProfileMenu.builder()
+    private static BiFunction<Long, ProfileMenuRequestDTO, ProfileMenu> convertToProfileMenuResponse =
+            (profileId, profileMenu) -> ProfileMenu.builder()
+                    .id(profileMenu.getProfileMenuId() == null ? null : profileMenu.getProfileMenuId())
                     .profileId(profileId)
-                    .userMenuId(rolesRequestDTO.getUserMenuId())
-                    .roleId(rolesRequestDTO.getRoleId())
-                    .status('Y')
+                    .userMenuId(profileMenu.getUserMenuId())
+                    .roleId(profileMenu.getRoleId())
+                    .status(profileMenu.getStatus())
                     .build();
 
     public static List<ProfileMenu> convertToProfileMenu(Long profileId, List<ProfileMenuRequestDTO> requestDTO) {
 
         List<ProfileMenu> profileMenus = requestDTO.stream()
-                .map(roles -> convertToProfileMenuResponse.apply(roles, profileId))
+                .map(profileMenu -> convertToProfileMenuResponse.apply(profileId, profileMenu))
                 .collect(Collectors.toList());
 
         return profileMenus;

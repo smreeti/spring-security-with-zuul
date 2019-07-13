@@ -14,7 +14,11 @@ import java.io.Serializable;
 @ToString
 public class ProfileMenuRequestDTO implements Serializable{
 
+    private Long profileMenuId;
+
     private Long userMenuId;
 
     private Long roleId;
+
+    private Character status;
 }

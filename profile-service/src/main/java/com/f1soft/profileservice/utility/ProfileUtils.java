@@ -4,6 +4,7 @@ import com.f1soft.profileservice.entities.Profile;
 import com.f1soft.profileservice.requestDTO.ProfileDTO;
 import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -31,4 +32,15 @@ public class ProfileUtils {
                 .subDepartmentId(Long.parseLong(objects[SUB_DEPARTMENT_ID].toString()))
                 .build();
     };
+
+    public static BiFunction<ProfileDTO, Profile, Profile> convertToProfileEntity = (profileDTO, profile) -> {
+
+        profile.setName(profileDTO.getName());
+        profile.setDescription(profileDTO.getDescription());
+        profile.setDepartmentId(profileDTO.getDepartmentId());
+        profile.setSubDepartmentId(profileDTO.getSubDepartmentId());
+
+        return profile;
+    };
+
 }

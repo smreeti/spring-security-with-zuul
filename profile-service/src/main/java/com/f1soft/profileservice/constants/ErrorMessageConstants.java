@@ -51,8 +51,8 @@ public class ErrorMessageConstants {
         String MESSAGE = "Profile entity returned not null.";
     }
 
-    public interface ProfileNameNotFound{
-        String DEVELOPER_MESSAGE = "Profile with given name doesn't exists.";
+    public interface ProfileNotFound {
+        String DEVELOPER_MESSAGE = "Profile with given id doesn't exists.";
         String MESSAGE = "Profile entity returned null.";
     }
 

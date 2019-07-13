@@ -19,13 +19,11 @@ import static org.springframework.http.ResponseEntity.ok;
 @Api(value = "This is profile controller")
 public class ProfileController {
 
-
     private final ProfileService profileService;
 
     public ProfileController(ProfileService profileService) {
         this.profileService = profileService;
     }
-
 
     @PostMapping(value = SAVE)
     @ApiOperation(value = "Save new profile")
@@ -34,9 +32,9 @@ public class ProfileController {
         return ok().build();
     }
 
-    @GetMapping("/test")
-    public String sayhello() {
-//        custom.refresh();
+    @PostMapping("/test")
+    public String sayhello(@RequestBody ProfileRequestDTO requestDTO) {
+profileService.updateProfile(requestDTO);
         return "sdvd";
     }
 

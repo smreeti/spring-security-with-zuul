@@ -4,14 +4,13 @@ import com.f1soft.profileservice.entities.Profile;
 import com.f1soft.profileservice.entities.ProfileMenu;
 import com.f1soft.profileservice.exceptions.DataDuplicationException;
 import com.f1soft.profileservice.exceptions.NoContentFoundException;
+import com.f1soft.profileservice.repository.ProfileMenuRepository;
 import com.f1soft.profileservice.repository.ProfileRepository;
 import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
-import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
 import com.f1soft.profileservice.service.serviceImpl.ProfileMenuServiceImpl;
 import com.f1soft.profileservice.service.serviceImpl.ProfileServiceImpl;
 import com.f1soft.profileservice.utility.ProfileMenuUtils;
 import com.f1soft.profileservice.utility.ProfileUtils;
-import com.f1soft.profileservice.utils.ProfileResponseUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Rule;
@@ -21,19 +20,20 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static com.f1soft.profileservice.utils.ProfileRequestUtils.*;
+import static java.math.BigInteger.ONE;
+import static java.math.BigInteger.ZERO;
+import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * @author smriti on 7/2/19
@@ -50,6 +50,9 @@ public class ProfileServiceImplTest {
     @Mock
     private ProfileMenuServiceImpl profileMenuService;
 
+    @Mock
+    private ProfileMenuRepository profileMenuRepository;
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -59,7 +62,7 @@ public class ProfileServiceImplTest {
     }
 
     @Test
-    public void saveProfile() {
+    public void saveProfileTest() {
         Should_ThrowException_When_ProfileNameExists();
 
         Should_ThrowException_When_UserMenusIsEmpty();
@@ -70,8 +73,16 @@ public class ProfileServiceImplTest {
     }
 
     @Test
-    public void updateProfile() {
+    public void updateProfileTest() {
         Should_ThrowException_When_ProfileIsNotFound();
+
+        Should_ThrowException_When_UserMenusIsEmpty();
+
+        Should_Throw_Exception_When_ProfileNameAlreadyExists();
+
+        Should_Successfully_UpdateProfile();
+
+        Should_Successfully_UpdateProfileMenu();
     }
 
     @Test
@@ -79,12 +90,9 @@ public class ProfileServiceImplTest {
 
         ProfileRequestDTO requestDTO = getProfileRequestDTOThatThrowsException();
 
-        Profile profile = Profile.builder()
-                .name("admin")
-                .build();
+        System.out.println(profileRepository.findProfileByName(requestDTO.getProfileDTO().getName()));
 
-        given(profileRepository.findByName(requestDTO.getProfileDTO().getName()))
-                .willReturn(profile);
+        given(profileRepository.findProfileByName(requestDTO.getProfileDTO().getName())).willReturn(ONE);
 
         thrown.expect(DataDuplicationException.class);
 
@@ -106,18 +114,19 @@ public class ProfileServiceImplTest {
 
         ProfileRequestDTO requestDTO = getProfileRequestDTO();
 
-        given(profileRepository.findByName(requestDTO.getProfileDTO().getName())).willReturn(null);
-
         Profile expected = ProfileUtils.convertToProfileInfo(requestDTO.getProfileDTO());
 
-        given(profileService.saveProfile(expected)).willReturn(getProfileInfo());
+        saveProfile(requestDTO, expected);
 
         profileService.createProfile(requestDTO);
 
-//        Assertions.assertThat(profileService.saveProfile(expected)).isEqualTo(getProfileInfo());
-
         verify(profileRepository, times(1)).save(expected);
+    }
 
+    public void saveProfile(ProfileRequestDTO requestDTO, Profile expected) {
+        given(profileRepository.findProfileByName(requestDTO.getProfileDTO().getName())).willReturn(ZERO);
+
+        given(profileRepository.save(expected)).willReturn(getProfileInfo());
     }
 
     @Test
@@ -126,9 +135,7 @@ public class ProfileServiceImplTest {
 
         Profile profile = getProfileInfo();
 
-        given(profileRepository.findByName(requestDTO.getProfileDTO().getName())).willReturn(null);
-
-        given(profileService.saveProfile(profile)).willReturn(profile);
+        saveProfile(requestDTO, ProfileUtils.convertToProfileInfo(requestDTO.getProfileDTO()));
 
         List<ProfileMenu> expectedProfileMenus = ProfileMenuUtils.convertToProfileMenu(profile.getId(),
                 requestDTO.getProfileMenuRequestDTO());
@@ -139,19 +146,84 @@ public class ProfileServiceImplTest {
 
         assertThat(profileMenuService.saveProfileMenu(expectedProfileMenus),
                 hasSize(requestDTO.getProfileMenuRequestDTO().size()));
+
+        assertThat(profileMenuService.saveProfileMenu(expectedProfileMenus).get(0).getRoleId())
+                .isEqualTo(requestDTO.getProfileMenuRequestDTO().get(0).getRoleId());
     }
 
     @Test
     public void Should_ThrowException_When_ProfileIsNotFound() {
 
-        ProfileRequestDTO requestDTO = getProfileRequestDTO();
+        ProfileRequestDTO requestDTO = getProfileRequestDTOForUpdate();
 
-        given(profileRepository.findByName(requestDTO.getProfileDTO().getName())).willReturn(null);
+        given(profileRepository.findById(requestDTO.getProfileDTO().getId())).willReturn(Optional.ofNullable(null));
 
         thrown.expect(NoContentFoundException.class);
 
         profileService.updateProfile(requestDTO);
     }
 
+    @Test
+    public void Should_Throw_Exception_When_ProfileNameAlreadyExists() {
 
+        ProfileRequestDTO requestDTO = getProfileRequestDTOForUpdate();
+
+        given(profileRepository.findById(requestDTO.getProfileDTO().getId())).willReturn(Optional.of(getProfileInfo()));
+
+        given(profileRepository.findProfileByIdAndName(requestDTO.getProfileDTO().getId(),
+                requestDTO.getProfileDTO().getName())).willReturn(ONE);
+
+        thrown.expect(DataDuplicationException.class);
+
+        profileService.updateProfile(requestDTO);
+    }
+
+    @Test
+    public void Should_Successfully_UpdateProfile() {
+        ProfileRequestDTO requestDTO = getProfileRequestDTOForUpdate();
+
+        Profile savedProfile = getProfileInfo();
+
+        Profile updatedProfile = ProfileUtils.convertToProfileEntity.apply(requestDTO.getProfileDTO(), savedProfile);
+
+        updateProfile(requestDTO, savedProfile, updatedProfile);
+
+        profileService.updateProfile(requestDTO);
+
+        verify(profileRepository, times(1)).save(updatedProfile);
+    }
+
+    public void updateProfile(ProfileRequestDTO requestDTO, Profile savedProfile, Profile updatedProfile) {
+
+        given(profileRepository.findById(requestDTO.getProfileDTO().getId())).willReturn(Optional.of(savedProfile));
+
+        given(profileRepository.findProfileByIdAndName(requestDTO.getProfileDTO().getId(),
+                requestDTO.getProfileDTO().getName())).willReturn(ZERO);
+
+        given(profileRepository.save(updatedProfile)).willReturn(getUpdatedProfileInfo());
+    }
+
+    @Test
+    public void Should_Successfully_UpdateProfileMenu() {
+
+        ProfileRequestDTO requestDTO = getProfileRequestDTOForUpdate();
+
+        Profile savedProfile = getProfileInfo();
+
+        updateProfile(requestDTO, savedProfile, ProfileUtils.convertToProfileEntity.apply(requestDTO.getProfileDTO(),
+                savedProfile));
+
+        List<ProfileMenu> expectedProfileMenus = ProfileMenuUtils.convertToProfileMenu(savedProfile.getId(),
+                requestDTO.getProfileMenuRequestDTO());
+
+        given(profileMenuService.saveProfileMenu(expectedProfileMenus)).willReturn(getUpdatedProfileMenus());
+
+        profileService.updateProfile(requestDTO);
+
+        assertThat(profileMenuService.saveProfileMenu(expectedProfileMenus),
+                hasSize(requestDTO.getProfileMenuRequestDTO().size()));
+
+        assertThat(profileMenuService.saveProfileMenu(expectedProfileMenus).get(0).getStatus())
+                .isEqualTo(requestDTO.getProfileMenuRequestDTO().get(0).getStatus());
+    }
 }
