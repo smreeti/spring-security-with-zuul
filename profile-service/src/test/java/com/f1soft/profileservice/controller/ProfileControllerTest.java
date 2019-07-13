@@ -22,9 +22,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 
-import static com.f1soft.profileservice.constants.WebResourceKeyConstants.BASE_API;
-import static com.f1soft.profileservice.constants.WebResourceKeyConstants.SAVE;
-import static com.f1soft.profileservice.constants.WebResourceKeyConstants.UPDATE;
+import static com.f1soft.profileservice.constants.WebResourceKeyConstants.*;
 import static com.f1soft.profileservice.utils.ProfileRequestUtils.getProfileRequestDTO;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -35,9 +33,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @RunWith(SpringRunner.class)
 @WebMvcTest(ProfileController.class)
 public class ProfileControllerTest {
-
-    @MockBean
-    private ProfileService profileService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -64,6 +59,15 @@ public class ProfileControllerTest {
         mockMvc.perform(post(URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeObjectToJson(getProfileRequestDTO())))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
+    }
+
+    @Test
+    public void deleteProfile() throws Exception {
+        String URL = BASE_API + DELETE + ID_PATH_VARIABLE_BASE;
+
+        mockMvc.perform(post(URL, 1L)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
     }
 }

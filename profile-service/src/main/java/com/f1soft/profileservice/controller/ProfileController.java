@@ -7,9 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.f1soft.profileservice.constants.WebResourceKeyConstants.BASE_API;
-import static com.f1soft.profileservice.constants.WebResourceKeyConstants.SAVE;
-import static com.f1soft.profileservice.constants.WebResourceKeyConstants.UPDATE;
+import static com.f1soft.profileservice.constants.WebResourceKeyConstants.*;
 import static org.springframework.http.ResponseEntity.ok;
 
 /**
@@ -37,6 +35,13 @@ public class ProfileController {
     @ApiOperation(value = "Update existing profile")
     public ResponseEntity<?> sayhello(@RequestBody ProfileRequestDTO requestDTO) {
         profileService.updateProfile(requestDTO);
+        return ok().build();
+    }
+
+    @PostMapping(value = DELETE + ID_PATH_VARIABLE_BASE)
+    @ApiOperation(value = "Set profile status as 'D' when deleted")
+    public ResponseEntity<?> deleteProfile(@PathVariable("id") Long id) {
+        profileService.deleteProfile(id);
         return ok().build();
     }
 

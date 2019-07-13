@@ -13,6 +13,7 @@ public class WebResourceKeyConstants {
     //C
 
     //D
+    public static final String DELETE = "/delete";
 
     //E
 
@@ -23,6 +24,7 @@ public class WebResourceKeyConstants {
     //H
 
     //I
+    public static final String ID_PATH_VARIABLE_BASE = "/{id}";
 
     //J
 
