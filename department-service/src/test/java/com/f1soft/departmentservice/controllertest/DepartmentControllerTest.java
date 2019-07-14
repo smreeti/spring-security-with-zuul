@@ -5,22 +5,15 @@ import com.f1soft.departmentservice.entities.Department;
 import com.f1soft.departmentservice.requestDTO.DepartmentSetupDTO;
 import com.f1soft.departmentservice.requestDTO.UpdatedDepartmentDTO;
 import com.f1soft.departmentservice.service.DepartmentService;
-import com.f1soft.departmentservice.service.serviceimpl.DepartmentServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -28,17 +21,15 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.nio.charset.Charset;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.f1soft.departmentservice.constants.WebResourceConstants.BASE_API;
 import static com.f1soft.departmentservice.constants.WebResourceConstants.DepartmentController.BASE_API_DEPARTMENT;
 import static com.f1soft.departmentservice.constants.WebResourceConstants.DepartmentController.DEPARTMENTCRUD.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class DepartmentControllerTest {
@@ -65,6 +56,7 @@ public class DepartmentControllerTest {
 
     @Test
     public void departmentCrud() throws Exception {
+        save_ShouldSaveDepartment();
         retrieve_ShouldRetrieveDepartments();
         delete_ShouldDeleteDepartment();
         update_ShouldUpdateDepartment();
@@ -74,21 +66,27 @@ public class DepartmentControllerTest {
 
     @Test
     public void save_ShouldSaveDepartment() throws Exception {
-        String URL=BASE_API+BASE_API_DEPARTMENT+SAVE;
+        String URL = BASE_API + BASE_API_DEPARTMENT + SAVE;
         System.out.println(URL);
 
-        DepartmentSetupDTO departmentSetupDTO=DepartmentSetupDTO.builder()
+        DepartmentSetupDTO departmentSetupDTO = DepartmentSetupDTO.builder()
                 .departmentName("Surgical")
                 .code("SRG")
                 .status('Y')
                 .build();
+        given(departmentService.addDepartment(any(DepartmentSetupDTO.class))).willReturn(java.util.Optional.ofNullable(getDepartment()));
 
-        given(departmentService.addDepartment(departmentSetupDTO)).willReturn(getDepartment());
+        System.out.println("********************************************");
+        System.out.println(departmentService.addDepartment(departmentSetupDTO));
 
         mockMvc.perform(MockMvcRequestBuilders.post(URL)
                 .contentType(APPLICATION_JSON_UTF8)
                 .content(writeObjectToJson(departmentSetupDTO)))
                 .andExpect(status().isOk());
+
+        verify(departmentService).addDepartment(any(DepartmentSetupDTO.class));
+
+
     }
 
     @Test
@@ -106,7 +104,7 @@ public class DepartmentControllerTest {
                 .andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
 
-        verify(departmentService,times(2)).fetchAllDepartment();
+        verify(departmentService).fetchAllDepartment();
     }
 
     @Test
@@ -147,7 +145,7 @@ public class DepartmentControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        verify(departmentService,times(2)).updateDepartment(updatedDepartmentSetupDTO);
+        verify(departmentService).updateDepartment(updatedDepartmentSetupDTO);
 
     }
 

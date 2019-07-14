@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  * @author Sauravi
@@ -18,6 +19,7 @@ import java.io.Serializable;
 @Builder
 @ApiModel
 public class DepartmentSetupDTO implements Serializable {
+
     @ApiModelProperty(value = "Department name should be unique")
     private String departmentName;
 
@@ -26,4 +28,5 @@ public class DepartmentSetupDTO implements Serializable {
 
     @ApiModelProperty(value = "Y, N and D are only used")
     private Character status;
+
 }

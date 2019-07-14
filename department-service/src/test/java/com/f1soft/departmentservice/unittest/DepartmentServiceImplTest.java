@@ -76,7 +76,7 @@ public class DepartmentServiceImplTest {
         addDepartment_ShouldReturnNameExists();
         addDepartment_ShouldReturnCodeExists();
         addDepartment_ShouldSaveData();
-        addDepartment_ShhouldReturnBadRequest();
+        addDepartment_ShouldReturnBadRequest();
     }
 
     @Test
@@ -94,7 +94,6 @@ public class DepartmentServiceImplTest {
     @Test
     public void updateDepartment(){
         updateDepartment_ShouldReturnDataNotFound();
-        updateDepartment_ShouldReturnNoChangeFound();
         updateDepartment_ShouldUpdateDepartment();
     }
 
@@ -103,9 +102,8 @@ public class DepartmentServiceImplTest {
     public void addDepartment_ShouldReturnNameExists() {
 
         thrown.expect(DataAlreadyExistsException.class);
-        thrown.expectMessage("DEPARTMENT WITH NAME :" + " " + departmentSetupDTO.getDepartmentName() + " " + " ALREADY EXISTS");
 
-        given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(1);
+        given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(savedDepartment);
 
         departmentService.addDepartment(departmentSetupDTO);
 
@@ -114,10 +112,9 @@ public class DepartmentServiceImplTest {
     @Test
     public void addDepartment_ShouldReturnCodeExists() {
         thrown.expect(DataAlreadyExistsException.class);
-        thrown.expectMessage("DEPARTMENT WITH CODE :" + " " + departmentSetupDTO.getCode() + " " + " ALREADY EXISTS");
 
         given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(null);
-        given(departmentRepository.findByCode(departmentSetupDTO.getCode())).willReturn(1);
+        given(departmentRepository.findByCode(departmentSetupDTO.getCode())).willReturn(savedDepartment);
 
         departmentService.addDepartment(departmentSetupDTO);
     }
@@ -135,9 +132,8 @@ public class DepartmentServiceImplTest {
     }
 
     @Test
-    public void addDepartment_ShhouldReturnBadRequest() {
+    public void addDepartment_ShouldReturnBadRequest() {
         thrown.expect(BadRequestDataException.class);
-        thrown.expectMessage("Bad Request.");
 
         departmentService.addDepartment(null);
     }
@@ -145,7 +141,6 @@ public class DepartmentServiceImplTest {
     @Test
     public void fetchAllDepartment_ShouldReturnEmptyList(){
         thrown.expect(DataNotFoundException.class);
-        thrown.expectMessage("SORRY, DEPARTMENT NOT FOUND");
 
         given(departmentRepository.fetchAllDepartment()).willReturn(Collections.emptyList());
 
@@ -166,7 +161,6 @@ public class DepartmentServiceImplTest {
     @Test
     public void deleteDepartment_ShouldReturnDataNotFound(){
         thrown.expect(DataNotFoundException.class);
-        thrown.expectMessage("SORRY, DEPARTMENT NOT FOUND");
 
         given(departmentRepository.findByDepartmentId(1L)).willReturn(null);
 
@@ -187,32 +181,18 @@ public class DepartmentServiceImplTest {
     @Test
     public void updateDepartment_ShouldReturnDataNotFound(){
         thrown.expect(DataNotFoundException.class);
-        thrown.expectMessage("SORRY, DEPARTMENT NOT FOUND");
 
         given(departmentRepository.findByDepartmentId(updatedDepartmentDTO.getId())).willReturn(null);
 
         departmentService.updateDepartment(updatedDepartmentDTO);
     }
 
-    @Test
-    public void updateDepartment_ShouldReturnNoChangeFound(){
-        thrown.expect(NoChangeFoundException.class);
-        thrown.expectMessage("SORRY, NO CHANGES FOUND");
 
-        given(departmentRepository.findByDepartmentId(updatedDepartmentDTO.getId())).willReturn(savedDepartment);
-        given(departmentRepository.searchDepartment(updatedDepartmentDTO.getId(),
-                updatedDepartmentDTO.getDepartmentName(),updatedDepartmentDTO.getCode(),updatedDepartmentDTO.getStatus())).willReturn(savedDepartment);
-
-        departmentService.updateDepartment(updatedDepartmentDTO);
-
-    }
 
     @Test
     public void updateDepartment_ShouldUpdateDepartment(){
         Department departmentToSave=DepartmentUtils.convertDepartmentToUpdate(updatedDepartmentDTO,savedDepartment);
         given(departmentRepository.findByDepartmentId(updatedDepartmentDTO.getId())).willReturn(savedDepartment);
-        given(departmentRepository.searchDepartment(updatedDepartmentDTO.getId(),
-                updatedDepartmentDTO.getDepartmentName(),updatedDepartmentDTO.getCode(),updatedDepartmentDTO.getStatus())).willReturn(null);
         given(departmentRepository.save(departmentToSave)).willReturn(departmentToSave);
 
         assertThat(departmentService.updateDepartment(updatedDepartmentDTO)).isEqualTo(departmentToSave);

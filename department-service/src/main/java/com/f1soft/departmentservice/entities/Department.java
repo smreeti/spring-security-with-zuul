@@ -7,6 +7,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Optional;
+
 /**
  * @author Sauravi
  */
@@ -49,5 +51,4 @@ public class Department  implements Serializable{
 
     @Column(name="last_modified_by_id")
     private Long modifiedById;
-
 }

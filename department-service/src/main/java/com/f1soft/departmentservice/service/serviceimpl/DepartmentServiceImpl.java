@@ -14,6 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
+import static com.f1soft.departmentservice.constants.ErrorMessageConstants.*;
+
 /**
  * @author Sauravi
  */
@@ -38,7 +42,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             Department department = DepartmentUtils.convertDepartmentSetupToDepartment(departmentSetupDTO);
             return saveDepartment(department);
         } else {
-            throw new BadRequestDataException("Bad Request.");
+            throw new BadRequestDataException(BAD_REQUEST);
         }
 
     }
@@ -47,7 +51,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<Department> fetchAllDepartment() {
 //        return departmentRepository.fetchAllDepartment().orElseThrow(()-> new DataNotFoundException("SORRY, DATA NOT FOUND"));
         if (departmentRepository.fetchAllDepartment() == null) {
-            throw new DataNotFoundException("SORRY, DEPARTMENT NOT FOUND");
+            throw new DataNotFoundException(DEPARTMENT_NOT_FOUND);
         } else {
             return departmentRepository.fetchAllDepartment();
         }
@@ -57,7 +61,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department deleteDepartment(Long id) {
         Department departmentToDelete = departmentRepository.findByDepartmentId(id);
         if (departmentToDelete == null) {
-            throw new DataNotFoundException("SORRY, DEPARTMENT NOT FOUND");
+            throw new DataNotFoundException(DEPARTMENT_NOT_FOUND);
         } else {
             Department departmentToSave = DepartmentUtils.convertDepartmentToDelete(departmentToDelete);
             return saveDepartment(departmentToSave);
@@ -69,9 +73,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department updateDepartment(UpdatedDepartmentDTO updatedDepartmentDTO) {
         Department savedDepartment = departmentRepository.findByDepartmentId(updatedDepartmentDTO.getId());
         if (savedDepartment == null) {
-            throw new DataNotFoundException("SORRY, DEPARTMENT NOT FOUND");
+            throw new DataNotFoundException(DEPARTMENT_NOT_FOUND);
         } else {
-            searchDepartment(updatedDepartmentDTO);
             Department departmentToSave = DepartmentUtils.convertDepartmentToUpdate(updatedDepartmentDTO, savedDepartment);
             return saveDepartment(departmentToSave);
         }
@@ -79,26 +82,17 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     public void validateDepartmentName(String name) {
         if (departmentRepository.findByName(name) != null) {
-            throw new DataAlreadyExistsException("DEPARTMENT WITH NAME :" + " " + name
-                    + " " + " ALREADY EXISTS");
+            throw new DataAlreadyExistsException(DEPARTMENT_ALREADY_EXISTS_WITH_NAME +  name);
         }
 
     }
 
     public void validateDepartmentCode(String code) {
         if (departmentRepository.findByCode(code) != null) {
-            throw new DataAlreadyExistsException("DEPARTMENT WITH CODE :" + " " + code
-                    + " " + " ALREADY EXISTS");
+            throw new DataAlreadyExistsException(DEPARTMENT_ALREADY_EXISTS_WITH_CODE+ code);
         }
     }
 
-    public void searchDepartment(UpdatedDepartmentDTO updatedDepartmentDTO) {
-        if (departmentRepository.searchDepartment(updatedDepartmentDTO.getId(), updatedDepartmentDTO.getDepartmentName(),
-                updatedDepartmentDTO.getCode(), updatedDepartmentDTO.getStatus()) != null) {
-            throw new NoChangeFoundException("SORRY, NO CHANGES FOUND");
-        }
-
-    }
 
     public Department saveDepartment(Department department) {
         return departmentRepository.save(department);
