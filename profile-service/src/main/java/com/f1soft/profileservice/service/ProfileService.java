@@ -1,5 +1,6 @@
 package com.f1soft.profileservice.service;
 
+import com.f1soft.profileservice.entities.Profile;
 import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
 
 /**

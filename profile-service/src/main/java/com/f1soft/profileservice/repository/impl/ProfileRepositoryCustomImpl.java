@@ -14,9 +14,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static com.f1soft.profileservice.constants.ErrorMessageConstants.NoRecordsFound;
+import static com.f1soft.profileservice.utility.ProfileUtils.*;
 
 /**
  * @author smriti on 7/10/19
@@ -33,13 +36,15 @@ public class ProfileRepositoryCustomImpl implements ProfileRepositoryCustom {
 
         Query query = entityManager.createNativeQuery(QueryCreator.createQueryToSearchProfile.apply(profileDTO));
 
-        List<Object[]> list = query.getResultList();
+        List<Object[]> results = query.getResultList();
 
-        if (ObjectUtils.isEmpty(list))
-            throw new NoContentFoundException(NoRecordsFound.MESSAGE, NoRecordsFound.DEVELOPER_MESSAGE);
+        validateResults.accept(results);
 
-        return list.stream().map(
-                ProfileUtils.convertObjectToProfileResponseDTO)
-                .collect(Collectors.toList());
+        return results.stream().map(convertObjectToProfileResponseDTO).collect(Collectors.toList());
     }
+
+    public Consumer<List<Object[]>> validateResults = (results -> {
+        if (ObjectUtils.isEmpty(results))
+            throw new NoContentFoundException(NoRecordsFound.MESSAGE, NoRecordsFound.DEVELOPER_MESSAGE);
+    });
 }

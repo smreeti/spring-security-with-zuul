@@ -1,39 +1,26 @@
 package com.f1soft.profileservice.repository;
 
-import com.f1soft.profileservice.constants.ErrorMessageConstants;
 import com.f1soft.profileservice.exceptions.NoContentFoundException;
 import com.f1soft.profileservice.repository.impl.ProfileRepositoryCustomImpl;
-import com.f1soft.profileservice.requestDTO.ProfileDTO;
 import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
-import com.f1soft.profileservice.service.serviceImpl.ProfileServiceImpl;
-import com.f1soft.profileservice.utility.ProfileUtils;
 import com.f1soft.profileservice.utility.QueryCreator;
-import com.f1soft.profileservice.utils.ProfileRequestUtils;
-import com.f1soft.profileservice.utils.ProfileResponseUtils;
-import org.assertj.core.api.Assertions;
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.ObjectUtils;
 
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-import static com.f1soft.profileservice.utils.ProfileRequestUtils.*;
-import static org.mockito.ArgumentMatchers.nullable;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
-import static org.springframework.test.util.AssertionErrors.assertTrue;
+import static junit.framework.TestCase.assertFalse;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author smriti on 7/11/19
@@ -45,7 +32,7 @@ import static org.springframework.test.util.AssertionErrors.assertTrue;
 public class ProfileRepositoryCustomTest {
 
     @Autowired
-    EntityManager entityManager;
+    TestEntityManager entityManager;
 
     @Autowired
     ProfileRepositoryCustomImpl profileRepositoryCustom;
@@ -55,33 +42,42 @@ public class ProfileRepositoryCustomTest {
 
     @Test
     public void searchProfile() {
+        Should_ThrowException_When_ProfileListIsEmpty();
 
-        Query query = entityManager.createNativeQuery(QueryCreator.createQueryToSearchProfile.apply(null));
+        Should_ReturnProfileList_When_ProfileListIsNotEmpty();
+    }
 
-        List<Object[]> list = query.getResultList();
+    @Test
+    public void Should_ThrowException_When_ProfileListIsEmpty() {
 
-        List<ProfileMinimalResponseDTO> responseDTOS = list.stream().map(
-                ProfileUtils.convertObjectToProfileResponseDTO)
-                .collect(Collectors.toList());
-
-        given(profileRepositoryCustom.searchProfile(null)).willReturn(responseDTOS);
-//
-//        Assertions.assertThat()
-
-
-        thrown.expect(NoContentFoundException.class);
+        Query query = entityManager.getEntityManager().createNativeQuery(
+                QueryCreator.createQueryToSearchProfile.apply(null));
 
         profileRepositoryCustom.searchProfile(null);
 
+        assertThat(query.getResultList()).isEqualTo(Collections.emptyList());
 
-//        profileRepository.refresh(new ProfileDTO());
+        thrown.expect(NoContentFoundException.class);
+    }
 
-//        profileService.getQueryToSearchProfile(new ProfileDTO());
+    @Test
+    public void Should_ReturnProfileList_When_ProfileListIsNotEmpty() {
 
+        Query query = entityManager.getEntityManager().createNativeQuery(
+                QueryCreator.createQueryToSearchProfile.apply(null));
 
-//
-//        given(profileService.getQueryToSearchProfile(null)).willReturn(new ArrayList<>());
+        List<ProfileMinimalResponseDTO> expected = profileRepositoryCustom.searchProfile(null);
 
-//        profileRepository.refresh(new ProfileDTO());
+        assertFalse(query.getResultList().isEmpty());
+
+        assertFalse(expected.isEmpty());
+
+        assertThat(expected).hasSize(getProfileList().size());
+    }
+
+    public List<ProfileMinimalResponseDTO> getProfileList() {
+        return Arrays.asList(
+                new ProfileMinimalResponseDTO(1L, "F1soft", 'Y', 1L, 2L),
+                new ProfileMinimalResponseDTO(2L, "Cogent", 'Y', 1L, 3L));
     }
 }

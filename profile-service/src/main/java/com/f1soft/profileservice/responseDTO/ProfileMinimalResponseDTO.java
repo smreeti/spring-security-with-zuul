@@ -12,6 +12,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Setter
 @ToString
+@Getter
 public class ProfileMinimalResponseDTO implements Serializable {
 
     private Long id;

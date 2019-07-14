@@ -33,7 +33,7 @@ public class ProfileController {
 
     @PostMapping(value = UPDATE)
     @ApiOperation(value = "Update existing profile")
-    public ResponseEntity<?> sayhello(@RequestBody ProfileRequestDTO requestDTO) {
+    public ResponseEntity<?> updateProfile(@RequestBody ProfileRequestDTO requestDTO) {
         profileService.updateProfile(requestDTO);
         return ok().build();
     }
