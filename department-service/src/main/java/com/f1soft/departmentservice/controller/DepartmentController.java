@@ -1,6 +1,7 @@
 package com.f1soft.departmentservice.controller;
 
 
+import com.f1soft.departmentservice.entities.Department;
 import com.f1soft.departmentservice.requestDTO.DepartmentSetupDTO;
 import com.f1soft.departmentservice.requestDTO.UpdatedDepartmentDTO;
 import com.f1soft.departmentservice.service.DepartmentService;
@@ -10,12 +11,9 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URL;
-
 import static com.f1soft.departmentservice.constants.WebResourceConstants.BASE_API;
 import static com.f1soft.departmentservice.constants.WebResourceConstants.DepartmentController.BASE_API_DEPARTMENT;
 import static com.f1soft.departmentservice.constants.WebResourceConstants.DepartmentController.DEPARTMENTCRUD.*;
-import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -24,15 +22,19 @@ import static org.springframework.http.ResponseEntity.ok;
 public class DepartmentController {
 
 
-    DepartmentService departmentService;
+  private  final   DepartmentService departmentService;
 
     public DepartmentController(DepartmentService departmentService) {
         this.departmentService = departmentService;
     }
 
+
     @PostMapping(value = SAVE)
     @ApiOperation("Api to save department")
     public ResponseEntity<?> save(@ApiParam(value = "contains the department details to save")@RequestBody DepartmentSetupDTO departmentSetupDTO) {
+        System.out.println("*******************");
+        System.out.println(departmentService.addDepartment(departmentSetupDTO));
+        Department department=departmentService.addDepartment(departmentSetupDTO);
         return ok(departmentService.addDepartment(departmentSetupDTO));
     }
 
@@ -49,8 +51,7 @@ public class DepartmentController {
 
     @PostMapping(value = UPDATE)
     @ApiOperation("Api to update department")
-    public ResponseEntity<?> update(UpdatedDepartmentDTO updatedDepartmentDTO){
-        System.out.println(departmentService.updateDepartment(updatedDepartmentDTO));
+    public ResponseEntity<?> update(@RequestBody UpdatedDepartmentDTO updatedDepartmentDTO){
         return ok(departmentService.updateDepartment(updatedDepartmentDTO));
     }
 

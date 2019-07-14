@@ -105,7 +105,7 @@ public class DepartmentServiceImplTest {
         thrown.expect(DataAlreadyExistsException.class);
         thrown.expectMessage("DEPARTMENT WITH NAME :" + " " + departmentSetupDTO.getDepartmentName() + " " + " ALREADY EXISTS");
 
-        given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(savedDepartment);
+        given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(1);
 
         departmentService.addDepartment(departmentSetupDTO);
 
@@ -117,7 +117,7 @@ public class DepartmentServiceImplTest {
         thrown.expectMessage("DEPARTMENT WITH CODE :" + " " + departmentSetupDTO.getCode() + " " + " ALREADY EXISTS");
 
         given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(null);
-        given(departmentRepository.findByCode(departmentSetupDTO.getCode())).willReturn(savedDepartment);
+        given(departmentRepository.findByCode(departmentSetupDTO.getCode())).willReturn(1);
 
         departmentService.addDepartment(departmentSetupDTO);
     }

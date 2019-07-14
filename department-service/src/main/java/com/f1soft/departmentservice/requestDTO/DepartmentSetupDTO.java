@@ -19,6 +19,8 @@ import java.io.Serializable;
 @ApiModel
 public class DepartmentSetupDTO implements Serializable {
 
+    private Long id;
+
     @ApiModelProperty(value = "Department name should be unique")
     private String departmentName;
 

@@ -14,10 +14,6 @@ public class DepartmentRepositoryCustomImpl implements DepartmentRepositoryCusto
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Override
-    public Department findByName(String name) {
-        return null;
-    }
 
     @Override
     public void refresh() {

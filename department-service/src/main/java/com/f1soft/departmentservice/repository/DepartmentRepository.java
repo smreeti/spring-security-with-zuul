@@ -16,11 +16,11 @@ import java.util.Optional;
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department,Long>, DepartmentRepositoryCustom {
 
-    @Query(value ="SELECT * FROM department WHERE department_name=:name AND status='Y'",nativeQuery = true)
-    Department findByName(@Param("name") String name);
+    @Query(value ="SELECT count(id) from department WHERE department_name=:name AND status='Y'",nativeQuery = true)
+    Integer findByName(@Param("name") String name);
 
-    @Query(value ="SELECT * FROM department WHERE code=:code AND status='Y'",nativeQuery = true)
-    Department findByCode(@Param("code") String code);
+    @Query(value ="SELECT count(id) FROM department WHERE code=:code AND status='Y'",nativeQuery = true)
+    Integer findByCode(@Param("code") String code);
 
     @Query(value ="SELECT * FROM department WHERE status='Y'",nativeQuery = true)
     List<Department> fetchAllDepartment();

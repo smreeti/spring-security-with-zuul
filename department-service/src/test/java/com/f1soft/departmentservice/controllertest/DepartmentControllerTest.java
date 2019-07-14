@@ -5,11 +5,17 @@ import com.f1soft.departmentservice.entities.Department;
 import com.f1soft.departmentservice.requestDTO.DepartmentSetupDTO;
 import com.f1soft.departmentservice.requestDTO.UpdatedDepartmentDTO;
 import com.f1soft.departmentservice.service.DepartmentService;
+import com.f1soft.departmentservice.service.serviceimpl.DepartmentServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -19,8 +25,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.nio.charset.Charset;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,19 +36,29 @@ import static com.f1soft.departmentservice.constants.WebResourceConstants.BASE_A
 import static com.f1soft.departmentservice.constants.WebResourceConstants.DepartmentController.BASE_API_DEPARTMENT;
 import static com.f1soft.departmentservice.constants.WebResourceConstants.DepartmentController.DEPARTMENTCRUD.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-@RunWith(SpringRunner.class)
-@WebMvcTest(DepartmentController.class)
 public class DepartmentControllerTest {
 
-    @MockBean
+    @Mock
     private DepartmentService departmentService;
 
-    @Autowired
-    MockMvc mockMvc;
+
+    @InjectMocks
+    private DepartmentController departmentController;
+
+    private static MockMvc mockMvc;
+
+
+    @Before
+    public void createMock() {
+        MockitoAnnotations.initMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(departmentController).build();
+    }
+
 
     public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
@@ -50,29 +68,37 @@ public class DepartmentControllerTest {
         save_ShouldSaveDepartment();
         retrieve_ShouldRetrieveDepartments();
         delete_ShouldDeleteDepartment();
+        update_ShouldUpdateDepartment();
 
     }
 
     @Test
     public void save_ShouldSaveDepartment() throws Exception {
         String URL = BASE_API + BASE_API_DEPARTMENT + SAVE;
-        System.out.println(URL);
 
         DepartmentSetupDTO departmentSetupDTO = DepartmentSetupDTO.builder()
-                .departmentName("Surgical")
-                .code("SRG")
+                .departmentName("Bijay")
+                .code("bj")
                 .status('Y')
                 .build();
 
-        given(departmentService.addDepartment(departmentSetupDTO)).willReturn(getDepartment());
+        Department department = Department.builder()
+                .id(3L)
+                .departmentName("Bijay")
+                .code("bj")
+                .status('Y')
+                .createdDate(LocalDate.now())
+                .createdById(1L)
+                .build();
+
+        System.out.println(":: :: ::: :: " + given(departmentService.addDepartment(departmentSetupDTO)).willReturn(department));
+
 
         mockMvc.perform(MockMvcRequestBuilders.post(URL)
                 .contentType(APPLICATION_JSON_UTF8)
-                .content(writeObjectToJson(departmentSetupDTO)))
-                .andExpect(status().isOk())
-                .andReturn();
+                .content(writeObjectToJson(departmentSetupDTO))).andExpect(status().isOk());
 
-        verify(departmentService).addDepartment(departmentSetupDTO);
+        verify(departmentService, times(2)).addDepartment(departmentSetupDTO);
     }
 
     @Test
@@ -109,6 +135,7 @@ public class DepartmentControllerTest {
         verify(departmentService).deleteDepartment(1L);
     }
 
+
     @Test
     public void update_ShouldUpdateDepartment() throws Exception {
         String URL = BASE_API + BASE_API_DEPARTMENT + UPDATE;
@@ -127,7 +154,8 @@ public class DepartmentControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post(URL)
                 .contentType(APPLICATION_JSON_UTF8)
                 .content(writeObjectToJson(updatedDepartmentSetupDTO)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn();
 
         verify(departmentService).updateDepartment(updatedDepartmentSetupDTO);
 
@@ -156,7 +184,7 @@ public class DepartmentControllerTest {
 
 
     private String writeObjectToJson(final Object obj) {
-        ObjectMapper objectMapper=new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {

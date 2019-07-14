@@ -46,16 +46,16 @@ public class DepartmentRepositoryTest extends AbstractDepartmentInfo {
 
     @Test
     public void testfindByName() {
-        Department departmentSavedInDb = departmentRepository.findByName(getDepartmentInfo().getDepartmentName());
+        Integer departmentSavedInDb = departmentRepository.findByName(getDepartmentInfo().getDepartmentName());
 
-        assertThat(departmentSavedInDb.getDepartmentName()).isEqualTo(getDepartmentInfo().getDepartmentName());
+        assertThat(departmentSavedInDb).isEqualTo(1);
     }
 
     @Test
     public void testfindByCode() {
-        Department departmentSavedInDb = departmentRepository.findByCode(getDepartmentInfo().getCode());
+        Integer departmentSavedInDb = departmentRepository.findByCode(getDepartmentInfo().getCode());
 
-        assertThat(departmentSavedInDb.getCode()).isEqualTo(getDepartmentInfo().getCode());
+        assertThat(departmentSavedInDb).isEqualTo(1);
     }
 
     @Test
