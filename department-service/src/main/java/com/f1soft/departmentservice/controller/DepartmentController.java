@@ -28,19 +28,12 @@ public class DepartmentController {
         this.departmentService = departmentService;
     }
 
-
-    @PostMapping(value = SAVE)
-    @ApiOperation("Api to save department")
-    public ResponseEntity<?> save(@ApiParam(value = "contains the department details to save")@RequestBody DepartmentSetupDTO departmentSetupDTO) {
-        System.out.println("*******************");
-        System.out.println(departmentService.addDepartment(departmentSetupDTO));
-        Department department=departmentService.addDepartment(departmentSetupDTO);
-        return ok(departmentService.addDepartment(departmentSetupDTO));
-    }
-
     @GetMapping(value = RETRIEVE)
     @ApiOperation("Api to retrieve all departments")
     public ResponseEntity<?> retrieve(){
+        System.out.println("--------------------------------------");
+        System.out.println(departmentService.fetchAllDepartment());
+        System.out.println("---------------------------------------");
         return ok(departmentService.fetchAllDepartment());
     }
 
@@ -52,7 +45,19 @@ public class DepartmentController {
     @PostMapping(value = UPDATE)
     @ApiOperation("Api to update department")
     public ResponseEntity<?> update(@RequestBody UpdatedDepartmentDTO updatedDepartmentDTO){
+        System.out.println("--------------------------------------");
+        System.out.println(departmentService.updateDepartment(updatedDepartmentDTO));
+        System.out.println("---------------------------------------");
         return ok(departmentService.updateDepartment(updatedDepartmentDTO));
+    }
+
+    @PostMapping(value = SAVE)
+    public ResponseEntity<?> save(@RequestBody DepartmentSetupDTO departmentSetupDTO){
+        System.out.println("--------------------------------------");
+        System.out.println(departmentService.addDepartment(departmentSetupDTO));
+        System.out.println("---------------------------------------");
+        return ok(departmentService.addDepartment(departmentSetupDTO));
+
     }
 
 }

@@ -65,40 +65,30 @@ public class DepartmentControllerTest {
 
     @Test
     public void departmentCrud() throws Exception {
-        save_ShouldSaveDepartment();
         retrieve_ShouldRetrieveDepartments();
         delete_ShouldDeleteDepartment();
         update_ShouldUpdateDepartment();
 
     }
 
+
     @Test
     public void save_ShouldSaveDepartment() throws Exception {
-        String URL = BASE_API + BASE_API_DEPARTMENT + SAVE;
+        String URL=BASE_API+BASE_API_DEPARTMENT+SAVE;
+        System.out.println(URL);
 
-        DepartmentSetupDTO departmentSetupDTO = DepartmentSetupDTO.builder()
-                .departmentName("Bijay")
-                .code("bj")
+        DepartmentSetupDTO departmentSetupDTO=DepartmentSetupDTO.builder()
+                .departmentName("Surgical")
+                .code("SRG")
                 .status('Y')
                 .build();
 
-        Department department = Department.builder()
-                .id(3L)
-                .departmentName("Bijay")
-                .code("bj")
-                .status('Y')
-                .createdDate(LocalDate.now())
-                .createdById(1L)
-                .build();
-
-        System.out.println(":: :: ::: :: " + given(departmentService.addDepartment(departmentSetupDTO)).willReturn(department));
-
+        given(departmentService.addDepartment(departmentSetupDTO)).willReturn(getDepartment());
 
         mockMvc.perform(MockMvcRequestBuilders.post(URL)
                 .contentType(APPLICATION_JSON_UTF8)
-                .content(writeObjectToJson(departmentSetupDTO))).andExpect(status().isOk());
-
-        verify(departmentService, times(2)).addDepartment(departmentSetupDTO);
+                .content(writeObjectToJson(departmentSetupDTO)))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -116,7 +106,7 @@ public class DepartmentControllerTest {
                 .andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
 
-        verify(departmentService).fetchAllDepartment();
+        verify(departmentService,times(2)).fetchAllDepartment();
     }
 
     @Test
@@ -157,7 +147,7 @@ public class DepartmentControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        verify(departmentService).updateDepartment(updatedDepartmentSetupDTO);
+        verify(departmentService,times(2)).updateDepartment(updatedDepartmentSetupDTO);
 
     }
 
