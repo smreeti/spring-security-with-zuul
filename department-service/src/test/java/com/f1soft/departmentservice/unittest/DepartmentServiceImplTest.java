@@ -107,7 +107,7 @@ public class DepartmentServiceImplTest {
 
         thrown.expect(DataAlreadyExistsException.class);
 
-        given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(Optional.of(savedDepartment));
+        given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(savedDepartment);
 
         departmentService.addDepartment(departmentSetupDTO);
 

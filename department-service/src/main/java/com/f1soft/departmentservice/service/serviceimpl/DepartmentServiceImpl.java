@@ -75,6 +75,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     public void validateDepartmentName(String name) {
         if (departmentRepository.findByName(name) != null) {
+            System.out.println(departmentRepository.findByName(name));
             throw new DataAlreadyExistsException(DEPARTMENT_ALREADY_EXISTS_WITH_NAME + name);
         }
 
