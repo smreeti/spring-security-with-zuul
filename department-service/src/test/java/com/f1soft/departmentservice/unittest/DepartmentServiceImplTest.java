@@ -6,8 +6,10 @@ import com.f1soft.departmentservice.exception.DataAlreadyExistsException;
 import com.f1soft.departmentservice.exception.DataNotFoundException;
 import com.f1soft.departmentservice.exception.NoChangeFoundException;
 import com.f1soft.departmentservice.repository.DepartmentRepository;
+import com.f1soft.departmentservice.repository.DepartmentRepositoryCustom;
 import com.f1soft.departmentservice.requestDTO.DepartmentSetupDTO;
 import com.f1soft.departmentservice.requestDTO.UpdatedDepartmentDTO;
+import com.f1soft.departmentservice.responseDTO.requestDTO.DepartmentResponseDTO;
 import com.f1soft.departmentservice.service.serviceimpl.DepartmentServiceImpl;
 import com.f1soft.departmentservice.utils.DepartmentUtils;
 import org.junit.Before;
@@ -19,11 +21,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static com.f1soft.departmentservice.utils.DepartmentUtils.convertDepartmentToDelete;
+import static com.f1soft.departmentservice.utils.DepartmentUtils.convertDepartmentToUpdate;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.BDDMockito.given;
@@ -42,6 +47,9 @@ public class DepartmentServiceImplTest {
     @Mock
     DepartmentRepository departmentRepository;
 
+    @Mock
+    DepartmentRepositoryCustom departmentRepositoryCustom;
+
     @InjectMocks
     private DepartmentServiceImpl departmentService;
 
@@ -49,11 +57,13 @@ public class DepartmentServiceImplTest {
 
     private Department savedDepartment;
 
+    private DepartmentResponseDTO limitedData;
+
     private UpdatedDepartmentDTO updatedDepartmentDTO;
 
     @Before
     public void setUp() {
-        departmentService = new DepartmentServiceImpl(departmentRepository);
+        departmentService = new DepartmentServiceImpl(departmentRepository,departmentRepositoryCustom);
         departmentSetupDTO = DepartmentSetupDTO.builder()
                 .departmentName("Surgical")
                 .code("SRG")
@@ -72,7 +82,17 @@ public class DepartmentServiceImplTest {
         savedDepartment.setDepartmentName("Surgical");
         savedDepartment.setCode("SRG");
         savedDepartment.setStatus('Y');
+        savedDepartment.setCreatedDate(null);
+        savedDepartment.setCreatedById(1L);
+        savedDepartment.setLastModifiedDate(null);
+        savedDepartment.setModifiedById(1L);
 
+
+        limitedData=new DepartmentResponseDTO();
+        limitedData.setId(1L);
+        limitedData.setDepartmentName("Surgical");
+        limitedData.setCode("SRG");
+        limitedData.setStatus('Y');
     }
 
     @Test
@@ -144,9 +164,9 @@ public class DepartmentServiceImplTest {
 
     @Test
     public void fetchAllDepartment_ShouldReturnEmptyList(){
+        thrown.expect(DataNotFoundException.class);
 
         given(departmentRepository.fetchAllDepartment()).willReturn(Optional.ofNullable(null));
-        thrown.expect(DataNotFoundException.class);
 
         departmentService.fetchAllDepartment();
     }
@@ -163,6 +183,30 @@ public class DepartmentServiceImplTest {
     }
 
     @Test
+    public void fetchDepartment_ShouldReturnEmptyList(){
+        thrown.expect(DataNotFoundException.class);
+
+        given(departmentRepositoryCustom.fetchDepartmentWithMinimalData()).willReturn(null);
+
+        departmentService.fetchDepartment();
+
+    }
+
+    @Test
+    public void fetchDepartment_ShouldReturnDepartment(){
+        List<DepartmentResponseDTO> departmentList=new ArrayList<>();
+        departmentList.add(limitedData);
+
+        given(departmentRepositoryCustom.fetchDepartmentWithMinimalData()).willReturn(departmentList);
+
+        assertThat(departmentService.fetchDepartment()).isEqualTo(departmentList);
+        assertNotNull(departmentService.fetchDepartment());
+    }
+
+
+
+
+    @Test
     public void deleteDepartment_ShouldReturnDataNotFound(){
         thrown.expect(DataNotFoundException.class);
 
@@ -173,7 +217,7 @@ public class DepartmentServiceImplTest {
 
     @Test
     public void deleteDepartment_ShouldDeleteData(){
-        Department departmentToSave=DepartmentUtils.convertDepartmentToDelete(savedDepartment);
+        Department departmentToSave=convertDepartmentToDelete.apply(savedDepartment);
 
         given(departmentRepository.findByDepartmentId(1L)).willReturn(savedDepartment);
         given(departmentRepository.save(departmentToSave)).willReturn(departmentToSave);
@@ -195,7 +239,7 @@ public class DepartmentServiceImplTest {
 
     @Test
     public void updateDepartment_ShouldUpdateDepartment(){
-        Department departmentToSave=DepartmentUtils.convertDepartmentToUpdate(updatedDepartmentDTO,savedDepartment);
+        Department departmentToSave=convertDepartmentToUpdate.apply(updatedDepartmentDTO,savedDepartment);
         given(departmentRepository.findByDepartmentId(updatedDepartmentDTO.getId())).willReturn(savedDepartment);
         given(departmentRepository.save(departmentToSave)).willReturn(departmentToSave);
 

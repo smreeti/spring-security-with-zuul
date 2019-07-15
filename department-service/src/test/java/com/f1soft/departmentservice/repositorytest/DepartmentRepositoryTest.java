@@ -50,6 +50,7 @@ public class DepartmentRepositoryTest extends AbstractDepartmentInfo {
     public void testfindByName() {
         Department departmentSavedInDb = departmentRepository.findByName(getDepartmentInfo().getDepartmentName());
 
+
         assertThat(departmentSavedInDb).isEqualTo(getDepartmentInfo().getDepartmentName());
     }
 
@@ -57,6 +58,7 @@ public class DepartmentRepositoryTest extends AbstractDepartmentInfo {
     public void testfindByCode() {
         Department departmentSavedInDb = departmentRepository.findByCode(getDepartmentInfo().getCode());
 
+        System.out.println(departmentSavedInDb);
         assertThat(departmentSavedInDb).isEqualTo(getDepartmentInfo().getCode());
     }
 

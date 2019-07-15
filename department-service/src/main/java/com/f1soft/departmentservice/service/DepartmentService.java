@@ -3,6 +3,7 @@ package com.f1soft.departmentservice.service;
 import com.f1soft.departmentservice.entities.Department;
 import com.f1soft.departmentservice.requestDTO.DepartmentSetupDTO;
 import com.f1soft.departmentservice.requestDTO.UpdatedDepartmentDTO;
+import com.f1soft.departmentservice.responseDTO.requestDTO.DepartmentResponseDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,8 @@ import java.util.Optional;
 
 public interface DepartmentService {
     Optional<Department> addDepartment(DepartmentSetupDTO departmentSetupDTO);
+
+    List<DepartmentResponseDTO> fetchDepartment();
 
    List<Department> fetchAllDepartment();
 

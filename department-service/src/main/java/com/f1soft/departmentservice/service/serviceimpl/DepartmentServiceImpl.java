@@ -5,8 +5,10 @@ import com.f1soft.departmentservice.exception.BadRequestDataException;
 import com.f1soft.departmentservice.exception.DataAlreadyExistsException;
 import com.f1soft.departmentservice.exception.DataNotFoundException;
 import com.f1soft.departmentservice.repository.DepartmentRepository;
+import com.f1soft.departmentservice.repository.DepartmentRepositoryCustom;
 import com.f1soft.departmentservice.requestDTO.DepartmentSetupDTO;
 import com.f1soft.departmentservice.requestDTO.UpdatedDepartmentDTO;
+import com.f1soft.departmentservice.responseDTO.requestDTO.DepartmentResponseDTO;
 import com.f1soft.departmentservice.service.DepartmentService;
 import com.f1soft.departmentservice.utils.DepartmentUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.f1soft.departmentservice.constants.ErrorMessageConstants.*;
+import static com.f1soft.departmentservice.utils.DepartmentUtils.convertDepartmentToDelete;
+import static com.f1soft.departmentservice.utils.DepartmentUtils.convertDepartmentToUpdate;
 
 /**
  * @author Sauravi
@@ -28,10 +32,12 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private DepartmentRepository departmentRepository;
 
-    public DepartmentServiceImpl(DepartmentRepository departmentRepository) {
-        this.departmentRepository = departmentRepository;
-    }
+    private DepartmentRepositoryCustom departmentRepositoryCustom;
 
+    public DepartmentServiceImpl(DepartmentRepository departmentRepository, DepartmentRepositoryCustom departmentRepositoryCustom) {
+        this.departmentRepository = departmentRepository;
+        this.departmentRepositoryCustom = departmentRepositoryCustom;
+    }
 
     @Override
     public Optional<Department> addDepartment(DepartmentSetupDTO departmentSetupDTO) {
@@ -41,6 +47,14 @@ public class DepartmentServiceImpl implements DepartmentService {
             Department department = DepartmentUtils.convertDepartmentSetupToDepartment(departmentSetupDTO);
             return Optional.ofNullable(Optional.ofNullable(saveDepartment(department))
                     .orElseThrow(() -> new BadRequestDataException(BAD_REQUEST)));
+    }
+
+    @Override
+    public List<DepartmentResponseDTO> fetchDepartment() {
+        if(departmentRepositoryCustom.fetchDepartmentWithMinimalData() == null){
+            throw new DataNotFoundException(DEPARTMENT_NOT_FOUND);
+        }else
+            return departmentRepositoryCustom.fetchDepartmentWithMinimalData();
     }
 
 
@@ -56,7 +70,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         if (departmentToDelete == null) {
             throw new DataNotFoundException(DEPARTMENT_NOT_FOUND);
         } else {
-            Department departmentToSave = DepartmentUtils.convertDepartmentToDelete(departmentToDelete);
+            Department departmentToSave = convertDepartmentToDelete.apply(departmentToDelete);
             return saveDepartment(departmentToSave);
         }
 
@@ -68,14 +82,13 @@ public class DepartmentServiceImpl implements DepartmentService {
         if (savedDepartment == null) {
             throw new DataNotFoundException(DEPARTMENT_NOT_FOUND);
         } else {
-            Department departmentToSave = DepartmentUtils.convertDepartmentToUpdate(updatedDepartmentDTO, savedDepartment);
+            Department departmentToSave = convertDepartmentToUpdate.apply(updatedDepartmentDTO, savedDepartment);
             return saveDepartment(departmentToSave);
         }
     }
 
     public void validateDepartmentName(String name) {
         if (departmentRepository.findByName(name) != null) {
-            System.out.println(departmentRepository.findByName(name));
             throw new DataAlreadyExistsException(DEPARTMENT_ALREADY_EXISTS_WITH_NAME + name);
         }
 
