@@ -46,6 +46,7 @@ public class WebResourceKeyConstants {
 
     //S
     public static  final String SAVE = "/save";
+    public static  final String SEARCH = "/search";
 
     //T
 

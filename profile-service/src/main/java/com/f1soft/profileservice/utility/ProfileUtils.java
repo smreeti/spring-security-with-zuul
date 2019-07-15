@@ -2,8 +2,10 @@ package com.f1soft.profileservice.utility;
 
 import com.f1soft.profileservice.entities.Profile;
 import com.f1soft.profileservice.requestDTO.ProfileDTO;
+import com.f1soft.profileservice.responseDTO.ProfileDetailResponseDTO;
 import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
 
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -41,6 +43,14 @@ public class ProfileUtils {
         profile.setSubDepartmentId(profileDTO.getSubDepartmentId());
 
         return profile;
+    };
+
+    public static Function<List<Object[]>, ProfileDetailResponseDTO> convertObjectToDetailProfileResponse = (objects)->{
+        final Integer PROFILE_MENU_ID = 0;
+        final Integer DEPARTMENT_ID = 3;
+        final Integer SUB_DEPARTMENT_ID = 4;
+
+        return null;
     };
 
 }

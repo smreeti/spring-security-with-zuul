@@ -1,9 +1,12 @@
 package com.f1soft.profileservice.controller;
 
+import com.f1soft.profileservice.repository.ProfileRepositoryCustom;
+import com.f1soft.profileservice.requestDTO.ProfileDTO;
 import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
 import com.f1soft.profileservice.service.ProfileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +23,13 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
-    public ProfileController(ProfileService profileService) {
+    private final ProfileRepositoryCustom profileRepositoryCustom;
+
+    public ProfileController(ProfileService profileService,
+                             @Qualifier(value = "customRepo") ProfileRepositoryCustom profileRepositoryCustom) {
         this.profileService = profileService;
+
+        this.profileRepositoryCustom = profileRepositoryCustom;
     }
 
     @PostMapping(value = SAVE)
@@ -45,5 +53,10 @@ public class ProfileController {
         return ok().build();
     }
 
+    @PostMapping(value = SEARCH)
+    @ApiOperation(value = "Search profile according to given request parameters")
+    public ResponseEntity<?> searchProfile(@RequestBody ProfileDTO profileDTO) {
+        return ok(profileRepositoryCustom.searchProfile(profileDTO));
+    }
 
 }

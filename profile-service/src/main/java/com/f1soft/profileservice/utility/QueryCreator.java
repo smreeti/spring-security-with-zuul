@@ -23,18 +23,30 @@ public class QueryCreator {
                 " profile p" +
                 " WHERE p.id!=0";
 
-        if (!Objects.isNull(profileDTO)) {
-            if (!Objects.isNull(profileDTO.getName()))
-                query += " AND p.name='" + profileDTO.getName() + "'";
+        if (!Objects.isNull(profileDTO.getName()))
+            query += " AND p.name='" + profileDTO.getName() + "'";
 
-            if (!Objects.isNull(profileDTO.getDepartmentId()))
-                query += " AND p.department_id=" + profileDTO.getDepartmentId();
+        if (!Objects.isNull(profileDTO.getDepartmentId()))
+            query += " AND p.department_id=" + profileDTO.getDepartmentId();
 
-            if (!Objects.isNull(profileDTO.getSubDepartmentId()))
-                query += " AND p.sub_department_id=" + profileDTO.getDepartmentId();
-        }
+        if (!Objects.isNull(profileDTO.getSubDepartmentId()))
+            query += " AND p.sub_department_id=" + profileDTO.getDepartmentId();
 
+        query += " ORDER BY p.id DESC";
         return query;
     });
+
+    public static Function<Long, String> createQueryToFetchAllProfileDetails = (id) -> {
+        return "SELECT" +
+                " pm.id," +                 //[0]
+                " pm.profile_id," +         //[1]
+                " pm.role_id, " +           //[2]
+                " pm.user_menu_id, " +      //[3]
+                " p.description" +          //[4]
+                " FROM profile p" +
+                " LEFT JOIN profile_menu pm ON pm.profile_id = p.id" +
+                " WHERE" +
+                " p.id = " + id;
+    };
 
 }

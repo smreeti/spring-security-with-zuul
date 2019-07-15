@@ -11,5 +11,4 @@ public interface ProfileMenuService {
 
     List<ProfileMenu> saveProfileMenu(List<ProfileMenu> profileMenus);
 
-     String hello();
 }

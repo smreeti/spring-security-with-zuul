@@ -1,5 +1,6 @@
 package com.f1soft.profileservice.responseDTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.io.Serializable;

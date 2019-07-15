@@ -1,6 +1,8 @@
 package com.f1soft.profileservice.repository;
 
 import com.f1soft.profileservice.entities.Profile;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,7 +14,6 @@ import java.math.BigInteger;
  * @author smriti on 7/2/19
  */
 @Repository
-//@Qualifier("repo1")
 public interface ProfileRepository extends JpaRepository<Profile, Long>, ProfileRepositoryCustom {
 
     @Query(value = "SELECT COUNT(p.id) FROM profile p WHERE p.name =:name AND p.status = 'Y'", nativeQuery = true)

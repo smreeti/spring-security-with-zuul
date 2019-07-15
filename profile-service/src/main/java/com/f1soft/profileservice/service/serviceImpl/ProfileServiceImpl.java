@@ -93,4 +93,9 @@ public class ProfileServiceImpl implements ProfileService {
         saveProfile(profile);
     }
 
+    @Override
+    public List<Profile> findAll(){
+        return profileRepository.findAll();
+    }
+
 }

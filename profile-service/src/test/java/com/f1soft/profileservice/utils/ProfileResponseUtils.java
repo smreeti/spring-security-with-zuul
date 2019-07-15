@@ -1,5 +1,6 @@
 package com.f1soft.profileservice.utils;
 
+import com.f1soft.profileservice.entities.Profile;
 import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
 
 import java.util.Arrays;
@@ -11,9 +12,10 @@ import java.util.List;
 
 public class ProfileResponseUtils {
 
-    public static List<ProfileMinimalResponseDTO> getProfileMinimalResponseDTOS() {
+    public static List<ProfileMinimalResponseDTO> getProfileMinimalResponseList() {
         return Arrays.asList(
-                new ProfileMinimalResponseDTO(1L, "Superadmin", 'Y', 1L, 1L),
-                new ProfileMinimalResponseDTO(2L, "Finadmin", 'Y', 2L, 4L));
+                new ProfileMinimalResponseDTO(1L, "F1soft", 'Y', 1L, 2L),
+                new ProfileMinimalResponseDTO(2L, "Cogent", 'Y', 1L, 3L));
     }
+
 }

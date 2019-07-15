@@ -3,14 +3,18 @@ package com.f1soft.profileservice.service;
 import com.f1soft.profileservice.entities.Profile;
 import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
 
+import java.util.List;
+
 /**
  * @author smriti on 7/2/19
  */
 public interface ProfileService {
 
-    void createProfile(ProfileRequestDTO profileRequestDTO);
+    void createProfile(ProfileRequestDTO requestDTO);
 
     void updateProfile(ProfileRequestDTO requestDTO);
 
     void deleteProfile(Long id);
+
+    List<Profile> findAll();
 }

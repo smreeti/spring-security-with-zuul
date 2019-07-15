@@ -25,8 +25,4 @@ public class ProfileMenuServiceImpl implements ProfileMenuService {
         return profileMenuRepository.saveAll(profileMenus);
     }
 
-    @Override
-    public String hello(){
-        return "dsvdsv";
-    }
 }

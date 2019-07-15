@@ -4,6 +4,7 @@ import com.f1soft.profileservice.exceptions.NoContentFoundException;
 import com.f1soft.profileservice.repository.impl.ProfileRepositoryCustomImpl;
 import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
 import com.f1soft.profileservice.utility.QueryCreator;
+import com.f1soft.profileservice.utils.ProfileRequestUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -15,10 +16,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.Query;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static com.f1soft.profileservice.utils.ProfileRequestUtils.*;
+import static com.f1soft.profileservice.utils.ProfileResponseUtils.getProfileMinimalResponseList;
 import static junit.framework.TestCase.assertFalse;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -51,7 +53,7 @@ public class ProfileRepositoryCustomTest {
     public void Should_ThrowException_When_ProfileListIsEmpty() {
 
         Query query = entityManager.getEntityManager().createNativeQuery(
-                QueryCreator.createQueryToSearchProfile.apply(null));
+                QueryCreator.createQueryToSearchProfile.apply(getProfileDTO()));
 
         profileRepositoryCustom.searchProfile(null);
 
@@ -64,20 +66,14 @@ public class ProfileRepositoryCustomTest {
     public void Should_ReturnProfileList_When_ProfileListIsNotEmpty() {
 
         Query query = entityManager.getEntityManager().createNativeQuery(
-                QueryCreator.createQueryToSearchProfile.apply(null));
+                QueryCreator.createQueryToSearchProfile.apply(getProfileDTO()));
 
-        List<ProfileMinimalResponseDTO> expected = profileRepositoryCustom.searchProfile(null);
+        List<ProfileMinimalResponseDTO> expected = profileRepositoryCustom.searchProfile(getProfileDTO());
 
         assertFalse(query.getResultList().isEmpty());
 
         assertFalse(expected.isEmpty());
 
-        assertThat(expected).hasSize(getProfileList().size());
-    }
-
-    public List<ProfileMinimalResponseDTO> getProfileList() {
-        return Arrays.asList(
-                new ProfileMinimalResponseDTO(1L, "F1soft", 'Y', 1L, 2L),
-                new ProfileMinimalResponseDTO(2L, "Cogent", 'Y', 1L, 3L));
+        assertThat(expected).hasSize(getProfileMinimalResponseList().size());
     }
 }
