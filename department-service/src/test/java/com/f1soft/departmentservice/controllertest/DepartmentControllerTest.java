@@ -23,12 +23,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.f1soft.departmentservice.constants.WebResourceConstants.BASE_API;
 import static com.f1soft.departmentservice.constants.WebResourceConstants.DepartmentController.BASE_API_DEPARTMENT;
 import static com.f1soft.departmentservice.constants.WebResourceConstants.DepartmentController.DEPARTMENTCRUD.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -76,9 +78,6 @@ public class DepartmentControllerTest {
                 .build();
         given(departmentService.addDepartment(any(DepartmentSetupDTO.class))).willReturn(java.util.Optional.ofNullable(getDepartment()));
 
-        System.out.println("********************************************");
-        System.out.println(departmentService.addDepartment(departmentSetupDTO));
-
         mockMvc.perform(MockMvcRequestBuilders.post(URL)
                 .contentType(APPLICATION_JSON_UTF8)
                 .content(writeObjectToJson(departmentSetupDTO)))
@@ -95,7 +94,7 @@ public class DepartmentControllerTest {
         List<Department> departmentList = new ArrayList<>();
         departmentList.add(getDepartment());
 
-        given(departmentService.fetchAllDepartment()).willReturn(departmentList);
+        given(departmentService.fetchAllDepartment()).willReturn((departmentList));
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(URL))
                 .andExpect(status().isOk())

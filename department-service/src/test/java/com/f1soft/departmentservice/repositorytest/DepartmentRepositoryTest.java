@@ -12,8 +12,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Sauravi
@@ -39,14 +41,14 @@ public class DepartmentRepositoryTest extends AbstractDepartmentInfo {
 
     @Test
     public void testfetchAllDepartment() {
-        List<Department> departmentList = departmentRepository.fetchAllDepartment();
+        Optional<List<Department>> departmentList = departmentRepository.fetchAllDepartment();
         System.out.println(departmentList);
-        assertThat(departmentList).hasSize(2);
+        assertNotNull(departmentList);
     }
 
     @Test
     public void testfindByName() {
-        Department departmentSavedInDb = departmentRepository.findByName(getDepartmentInfo().getDepartmentName());
+        Optional<Department> departmentSavedInDb = departmentRepository.findByName(getDepartmentInfo().getDepartmentName());
 
         assertThat(departmentSavedInDb).isEqualTo(getDepartmentInfo().getDepartmentName());
     }

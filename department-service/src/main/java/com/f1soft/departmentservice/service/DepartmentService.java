@@ -12,8 +12,11 @@ import java.util.Optional;
  */
 
 public interface DepartmentService {
-   Department addDepartment(DepartmentSetupDTO departmentSetupDTO);
-    List<Department> fetchAllDepartment();
+    Optional<Department> addDepartment(DepartmentSetupDTO departmentSetupDTO);
+
+   List<Department> fetchAllDepartment();
+
     Department deleteDepartment(Long id);
+
     Department updateDepartment(UpdatedDepartmentDTO updatedDepartmentDTO);
 }

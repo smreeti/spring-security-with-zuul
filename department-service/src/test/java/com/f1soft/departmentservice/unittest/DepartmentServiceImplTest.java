@@ -15,14 +15,17 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -39,6 +42,7 @@ public class DepartmentServiceImplTest {
     @Mock
     DepartmentRepository departmentRepository;
 
+    @InjectMocks
     private DepartmentServiceImpl departmentService;
 
     private DepartmentSetupDTO departmentSetupDTO;
@@ -103,7 +107,7 @@ public class DepartmentServiceImplTest {
 
         thrown.expect(DataAlreadyExistsException.class);
 
-        given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(savedDepartment);
+        given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(Optional.of(savedDepartment));
 
         departmentService.addDepartment(departmentSetupDTO);
 
@@ -140,9 +144,9 @@ public class DepartmentServiceImplTest {
 
     @Test
     public void fetchAllDepartment_ShouldReturnEmptyList(){
-        thrown.expect(DataNotFoundException.class);
 
-        given(departmentRepository.fetchAllDepartment()).willReturn(Collections.emptyList());
+        given(departmentRepository.fetchAllDepartment()).willReturn(Optional.ofNullable(null));
+        thrown.expect(DataNotFoundException.class);
 
         departmentService.fetchAllDepartment();
     }
@@ -152,10 +156,10 @@ public class DepartmentServiceImplTest {
         List<Department> departmentList=new ArrayList<>();
         departmentList.add(savedDepartment);
 
-        given(departmentRepository.fetchAllDepartment()).willReturn(departmentList);
+        given(departmentRepository.fetchAllDepartment()).willReturn(Optional.ofNullable(departmentList));
 
         assertThat(departmentService.fetchAllDepartment()).isEqualTo(departmentList);
-        assertThat(departmentService.fetchAllDepartment()).hasSize(1);
+        assertNotNull(departmentService.fetchAllDepartment());
     }
 
     @Test
@@ -199,4 +203,6 @@ public class DepartmentServiceImplTest {
         verify(departmentRepository).save(departmentToSave);
 
     }
+
+
 }

@@ -4,7 +4,6 @@ import com.f1soft.departmentservice.entities.Department;
 import com.f1soft.departmentservice.exception.BadRequestDataException;
 import com.f1soft.departmentservice.exception.DataAlreadyExistsException;
 import com.f1soft.departmentservice.exception.DataNotFoundException;
-import com.f1soft.departmentservice.exception.NoChangeFoundException;
 import com.f1soft.departmentservice.repository.DepartmentRepository;
 import com.f1soft.departmentservice.requestDTO.DepartmentSetupDTO;
 import com.f1soft.departmentservice.requestDTO.UpdatedDepartmentDTO;
@@ -35,26 +34,20 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 
     @Override
-    public Department addDepartment(DepartmentSetupDTO departmentSetupDTO) {
-        if (departmentSetupDTO != null) {
+    public Optional<Department> addDepartment(DepartmentSetupDTO departmentSetupDTO) {
+        if (departmentSetupDTO != null)
             validateDepartmentName(departmentSetupDTO.getDepartmentName());
             validateDepartmentCode(departmentSetupDTO.getCode());
             Department department = DepartmentUtils.convertDepartmentSetupToDepartment(departmentSetupDTO);
-            return saveDepartment(department);
-        } else {
-            throw new BadRequestDataException(BAD_REQUEST);
-        }
-
+            return Optional.ofNullable(Optional.ofNullable(saveDepartment(department))
+                    .orElseThrow(() -> new BadRequestDataException(BAD_REQUEST)));
     }
+
 
     @Override
     public List<Department> fetchAllDepartment() {
-//        return departmentRepository.fetchAllDepartment().orElseThrow(()-> new DataNotFoundException("SORRY, DATA NOT FOUND"));
-        if (departmentRepository.fetchAllDepartment() == null) {
-            throw new DataNotFoundException(DEPARTMENT_NOT_FOUND);
-        } else {
-            return departmentRepository.fetchAllDepartment();
-        }
+        return departmentRepository.fetchAllDepartment().orElseThrow(() ->
+                new DataNotFoundException(DEPARTMENT_NOT_FOUND));
     }
 
     @Override
@@ -82,14 +75,14 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     public void validateDepartmentName(String name) {
         if (departmentRepository.findByName(name) != null) {
-            throw new DataAlreadyExistsException(DEPARTMENT_ALREADY_EXISTS_WITH_NAME +  name);
+            throw new DataAlreadyExistsException(DEPARTMENT_ALREADY_EXISTS_WITH_NAME + name);
         }
 
     }
 
     public void validateDepartmentCode(String code) {
         if (departmentRepository.findByCode(code) != null) {
-            throw new DataAlreadyExistsException(DEPARTMENT_ALREADY_EXISTS_WITH_CODE+ code);
+            throw new DataAlreadyExistsException(DEPARTMENT_ALREADY_EXISTS_WITH_CODE + code);
         }
     }
 
