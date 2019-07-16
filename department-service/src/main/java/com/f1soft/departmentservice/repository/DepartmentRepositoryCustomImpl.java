@@ -1,7 +1,6 @@
 package com.f1soft.departmentservice.repository;
 
 
-import com.f1soft.departmentservice.entities.Department;
 import com.f1soft.departmentservice.responseDTO.requestDTO.DepartmentResponseDTO;
 import com.f1soft.departmentservice.utils.DepartmentUtils;
 import com.f1soft.departmentservice.utils.QueryCreator;
@@ -11,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -21,10 +21,10 @@ public class DepartmentRepositoryCustomImpl implements DepartmentRepositoryCusto
 
     @Override
     @Transactional
-    public List<DepartmentResponseDTO> fetchDepartmentWithMinimalData() {
-        String sql= QueryCreator.createQueryToFetchDepartment();
+    public Optional<List<DepartmentResponseDTO>> fetchMinimalDepartmentData() {
+        String sql= QueryCreator.createQueryTofetchMinimalDepartmentData();
         List<Object[]> objects=entityManager.createNativeQuery(sql).getResultList();
         List<DepartmentResponseDTO> departmentResponseDTO= DepartmentUtils.convertObjectToDepartmentResponseDTO.apply(objects);
-        return departmentResponseDTO;
+        return Optional.of(departmentResponseDTO);
     }
 }

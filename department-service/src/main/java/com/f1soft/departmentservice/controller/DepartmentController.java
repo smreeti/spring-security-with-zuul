@@ -26,11 +26,21 @@ public class DepartmentController {
     @Autowired
    DepartmentService departmentService;
 
+    @PostMapping(value = SAVE)
+    public ResponseEntity<?> save(@RequestBody DepartmentSetupDTO departmentSetupDTO){
+        return ok(departmentService.createDepartment(departmentSetupDTO));
+    }
 
     @GetMapping(value = RETRIEVE)
     @ApiOperation("Api to retrieve all departments")
     public ResponseEntity<?> retrieve(){
         return ok(departmentService.fetchAllDepartment());
+    }
+
+    @GetMapping(value = RETRIEVE_MINIMAL_DATA)
+    @ApiOperation("Api to retrieve all departments with minimal datas")
+    public ResponseEntity<?> retrieveMinimalDepartmentData(){
+        return ok(departmentService.fetchMinimalDepartmentData());
     }
 
     @PostMapping(value = DELETE)
@@ -44,9 +54,6 @@ public class DepartmentController {
         return ok(departmentService.updateDepartment(updatedDepartmentDTO));
     }
 
-    @PostMapping(value = SAVE)
-    public ResponseEntity<?> save(@RequestBody DepartmentSetupDTO departmentSetupDTO){
-        return ok(departmentService.addDepartment(departmentSetupDTO));
-    }
+
 
 }

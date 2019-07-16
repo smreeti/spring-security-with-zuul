@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static com.f1soft.departmentservice.utils.DepartmentUtils.convertDepartmentSetupToDepartment;
 import static com.f1soft.departmentservice.utils.DepartmentUtils.convertDepartmentToDelete;
 import static com.f1soft.departmentservice.utils.DepartmentUtils.convertDepartmentToUpdate;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,9 +48,6 @@ public class DepartmentServiceImplTest {
     @Mock
     DepartmentRepository departmentRepository;
 
-    @Mock
-    DepartmentRepositoryCustom departmentRepositoryCustom;
-
     @InjectMocks
     private DepartmentServiceImpl departmentService;
 
@@ -63,7 +61,7 @@ public class DepartmentServiceImplTest {
 
     @Before
     public void setUp() {
-        departmentService = new DepartmentServiceImpl(departmentRepository,departmentRepositoryCustom);
+        departmentService = new DepartmentServiceImpl(departmentRepository);
         departmentSetupDTO = DepartmentSetupDTO.builder()
                 .departmentName("Surgical")
                 .code("SRG")
@@ -96,17 +94,23 @@ public class DepartmentServiceImplTest {
     }
 
     @Test
-    public void addDepartment() {
-        addDepartment_ShouldReturnNameExists();
-        addDepartment_ShouldReturnCodeExists();
-        addDepartment_ShouldSaveData();
-        addDepartment_ShouldReturnBadRequest();
+    public void createDepartment() {
+        createDepartment_ShouldReturnNameExists();
+        createDepartment_ShouldReturnCodeExists();
+        createDepartment_ShouldSaveData();
+        createDepartment_ShouldReturnBadRequest();
     }
 
     @Test
     public void fetchAllDepartment(){
         fetchAllDepartment_ShouldReturnEmptyList();
         fetchAllDepartment_ShouldReturnDepartments();
+    }
+
+    @Test
+    public void fetchMinimalDepartmentData(){
+        fetchMinimalDepartmentData_ShouldReturnEmptyList();
+        fetchMinimalDepartmentData_ShouldReturnDepartment();
     }
 
     @Test
@@ -123,43 +127,43 @@ public class DepartmentServiceImplTest {
 
 
     @Test
-    public void addDepartment_ShouldReturnNameExists() {
+    public void createDepartment_ShouldReturnNameExists() {
 
         thrown.expect(DataAlreadyExistsException.class);
 
         given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(savedDepartment);
 
-        departmentService.addDepartment(departmentSetupDTO);
+        departmentService.createDepartment(departmentSetupDTO);
 
     }
 
     @Test
-    public void addDepartment_ShouldReturnCodeExists() {
+    public void createDepartment_ShouldReturnCodeExists() {
         thrown.expect(DataAlreadyExistsException.class);
 
         given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(null);
         given(departmentRepository.findByCode(departmentSetupDTO.getCode())).willReturn(savedDepartment);
 
-        departmentService.addDepartment(departmentSetupDTO);
+        departmentService.createDepartment(departmentSetupDTO);
     }
 
     @Test
-    public void addDepartment_ShouldSaveData() {
-        Department department = DepartmentUtils.convertDepartmentSetupToDepartment(departmentSetupDTO);
+    public void createDepartment_ShouldSaveData() {
+        Department department = convertDepartmentSetupToDepartment.apply(departmentSetupDTO);
 
         given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(null);
         given(departmentRepository.findByCode(departmentSetupDTO.getCode())).willReturn(null);
         given(departmentRepository.save(department)).willReturn(savedDepartment);
 
-        assertThat(departmentService.addDepartment(departmentSetupDTO)).isEqualTo(savedDepartment);
+        assertThat(departmentService.createDepartment(departmentSetupDTO)).isEqualTo(savedDepartment);
         verify(departmentRepository).save(department);
     }
 
     @Test
-    public void addDepartment_ShouldReturnBadRequest() {
+    public void createDepartment_ShouldReturnBadRequest() {
         thrown.expect(BadRequestDataException.class);
 
-        departmentService.addDepartment(null);
+        departmentService.createDepartment(null);
     }
 
     @Test
@@ -176,31 +180,31 @@ public class DepartmentServiceImplTest {
         List<Department> departmentList=new ArrayList<>();
         departmentList.add(savedDepartment);
 
-        given(departmentRepository.fetchAllDepartment()).willReturn(Optional.ofNullable(departmentList));
+        given(departmentRepository.fetchAllDepartment()).willReturn(Optional.of(departmentList));
 
         assertThat(departmentService.fetchAllDepartment()).isEqualTo(departmentList);
         assertNotNull(departmentService.fetchAllDepartment());
     }
 
     @Test
-    public void fetchDepartment_ShouldReturnEmptyList(){
+    public void fetchMinimalDepartmentData_ShouldReturnEmptyList(){
         thrown.expect(DataNotFoundException.class);
 
-        given(departmentRepositoryCustom.fetchDepartmentWithMinimalData()).willReturn(null);
+        given(departmentRepository.fetchMinimalDepartmentData()).willReturn(Optional.ofNullable(null));
 
-        departmentService.fetchDepartment();
+        departmentService.fetchMinimalDepartmentData();
 
     }
 
     @Test
-    public void fetchDepartment_ShouldReturnDepartment(){
+    public void fetchMinimalDepartmentData_ShouldReturnDepartment(){
         List<DepartmentResponseDTO> departmentList=new ArrayList<>();
         departmentList.add(limitedData);
 
-        given(departmentRepositoryCustom.fetchDepartmentWithMinimalData()).willReturn(departmentList);
+        given(departmentRepository.fetchMinimalDepartmentData()).willReturn(Optional.of(departmentList));
 
-        assertThat(departmentService.fetchDepartment()).isEqualTo(departmentList);
-        assertNotNull(departmentService.fetchDepartment());
+        assertThat(departmentService.fetchMinimalDepartmentData()).isEqualTo(departmentList);
+        assertNotNull(departmentService.fetchMinimalDepartmentData());
     }
 
 

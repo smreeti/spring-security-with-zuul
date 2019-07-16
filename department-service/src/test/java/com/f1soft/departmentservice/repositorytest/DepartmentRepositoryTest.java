@@ -33,6 +33,15 @@ public class DepartmentRepositoryTest extends AbstractDepartmentInfo {
     private DepartmentRepository departmentRepository;
 
     @Test
+    public void testDepartmentRepository(){
+        testfetchAllDepartment();
+        testfetchMinimalDepartmentData();
+        testfindByName();
+        testfindByCode();
+        testfindByDepartmentId();
+    }
+
+    @Test
     public void testSaveDepartment() {
         Department departmentToSave = getDepartmentInfo();
         Department department = testEntityManager.persist(departmentToSave);
@@ -45,6 +54,13 @@ public class DepartmentRepositoryTest extends AbstractDepartmentInfo {
         Optional<List<Department>> departmentList = departmentRepository.fetchAllDepartment();
         System.out.println(departmentList);
         assertNotNull(departmentList);
+    }
+
+    @Test
+    public void testfetchMinimalDepartmentData(){
+        Optional<List<DepartmentResponseDTO>> departmentResponseDTOS=departmentRepository.fetchMinimalDepartmentData();
+        System.out.println(departmentResponseDTOS);
+        assertNotNull(departmentResponseDTOS);
     }
 
     @Test
@@ -72,17 +88,6 @@ public class DepartmentRepositoryTest extends AbstractDepartmentInfo {
         assertThat(departmentSavedInDb.getCode()).isEqualTo(getDepartmentInfo().getCode());
     }
 
-    @Test
-    public void testsearchDepartment() {
-        Department departmentSavedInDb = departmentRepository.searchDepartment(3L, getDepartmentInfo().getDepartmentName(), getDepartmentInfo().getCode(), getDepartmentInfo().getStatus());
 
-        assertThat(departmentSavedInDb).isNotNull();
-    }
 
-    @Test
-    public void testfetchDepartmentWithMinimalData(){
-        List<DepartmentResponseDTO> departmentResponseDTOS=departmentRepository.fetchDepartmentWithMinimalData();
-        System.out.println(departmentResponseDTOS);
-        assertNotNull(departmentResponseDTOS);
-    }
 }

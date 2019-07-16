@@ -5,9 +5,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Qualifier("repo1")
 public interface DepartmentRepositoryCustom {
-    List<DepartmentResponseDTO> fetchDepartmentWithMinimalData();
+    Optional<List<DepartmentResponseDTO>> fetchMinimalDepartmentData();
 }

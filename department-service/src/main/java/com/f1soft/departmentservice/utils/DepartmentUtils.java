@@ -18,7 +18,8 @@ import java.util.function.Function;
 
 public class DepartmentUtils {
 
-    public static Department convertDepartmentSetupToDepartment(DepartmentSetupDTO departmentSetupDTO) {
+
+    public static Function<DepartmentSetupDTO,Department> convertDepartmentSetupToDepartment =(departmentSetupDTO)->{
         Department department = Department.builder()
                 .departmentName(departmentSetupDTO.getDepartmentName())
                 .code(departmentSetupDTO.getCode())
@@ -27,7 +28,7 @@ public class DepartmentUtils {
                 .createdById(1L)
                 .build();
         return department;
-    }
+    };
 
 
   public static Function<Department,Department> convertDepartmentToDelete=(departmentToDelete)->{

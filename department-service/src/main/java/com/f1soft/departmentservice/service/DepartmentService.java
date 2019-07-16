@@ -13,9 +13,9 @@ import java.util.Optional;
  */
 
 public interface DepartmentService {
-    Optional<Department> addDepartment(DepartmentSetupDTO departmentSetupDTO);
+    Optional<Department> createDepartment(DepartmentSetupDTO departmentSetupDTO);
 
-    List<DepartmentResponseDTO> fetchDepartment();
+    List<DepartmentResponseDTO> fetchMinimalDepartmentData();
 
    List<Department> fetchAllDepartment();
 

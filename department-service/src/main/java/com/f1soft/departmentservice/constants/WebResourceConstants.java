@@ -10,6 +10,7 @@ public class WebResourceConstants {
         public interface DEPARTMENTCRUD{
             String SAVE="/save";
             String RETRIEVE="/retrieve";
+            String RETRIEVE_MINIMAL_DATA="/retrieveMinimalData";
             String DELETE="/delete/{id}";
             String UPDATE="/update";
 

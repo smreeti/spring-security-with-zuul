@@ -4,6 +4,7 @@ import com.f1soft.departmentservice.controller.DepartmentController;
 import com.f1soft.departmentservice.entities.Department;
 import com.f1soft.departmentservice.requestDTO.DepartmentSetupDTO;
 import com.f1soft.departmentservice.requestDTO.UpdatedDepartmentDTO;
+import com.f1soft.departmentservice.responseDTO.requestDTO.DepartmentResponseDTO;
 import com.f1soft.departmentservice.service.DepartmentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,6 +61,7 @@ public class DepartmentControllerTest {
     public void departmentCrud() throws Exception {
         save_ShouldSaveDepartment();
         retrieve_ShouldRetrieveDepartments();
+        retrieveMinimalData_ShouldRetrieveMinimalDepartmentData();
         delete_ShouldDeleteDepartment();
         update_ShouldUpdateDepartment();
 
@@ -76,14 +78,14 @@ public class DepartmentControllerTest {
                 .code("SRG")
                 .status('Y')
                 .build();
-        given(departmentService.addDepartment(any(DepartmentSetupDTO.class))).willReturn(java.util.Optional.ofNullable(getDepartment()));
+        given(departmentService.createDepartment(any(DepartmentSetupDTO.class))).willReturn(java.util.Optional.ofNullable(getDepartment()));
 
         mockMvc.perform(MockMvcRequestBuilders.post(URL)
                 .contentType(APPLICATION_JSON_UTF8)
                 .content(writeObjectToJson(departmentSetupDTO)))
                 .andExpect(status().isOk());
 
-        verify(departmentService).addDepartment(any(DepartmentSetupDTO.class));
+        verify(departmentService).createDepartment(any(DepartmentSetupDTO.class));
 
 
     }
@@ -104,6 +106,30 @@ public class DepartmentControllerTest {
         System.out.println(mvcResult.getResponse().getContentAsString());
 
         verify(departmentService).fetchAllDepartment();
+    }
+
+    @Test
+    public void retrieveMinimalData_ShouldRetrieveMinimalDepartmentData() throws Exception {
+        String URL=BASE_API+BASE_API_DEPARTMENT+RETRIEVE_MINIMAL_DATA;
+
+        List<DepartmentResponseDTO> departmentResponseDTOS= new ArrayList<>();
+        DepartmentResponseDTO departmentResponseDTO= DepartmentResponseDTO.builder()
+                .id(1L)
+                .departmentName("Surgical")
+                .code("SRG")
+                .status('Y')
+                .build();
+        departmentResponseDTOS.add(departmentResponseDTO);
+
+        given(departmentService.fetchMinimalDepartmentData()).willReturn(departmentResponseDTOS);
+
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(URL)).andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].departmentName",
+                        Matchers.is("Surgical")))
+                .andReturn();
+        System.out.println(mvcResult.getResponse().getContentAsString());
+
+        verify(departmentService).fetchMinimalDepartmentData();
     }
 
     @Test
