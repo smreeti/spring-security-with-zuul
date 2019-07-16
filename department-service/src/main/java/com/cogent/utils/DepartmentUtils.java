@@ -1,8 +1,7 @@
 package com.cogent.utils;
 
-import com.cogent.DTO.requestDTO.DepartmentSetupDTO;
-import com.cogent.DTO.requestDTO.UpdatedDepartmentDTO;
-import com.cogent.DTO.responseDTO.DepartmentResponseDTO;
+import com.cogent.controller.departmentController.DTO.requestDTO.DepartmentRequestDTO;
+import com.cogent.controller.departmentController.DTO.responseDTO.DepartmentResponseDTO;
 import com.cogent.modal.Department;
 
 import java.util.ArrayList;
@@ -18,11 +17,12 @@ import java.util.function.Function;
 public class DepartmentUtils {
 
 
-    public static Function<DepartmentSetupDTO, Department> convertDepartmentSetupDtoToDepartment = (departmentSetupDTO) -> {
+    public static Function<DepartmentRequestDTO, Department> convertdepartmentRequestDtoToDepartment = (departmentRequestDto) -> {
         Department department = Department.builder()
-                .departmentName(departmentSetupDTO.getDepartmentName())
-                .code(departmentSetupDTO.getCode())
-                .status(departmentSetupDTO.getStatus())
+                .id(null)
+                .departmentName(departmentRequestDto.getDepartmentName())
+                .code(departmentRequestDto.getCode())
+                .status(departmentRequestDto.getStatus())
                 .createdDate(new Date())
                 .createdById(1L)
                 .build();
@@ -45,12 +45,12 @@ public class DepartmentUtils {
     };
 
 
-    public static BiFunction<UpdatedDepartmentDTO, Department, Department> convertDepartmentToUpdate = (updatedDepartmentDTO, savedDepartment) -> {
+    public static BiFunction<DepartmentRequestDTO, Department, Department> convertDepartmentToUpdate = (departmentRequestDto, savedDepartment) -> {
         Department department = Department.builder()
                 .id(savedDepartment.getId())
-                .departmentName(updatedDepartmentDTO.getDepartmentName())
-                .code(updatedDepartmentDTO.getCode())
-                .status(updatedDepartmentDTO.getStatus())
+                .departmentName(departmentRequestDto.getDepartmentName())
+                .code(departmentRequestDto.getCode())
+                .status(departmentRequestDto.getStatus())
                 .createdDate(savedDepartment.getCreatedDate())
                 .createdById(savedDepartment.getCreatedById())
                 .lastModifiedDate(new Date())

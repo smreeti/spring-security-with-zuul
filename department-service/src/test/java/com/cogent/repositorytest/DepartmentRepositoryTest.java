@@ -1,7 +1,7 @@
 package com.cogent.repositorytest;
 
 import com.cogent.AbstractDepartmentInfo;
-import com.cogent.DTO.responseDTO.DepartmentResponseDTO;
+import com.cogent.controller.departmentController.DTO.responseDTO.DepartmentResponseDTO;
 import com.cogent.modal.Department;
 import com.cogent.repository.DepartmentRepository;
 import org.junit.Test;

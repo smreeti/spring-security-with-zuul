@@ -1,10 +1,11 @@
 package com.cogent.controllertest;
 
 
-import com.cogent.DTO.requestDTO.DepartmentSetupDTO;
-import com.cogent.DTO.requestDTO.UpdatedDepartmentDTO;
-import com.cogent.DTO.responseDTO.DepartmentResponseDTO;
-import com.cogent.controller.DepartmentController;
+
+
+import com.cogent.controller.departmentController.DTO.requestDTO.DepartmentRequestDTO;
+import com.cogent.controller.departmentController.DTO.responseDTO.DepartmentResponseDTO;
+import com.cogent.controller.departmentController.DepartmentController;
 import com.cogent.modal.Department;
 import com.cogent.service.DepartmentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -72,19 +73,19 @@ public class DepartmentControllerTest {
         String URL = BASE_API + BASE_API_DEPARTMENT + SAVE;
         System.out.println(URL);
 
-        DepartmentSetupDTO departmentSetupDTO = DepartmentSetupDTO.builder()
+        DepartmentRequestDTO departmentRequestDto = DepartmentRequestDTO.builder()
                 .departmentName("Surgical")
                 .code("SRG")
                 .status('Y')
                 .build();
-        given(departmentService.createDepartment(any(DepartmentSetupDTO.class))).willReturn(java.util.Optional.ofNullable(getDepartment()));
+        given(departmentService.createDepartment(any(DepartmentRequestDTO.class))).willReturn(java.util.Optional.ofNullable(getDepartment()));
 
         mockMvc.perform(MockMvcRequestBuilders.post(URL)
                 .contentType(APPLICATION_JSON_UTF8)
-                .content(writeObjectToJson(departmentSetupDTO)))
+                .content(writeObjectToJson(departmentRequestDto)))
                 .andExpect(status().isOk());
 
-        verify(departmentService).createDepartment(any(DepartmentSetupDTO.class));
+        verify(departmentService).createDepartment(any(DepartmentRequestDTO.class));
 
 
     }
@@ -152,24 +153,24 @@ public class DepartmentControllerTest {
     public void update_ShouldUpdateDepartment() throws Exception {
         String URL = BASE_API + BASE_API_DEPARTMENT + UPDATE;
 
-        UpdatedDepartmentDTO updatedDepartmentSetupDTO = UpdatedDepartmentDTO.builder()
+        DepartmentRequestDTO updatedDepartmentRequestDto = DepartmentRequestDTO.builder()
                 .id(1L)
                 .departmentName("Surgical")
                 .code("SRG")
                 .status('Y')
                 .build();
 
-        given(departmentService.updateDepartment(updatedDepartmentSetupDTO)).willReturn(getDepartment());
+        given(departmentService.updateDepartment(updatedDepartmentRequestDto)).willReturn(getDepartment());
 
         System.out.println(getDepartment());
 
         mockMvc.perform(MockMvcRequestBuilders.post(URL)
                 .contentType(APPLICATION_JSON_UTF8)
-                .content(writeObjectToJson(updatedDepartmentSetupDTO)))
+                .content(writeObjectToJson(updatedDepartmentRequestDto)))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        verify(departmentService).updateDepartment(updatedDepartmentSetupDTO);
+        verify(departmentService).updateDepartment(updatedDepartmentRequestDto);
 
     }
 

@@ -1,8 +1,8 @@
 package com.cogent.servicetest;
 
-import com.cogent.DTO.requestDTO.DepartmentSetupDTO;
-import com.cogent.DTO.requestDTO.UpdatedDepartmentDTO;
-import com.cogent.DTO.responseDTO.DepartmentResponseDTO;
+
+import com.cogent.controller.departmentController.DTO.requestDTO.DepartmentRequestDTO;
+import com.cogent.controller.departmentController.DTO.responseDTO.DepartmentResponseDTO;
 import com.cogent.exceptionHandler.BadRequestDataException;
 import com.cogent.exceptionHandler.DataAlreadyExistsException;
 import com.cogent.exceptionHandler.DataNotFoundException;
@@ -45,28 +45,30 @@ public class DepartmentServiceImplTest {
     @InjectMocks
     private DepartmentServiceImpl departmentService;
 
-    private DepartmentSetupDTO departmentSetupDTO;
+    private DepartmentRequestDTO departmentRequestDto;
+
+    private DepartmentRequestDTO updatedDepartmentRequestDto;
 
     private Department savedDepartment;
 
     private DepartmentResponseDTO limitedData;
 
-    private UpdatedDepartmentDTO updatedDepartmentDTO;
 
     @Before
     public void setUp() {
         departmentService = new DepartmentServiceImpl(departmentRepository);
-        departmentSetupDTO = DepartmentSetupDTO.builder()
+        departmentRequestDto = DepartmentRequestDTO.builder()
                 .departmentName("Surgical")
                 .code("SRG")
                 .status('Y')
                 .build();
 
-        updatedDepartmentDTO = new UpdatedDepartmentDTO();
-        updatedDepartmentDTO.setId(1L);
-        updatedDepartmentDTO.setDepartmentName("Sugery");
-        updatedDepartmentDTO.setCode("SRG");
-        updatedDepartmentDTO.setStatus('Y');
+        updatedDepartmentRequestDto= DepartmentRequestDTO.builder()
+                .id(1L)
+                .departmentName("Surgical")
+                .code("SRG")
+                .status('Y')
+                .build();
 
 
         savedDepartment = new Department();
@@ -125,9 +127,9 @@ public class DepartmentServiceImplTest {
 
         thrown.expect(DataAlreadyExistsException.class);
 
-        given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(savedDepartment);
+        given(departmentRepository.findByName(departmentRequestDto.getDepartmentName())).willReturn(savedDepartment);
 
-        departmentService.createDepartment(departmentSetupDTO);
+        departmentService.createDepartment(departmentRequestDto);
 
     }
 
@@ -135,21 +137,21 @@ public class DepartmentServiceImplTest {
     public void createDepartment_ShouldReturnCodeExists() {
         thrown.expect(DataAlreadyExistsException.class);
 
-        given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(null);
-        given(departmentRepository.findByCode(departmentSetupDTO.getCode())).willReturn(savedDepartment);
+        given(departmentRepository.findByName(departmentRequestDto.getDepartmentName())).willReturn(null);
+        given(departmentRepository.findByCode(departmentRequestDto.getCode())).willReturn(savedDepartment);
 
-        departmentService.createDepartment(departmentSetupDTO);
+        departmentService.createDepartment(departmentRequestDto);
     }
 
     @Test
     public void createDepartment_ShouldSaveData() {
-        Department department = DepartmentUtils.convertDepartmentSetupDtoToDepartment.apply(departmentSetupDTO);
+        Department department = DepartmentUtils.convertdepartmentRequestDtoToDepartment.apply(departmentRequestDto);
 
-        given(departmentRepository.findByName(departmentSetupDTO.getDepartmentName())).willReturn(null);
-        given(departmentRepository.findByCode(departmentSetupDTO.getCode())).willReturn(null);
+        given(departmentRepository.findByName(departmentRequestDto.getDepartmentName())).willReturn(null);
+        given(departmentRepository.findByCode(departmentRequestDto.getCode())).willReturn(null);
         given(departmentRepository.save(department)).willReturn(savedDepartment);
 
-        assertThat(departmentService.createDepartment(departmentSetupDTO)).isEqualTo(savedDepartment);
+        assertThat(departmentService.createDepartment(departmentRequestDto)).isEqualTo(savedDepartment);
         verify(departmentRepository).save(department);
     }
 
@@ -226,19 +228,19 @@ public class DepartmentServiceImplTest {
     public void updateDepartment_ShouldReturnDataNotFound() {
         thrown.expect(DataNotFoundException.class);
 
-        given(departmentRepository.findByDepartmentId(updatedDepartmentDTO.getId())).willReturn(null);
+        given(departmentRepository.findByDepartmentId(updatedDepartmentRequestDto.getId())).willReturn(null);
 
-        departmentService.updateDepartment(updatedDepartmentDTO);
+        departmentService.updateDepartment(updatedDepartmentRequestDto);
     }
 
 
     @Test
     public void updateDepartment_ShouldUpdateDepartment() {
-        Department departmentToSave = DepartmentUtils.convertDepartmentToUpdate.apply(updatedDepartmentDTO, savedDepartment);
-        given(departmentRepository.findByDepartmentId(updatedDepartmentDTO.getId())).willReturn(savedDepartment);
+        Department departmentToSave = DepartmentUtils.convertDepartmentToUpdate.apply(updatedDepartmentRequestDto, savedDepartment);
+        given(departmentRepository.findByDepartmentId(updatedDepartmentRequestDto.getId())).willReturn(savedDepartment);
         given(departmentRepository.save(departmentToSave)).willReturn(departmentToSave);
 
-        assertThat(departmentService.updateDepartment(updatedDepartmentDTO)).isEqualTo(departmentToSave);
+        assertThat(departmentService.updateDepartment(updatedDepartmentRequestDto)).isEqualTo(departmentToSave);
         verify(departmentRepository).save(departmentToSave);
 
     }

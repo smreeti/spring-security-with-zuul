@@ -1,7 +1,8 @@
 package com.cogent.repository.customRepository.impl;
 
 
-import com.cogent.DTO.responseDTO.DepartmentResponseDTO;
+
+import com.cogent.controller.departmentController.DTO.responseDTO.DepartmentResponseDTO;
 import com.cogent.repository.customRepository.DepartmentRepositoryCustom;
 import com.cogent.utils.DepartmentUtils;
 import org.springframework.stereotype.Service;

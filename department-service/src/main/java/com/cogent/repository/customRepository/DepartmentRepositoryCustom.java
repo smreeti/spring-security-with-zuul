@@ -1,6 +1,6 @@
 package com.cogent.repository.customRepository;
 
-import com.cogent.DTO.responseDTO.DepartmentResponseDTO;
+import com.cogent.controller.departmentController.DTO.responseDTO.DepartmentResponseDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 

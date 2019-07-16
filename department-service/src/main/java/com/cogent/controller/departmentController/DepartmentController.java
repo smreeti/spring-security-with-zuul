@@ -1,8 +1,8 @@
-package com.cogent.controller;
+package com.cogent.controller.departmentController;
 
 
-import com.cogent.DTO.requestDTO.DepartmentSetupDTO;
-import com.cogent.DTO.requestDTO.UpdatedDepartmentDTO;
+
+import com.cogent.controller.departmentController.DTO.requestDTO.DepartmentRequestDTO;
 import com.cogent.service.DepartmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,8 +26,8 @@ public class DepartmentController {
     DepartmentService departmentService;
 
     @PostMapping(value = SAVE)
-    public ResponseEntity<?> save(@RequestBody DepartmentSetupDTO departmentSetupDTO) {
-        return ok(departmentService.createDepartment(departmentSetupDTO));
+    public ResponseEntity<?> save(@RequestBody DepartmentRequestDTO departmentRequestDto) {
+        return ok(departmentService.createDepartment(departmentRequestDto));
     }
 
     @GetMapping(value = RETRIEVE)
@@ -49,8 +49,8 @@ public class DepartmentController {
 
     @PostMapping(value = UPDATE)
     @ApiOperation("Api to update department")
-    public ResponseEntity<?> update(@RequestBody UpdatedDepartmentDTO updatedDepartmentDTO) {
-        return ok(departmentService.updateDepartment(updatedDepartmentDTO));
+    public ResponseEntity<?> update(@RequestBody DepartmentRequestDTO departmentRequestDto) {
+        return ok(departmentService.updateDepartment(departmentRequestDto));
     }
 
 

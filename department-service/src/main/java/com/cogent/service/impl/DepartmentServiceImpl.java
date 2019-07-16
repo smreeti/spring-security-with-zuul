@@ -1,8 +1,7 @@
 package com.cogent.service.impl;
 
-import com.cogent.DTO.requestDTO.DepartmentSetupDTO;
-import com.cogent.DTO.requestDTO.UpdatedDepartmentDTO;
-import com.cogent.DTO.responseDTO.DepartmentResponseDTO;
+import com.cogent.controller.departmentController.DTO.requestDTO.DepartmentRequestDTO;
+import com.cogent.controller.departmentController.DTO.responseDTO.DepartmentResponseDTO;
 import com.cogent.exceptionHandler.BadRequestDataException;
 import com.cogent.exceptionHandler.DataAlreadyExistsException;
 import com.cogent.exceptionHandler.DataNotFoundException;
@@ -36,11 +35,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Optional<Department> createDepartment(DepartmentSetupDTO departmentSetupDTO) {
-        if (departmentSetupDTO != null)
-            validateDepartmentName(departmentSetupDTO.getDepartmentName());
-        validateDepartmentCode(departmentSetupDTO.getCode());
-        Department department = DepartmentUtils.convertDepartmentSetupDtoToDepartment.apply(departmentSetupDTO);
+    public Optional<Department> createDepartment(DepartmentRequestDTO departmentRequestDto) {
+        if (departmentRequestDto != null)
+            validateDepartmentName(departmentRequestDto.getDepartmentName());
+        validateDepartmentCode(departmentRequestDto.getCode());
+        Department department = DepartmentUtils.convertdepartmentRequestDtoToDepartment.apply(departmentRequestDto);
         return Optional.ofNullable(Optional.ofNullable(saveDepartment(department))
                 .orElseThrow(() -> new BadRequestDataException(BAD_REQUEST)));
     }
@@ -67,10 +66,10 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Department updateDepartment(UpdatedDepartmentDTO updatedDepartmentDTO) {
-        Department savedDepartment = departmentRepository.findByDepartmentId(updatedDepartmentDTO.getId());
+    public Department updateDepartment(DepartmentRequestDTO departmentRequestDto) {
+        Department savedDepartment = departmentRepository.findByDepartmentId(departmentRequestDto.getId());
         validateDepartmentInfo(savedDepartment);
-        Department departmentToSave = DepartmentUtils.convertDepartmentToUpdate.apply(updatedDepartmentDTO, savedDepartment);
+        Department departmentToSave = DepartmentUtils.convertDepartmentToUpdate.apply(departmentRequestDto, savedDepartment);
         return saveDepartment(departmentToSave);
 
     }

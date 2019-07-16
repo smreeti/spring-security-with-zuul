@@ -1,8 +1,8 @@
 package com.cogent.service;
 
-import com.cogent.DTO.requestDTO.DepartmentSetupDTO;
-import com.cogent.DTO.requestDTO.UpdatedDepartmentDTO;
-import com.cogent.DTO.responseDTO.DepartmentResponseDTO;
+
+import com.cogent.controller.departmentController.DTO.requestDTO.DepartmentRequestDTO;
+import com.cogent.controller.departmentController.DTO.responseDTO.DepartmentResponseDTO;
 import com.cogent.modal.Department;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.Optional;
  */
 
 public interface DepartmentService {
-    Optional<Department> createDepartment(DepartmentSetupDTO departmentSetupDTO);
+    Optional<Department> createDepartment(DepartmentRequestDTO departmentRequestDto);
 
     List<DepartmentResponseDTO> fetchMinimalDepartmentData();
 
@@ -21,5 +21,5 @@ public interface DepartmentService {
 
     Department deleteDepartment(Long id);
 
-    Department updateDepartment(UpdatedDepartmentDTO updatedDepartmentDTO);
+    Department updateDepartment(DepartmentRequestDTO departmentRequestDto);
 }
