@@ -1,0 +1,101 @@
+package com.cogent.service.impl;
+
+import com.cogent.DTO.requestDTO.DepartmentSetupDTO;
+import com.cogent.DTO.requestDTO.UpdatedDepartmentDTO;
+import com.cogent.DTO.responseDTO.DepartmentResponseDTO;
+import com.cogent.exceptionHandler.BadRequestDataException;
+import com.cogent.exceptionHandler.DataAlreadyExistsException;
+import com.cogent.exceptionHandler.DataNotFoundException;
+import com.cogent.modal.Department;
+import com.cogent.repository.DepartmentRepository;
+import com.cogent.service.DepartmentService;
+import com.cogent.utils.DepartmentUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+import static com.cogent.constants.ErrorMessageConstants.*;
+
+/**
+ * @author Sauravi
+ */
+
+
+@Service
+@Slf4j
+@Transactional
+public class DepartmentServiceImpl implements DepartmentService {
+
+    private DepartmentRepository departmentRepository;
+
+    public DepartmentServiceImpl(DepartmentRepository departmentRepository) {
+        this.departmentRepository = departmentRepository;
+    }
+
+    @Override
+    public Optional<Department> createDepartment(DepartmentSetupDTO departmentSetupDTO) {
+        if (departmentSetupDTO != null)
+            validateDepartmentName(departmentSetupDTO.getDepartmentName());
+        validateDepartmentCode(departmentSetupDTO.getCode());
+        Department department = DepartmentUtils.convertDepartmentSetupDtoToDepartment.apply(departmentSetupDTO);
+        return Optional.ofNullable(Optional.ofNullable(saveDepartment(department))
+                .orElseThrow(() -> new BadRequestDataException(BAD_REQUEST)));
+    }
+
+    @Override
+    public List<Department> fetchAllDepartment() {
+        return departmentRepository.fetchAllDepartment().orElseThrow(() ->
+                new DataNotFoundException(DEPARTMENT_NOT_FOUND));
+    }
+
+    @Override
+    public List<DepartmentResponseDTO> fetchMinimalDepartmentData() {
+        return departmentRepository.fetchMinimalDepartmentData().orElseThrow(() ->
+                new DataNotFoundException(DEPARTMENT_NOT_FOUND));
+    }
+
+
+    @Override
+    public Department deleteDepartment(Long id) {
+        Department departmentToDelete = departmentRepository.findByDepartmentId(id);
+        validateDepartmentInfo(departmentToDelete);
+        Department departmentToSave = DepartmentUtils.convertDepartmentToDelete.apply(departmentToDelete);
+        return saveDepartment(departmentToSave);
+    }
+
+    @Override
+    public Department updateDepartment(UpdatedDepartmentDTO updatedDepartmentDTO) {
+        Department savedDepartment = departmentRepository.findByDepartmentId(updatedDepartmentDTO.getId());
+        validateDepartmentInfo(savedDepartment);
+        Department departmentToSave = DepartmentUtils.convertDepartmentToUpdate.apply(updatedDepartmentDTO, savedDepartment);
+        return saveDepartment(departmentToSave);
+
+    }
+
+    public void validateDepartmentName(String name) {
+        if (departmentRepository.findByName(name) != null) {
+            throw new DataAlreadyExistsException(DEPARTMENT_ALREADY_EXISTS_WITH_NAME + name);
+        }
+
+    }
+
+    public void validateDepartmentCode(String code) {
+        if (departmentRepository.findByCode(code) != null) {
+            throw new DataAlreadyExistsException(DEPARTMENT_ALREADY_EXISTS_WITH_CODE + code);
+        }
+    }
+
+    public void validateDepartmentInfo(Department department) {
+        if (department == null)
+            throw new DataNotFoundException(DEPARTMENT_NOT_FOUND);
+    }
+
+    public Department saveDepartment(Department department) {
+        return departmentRepository.save(department);
+    }
+
+
+}

@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>com.f1soft</groupId>
+	<groupId>com.cogent</groupId>
 	<artifactId>admin-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
