@@ -1,12 +1,10 @@
 package com.f1soft.profileservice.controller;
 
-import com.f1soft.profileservice.repository.ProfileRepositoryCustom;
 import com.f1soft.profileservice.requestDTO.ProfileDTO;
 import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
 import com.f1soft.profileservice.service.ProfileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,19 +15,14 @@ import static org.springframework.http.ResponseEntity.ok;
  * @author smriti on 7/2/19
  */
 @RestController
-@RequestMapping(value = BASE_API)
+@RequestMapping(value = BASE_API + BASE_PROFILE)
 @Api(value = "This is profile controller")
 public class ProfileController {
 
     private final ProfileService profileService;
 
-    private final ProfileRepositoryCustom profileRepositoryCustom;
-
-    public ProfileController(ProfileService profileService,
-                             @Qualifier(value = "customRepo") ProfileRepositoryCustom profileRepositoryCustom) {
+    public ProfileController(ProfileService profileService) {
         this.profileService = profileService;
-
-        this.profileRepositoryCustom = profileRepositoryCustom;
     }
 
     @PostMapping(value = SAVE)
@@ -41,12 +34,12 @@ public class ProfileController {
 
     @PostMapping(value = UPDATE)
     @ApiOperation(value = "Update existing profile")
-    public ResponseEntity<?> updateProfile(@RequestBody ProfileRequestDTO requestDTO) {
+    public ResponseEntity<Void> updateProfile(@RequestBody ProfileRequestDTO requestDTO) {
         profileService.updateProfile(requestDTO);
         return ok().build();
     }
 
-    @PostMapping(value = DELETE + ID_PATH_VARIABLE_BASE)
+    @GetMapping(value = DELETE + ID_PATH_VARIABLE_BASE)
     @ApiOperation(value = "Set profile status as 'D' when deleted")
     public ResponseEntity<?> deleteProfile(@PathVariable("id") Long id) {
         profileService.deleteProfile(id);
@@ -56,7 +49,12 @@ public class ProfileController {
     @PostMapping(value = SEARCH)
     @ApiOperation(value = "Search profile according to given request parameters")
     public ResponseEntity<?> searchProfile(@RequestBody ProfileDTO profileDTO) {
-        return ok(profileRepositoryCustom.searchProfile(profileDTO));
+        return ok(profileService.searchProfile(profileDTO));
     }
 
+    @GetMapping(value = DETAILS + ID_PATH_VARIABLE_BASE)
+    @ApiOperation(value = "Fetch all profile details ")
+    public ResponseEntity<?> fetchAllProfileDetails(@PathVariable("id") Long id) {
+        return ok(profileService.fetchAllProfileDetails(id));
+    }
 }

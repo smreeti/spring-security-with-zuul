@@ -31,7 +31,6 @@ public class ProfileRepositoryTest {
     @Autowired
     private ProfileRepository profileRepository;
 
-
     @Test
     public void saveProfile() {
 

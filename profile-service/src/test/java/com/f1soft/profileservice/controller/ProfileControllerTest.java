@@ -1,64 +1,61 @@
 package com.f1soft.profileservice.controller;
 
-import com.f1soft.profileservice.repository.ProfileRepositoryCustom;
 import com.f1soft.profileservice.requestDTO.ProfileDTO;
 import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
 import com.f1soft.profileservice.service.ProfileService;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.assertj.core.api.Assertions;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.regex.Matcher;
 
 import static com.f1soft.profileservice.constants.WebResourceKeyConstants.*;
 import static com.f1soft.profileservice.utils.ProfileRequestUtils.*;
-import static com.f1soft.profileservice.utils.ProfileResponseUtils.getProfileMinimalResponseList;
+import static com.f1soft.profileservice.utils.ProfileResponseUtils.*;
+import static net.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 //import javax.inject.Inject;
 
 /**
  * @author smriti on 7/2/19
  */
-@RunWith(SpringRunner.class)
 public class ProfileControllerTest {
 
     @Mock
     private ProfileService profileService;
 
-    @Mock
-    private ProfileRepositoryCustom profileRepositoryCustom;
+    @InjectMocks
+    private ProfileController profileController;
 
     private static MockMvc mockMvc;
 
     @Before
     public void createMock() {
-//        MockitoAnnotations.initMocks(this);
-//        mockMvc = MockMvcBuilders.standaloneSetup(profileController).build();
-
-        this.mockMvc = standaloneSetup(new ProfileController(profileService, profileRepositoryCustom))
-                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
-                .alwaysDo(print())
-                .build();
+        MockitoAnnotations.initMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(profileController).build();
     }
 
     @Test
     public void saveProfile() throws Exception {
-        String URL = BASE_API + SAVE;
+        String URL = BASE_API + BASE_PROFILE + SAVE;
 
         doNothing().when(profileService).createProfile(any(ProfileRequestDTO.class));
 
@@ -73,13 +70,13 @@ public class ProfileControllerTest {
 
     @Test
     public void updateProfile() throws Exception {
-        String URL = BASE_API + UPDATE;
+        String URL = BASE_API + BASE_PROFILE + UPDATE;
 
         doNothing().when(profileService).updateProfile(any(ProfileRequestDTO.class));
 
-        mockMvc.perform(post(URL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(writeObjectToJson(getProfileRequestDTOForUpdate())))
+        mockMvc.perform(MockMvcRequestBuilders.post(URL)
+                .content(writeObjectToJson(getProfileRequestDTOForUpdate()))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
         verify(profileService, times(1)).updateProfile(any(ProfileRequestDTO.class));
@@ -88,11 +85,11 @@ public class ProfileControllerTest {
 
     @Test
     public void deleteProfile() throws Exception {
-        String URL = BASE_API + DELETE + ID_PATH_VARIABLE_BASE;
+        String URL = BASE_API + BASE_PROFILE + DELETE + ID_PATH_VARIABLE_BASE;
 
         doNothing().when(profileService).deleteProfile(1L);
 
-        mockMvc.perform(post(URL, 1L)
+        mockMvc.perform(get(URL, 1L)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
 
@@ -102,10 +99,9 @@ public class ProfileControllerTest {
 
     @Test
     public void searchProfile() throws Exception {
-        String URL = BASE_API + SEARCH;
+        String URL = BASE_API + BASE_PROFILE + SEARCH;
 
-        given(profileRepositoryCustom.searchProfile(any(ProfileDTO.class)))
-                .willReturn(getProfileMinimalResponseList());
+        given(profileService.searchProfile(any(ProfileDTO.class))).willReturn(getProfileMinimalResponseList());
 
         mockMvc.perform(post(URL)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -114,13 +110,27 @@ public class ProfileControllerTest {
                 .andExpect(jsonPath("$", hasSize(getProfileMinimalResponseList().size())))
                 .andReturn();
 
-        verify(profileRepositoryCustom, times(1)).searchProfile(any(ProfileDTO.class));
-        verifyNoMoreInteractions(profileRepositoryCustom);
+        verify(profileService, times(1)).searchProfile(any(ProfileDTO.class));
+        verifyNoMoreInteractions(profileService);
+    }
+
+    @Test
+    public void fetchProfileDetails() throws Exception {
+        String URL = BASE_API + BASE_PROFILE + DETAILS + ID_PATH_VARIABLE_BASE;
+
+        given(profileService.fetchAllProfileDetails(1L)).willReturn(getProfileDetailResponse());
+
+        mockMvc.perform(get(URL, 1L)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        verify(profileService, times(1)).fetchAllProfileDetails(1L);
+        verifyNoMoreInteractions(profileService);
     }
 
     public static <T> String writeObjectToJson(T requestDTO) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         return objectMapper.writeValueAsString(requestDTO);
     }
 }

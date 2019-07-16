@@ -9,6 +9,7 @@ public class WebResourceKeyConstants {
 
     //B
     public static final String BASE_API = "/api";
+    public static final String BASE_PROFILE= "/profile";
 
     //C
 
@@ -39,6 +40,7 @@ public class WebResourceKeyConstants {
     //O
 
     //P
+    public static final String DETAILS = "/details";
 
     //Q
 

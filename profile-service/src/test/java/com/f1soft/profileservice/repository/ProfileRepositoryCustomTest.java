@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ProfileRepositoryCustomTest {
 
     @Autowired
-    TestEntityManager entityManager;
+    TestEntityManager testEntityManager;
 
     @Autowired
     ProfileRepositoryCustomImpl profileRepositoryCustom;
@@ -52,10 +52,10 @@ public class ProfileRepositoryCustomTest {
     @Test
     public void Should_ThrowException_When_ProfileListIsEmpty() {
 
-        Query query = entityManager.getEntityManager().createNativeQuery(
+        Query query = testEntityManager.getEntityManager().createNativeQuery(
                 QueryCreator.createQueryToSearchProfile.apply(getProfileDTO()));
 
-        profileRepositoryCustom.searchProfile(null);
+        profileRepositoryCustom.searchProfile(getProfileDTO());
 
         assertThat(query.getResultList()).isEqualTo(Collections.emptyList());
 
@@ -65,7 +65,7 @@ public class ProfileRepositoryCustomTest {
     @Test
     public void Should_ReturnProfileList_When_ProfileListIsNotEmpty() {
 
-        Query query = entityManager.getEntityManager().createNativeQuery(
+        Query query = testEntityManager.getEntityManager().createNativeQuery(
                 QueryCreator.createQueryToSearchProfile.apply(getProfileDTO()));
 
         List<ProfileMinimalResponseDTO> expected = profileRepositoryCustom.searchProfile(getProfileDTO());

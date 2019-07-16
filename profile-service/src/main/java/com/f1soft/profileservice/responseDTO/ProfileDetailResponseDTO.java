@@ -1,7 +1,6 @@
 package com.f1soft.profileservice.responseDTO;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,6 +10,8 @@ import java.util.List;
  */
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProfileDetailResponseDTO implements Serializable {
 
     private ProfileResponseDTO profileResponseDTO;

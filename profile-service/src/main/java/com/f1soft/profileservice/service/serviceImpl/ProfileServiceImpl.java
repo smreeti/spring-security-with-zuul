@@ -5,8 +5,11 @@ import com.f1soft.profileservice.entities.ProfileMenu;
 import com.f1soft.profileservice.exceptions.DataDuplicationException;
 import com.f1soft.profileservice.exceptions.NoContentFoundException;
 import com.f1soft.profileservice.repository.ProfileRepository;
+import com.f1soft.profileservice.requestDTO.ProfileDTO;
 import com.f1soft.profileservice.requestDTO.ProfileMenuRequestDTO;
 import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
+import com.f1soft.profileservice.responseDTO.ProfileDetailResponseDTO;
+import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
 import com.f1soft.profileservice.service.ProfileMenuService;
 import com.f1soft.profileservice.service.ProfileService;
 import com.f1soft.profileservice.utility.ProfileMenuUtils;
@@ -94,8 +97,13 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public List<Profile> findAll(){
-        return profileRepository.findAll();
+    public List<ProfileMinimalResponseDTO> searchProfile(ProfileDTO profileDTO) {
+        return profileRepository.searchProfile(profileDTO);
+    }
+
+    @Override
+    public ProfileDetailResponseDTO fetchAllProfileDetails(Long id) {
+        return profileRepository.fetchAllProfileDetails(id);
     }
 
 }

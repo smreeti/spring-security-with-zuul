@@ -1,8 +1,8 @@
 package com.f1soft.profileservice.utility;
 
 import com.f1soft.profileservice.requestDTO.ProfileDTO;
+import org.springframework.util.ObjectUtils;
 
-import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -23,13 +23,13 @@ public class QueryCreator {
                 " profile p" +
                 " WHERE p.id!=0";
 
-        if (!Objects.isNull(profileDTO.getName()))
+        if (!ObjectUtils.isEmpty(profileDTO.getName()))
             query += " AND p.name='" + profileDTO.getName() + "'";
 
-        if (!Objects.isNull(profileDTO.getDepartmentId()))
+        if (!ObjectUtils.isEmpty(profileDTO.getDepartmentId()))
             query += " AND p.department_id=" + profileDTO.getDepartmentId();
 
-        if (!Objects.isNull(profileDTO.getSubDepartmentId()))
+        if (!ObjectUtils.isEmpty(profileDTO.getSubDepartmentId()))
             query += " AND p.sub_department_id=" + profileDTO.getDepartmentId();
 
         query += " ORDER BY p.id DESC";
@@ -37,16 +37,17 @@ public class QueryCreator {
     });
 
     public static Function<Long, String> createQueryToFetchAllProfileDetails = (id) -> {
-        return "SELECT" +
-                " pm.id," +                 //[0]
-                " pm.profile_id," +         //[1]
-                " pm.role_id, " +           //[2]
-                " pm.user_menu_id, " +      //[3]
-                " p.description" +          //[4]
+        return " SELECT" +
+                " GROUP_CONCAT((CONCAT(pm.id, '-', pm.role_id,'-',pm.user_menu_id)) SEPARATOR ',')" +
+                " AS profile_menu_details," +                                                   //[0]
+                " p.description" +                                                              //[1]
                 " FROM profile p" +
-                " LEFT JOIN profile_menu pm ON pm.profile_id = p.id" +
+                " LEFT JOIN profile_menu pm ON p.id = pm.profile_id" +
                 " WHERE" +
-                " p.id = " + id;
+                " p.id = " + id +
+                " AND" +
+                " pm.status = 'Y'" +
+                " GROUP BY p.id";
     };
 
 }

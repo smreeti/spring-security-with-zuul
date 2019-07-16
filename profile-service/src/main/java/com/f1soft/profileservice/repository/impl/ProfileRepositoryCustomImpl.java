@@ -3,7 +3,9 @@ package com.f1soft.profileservice.repository.impl;
 import com.f1soft.profileservice.exceptions.NoContentFoundException;
 import com.f1soft.profileservice.repository.ProfileRepositoryCustom;
 import com.f1soft.profileservice.requestDTO.ProfileDTO;
+import com.f1soft.profileservice.responseDTO.ProfileDetailResponseDTO;
 import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
+import com.f1soft.profileservice.utility.ProfileUtils;
 import com.f1soft.profileservice.utility.QueryCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
@@ -50,4 +52,15 @@ public class ProfileRepositoryCustomImpl implements ProfileRepositoryCustom {
         if (ObjectUtils.isEmpty(results))
             throw new NoContentFoundException(NoRecordsFound.MESSAGE, NoRecordsFound.DEVELOPER_MESSAGE);
     });
+
+    @Override
+    public ProfileDetailResponseDTO fetchAllProfileDetails(Long id) {
+
+        Query query = entityManager.createNativeQuery(QueryCreator.createQueryToFetchAllProfileDetails.apply(id));
+
+        List<Object[]> results = query.getResultList();
+
+        return ProfileUtils.convertObjectToProfileDetailResponse.apply(results);
+    }
+
 }
