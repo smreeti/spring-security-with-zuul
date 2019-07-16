@@ -63,14 +63,14 @@ public class DepartmentUtils {
 
     public static Function<List<Object[]>,List<DepartmentResponseDTO>> convertObjectToDepartmentResponseDTO=(resultList) ->{
         List<DepartmentResponseDTO> departmentResponseDTOS=new ArrayList<>();
-        for (Object[] object: resultList){
+        resultList.forEach(objects -> {
             DepartmentResponseDTO departmentResponseDTO=new DepartmentResponseDTO();
-            departmentResponseDTO.setId(Long.parseLong(object[0].toString()));
-            departmentResponseDTO.setDepartmentName(object[1].toString());
-            departmentResponseDTO.setCode(object[2].toString());
-            departmentResponseDTO.setStatus(object[3].toString().charAt(0));
+            departmentResponseDTO.setId(Long.parseLong(objects[0].toString()));
+            departmentResponseDTO.setDepartmentName(objects[1].toString());
+            departmentResponseDTO.setCode(objects[2].toString());
+            departmentResponseDTO.setStatus(objects[3].toString().charAt(0));
             departmentResponseDTOS.add(departmentResponseDTO);
-        }
+        });
         return departmentResponseDTOS;
     };
 }
