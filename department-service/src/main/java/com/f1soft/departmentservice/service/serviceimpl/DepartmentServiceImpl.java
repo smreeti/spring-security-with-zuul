@@ -51,7 +51,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<DepartmentResponseDTO> fetchDepartment() {
-        if(departmentRepositoryCustom.fetchDepartmentWithMinimalData() == null){
+        if(departmentRepository.fetchDepartmentWithMinimalData() == null){
             throw new DataNotFoundException(DEPARTMENT_NOT_FOUND);
         }else
             return departmentRepositoryCustom.fetchDepartmentWithMinimalData();

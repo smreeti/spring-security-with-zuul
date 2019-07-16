@@ -12,8 +12,8 @@ public abstract class AbstractDepartmentInfo {
     public Department getDepartmentInfo(){
         return Department.builder()
                 .id(null)
-                .departmentName("Surgery")
-                .code("SRG")
+                .departmentName("Pharmacy")
+                .code("PHARM")
                 .status('Y')
                 .createdById(1L)
                 .createdDate(LocalDate.now())

@@ -15,10 +15,12 @@ import java.util.List;
 @Service
 @Transactional
 public class DepartmentRepositoryCustomImpl implements DepartmentRepositoryCustom {
+
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
+    @Transactional
     public List<DepartmentResponseDTO> fetchDepartmentWithMinimalData() {
         String sql= QueryCreator.createQueryToFetchDepartment();
         List<Object[]> objects=entityManager.createNativeQuery(sql).getResultList();

@@ -3,6 +3,7 @@ package com.f1soft.departmentservice.repositorytest;
 import com.f1soft.departmentservice.AbstractDepartmentInfo;
 import com.f1soft.departmentservice.entities.Department;
 import com.f1soft.departmentservice.repository.DepartmentRepository;
+import com.f1soft.departmentservice.responseDTO.requestDTO.DepartmentResponseDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,8 @@ public class DepartmentRepositoryTest extends AbstractDepartmentInfo {
         Department departmentSavedInDb = departmentRepository.findByName(getDepartmentInfo().getDepartmentName());
 
 
-        assertThat(departmentSavedInDb).isEqualTo(getDepartmentInfo().getDepartmentName());
+        System.out.println(departmentSavedInDb);
+        assertThat(departmentSavedInDb.getDepartmentName()).isEqualTo(getDepartmentInfo().getDepartmentName());
     }
 
     @Test
@@ -59,12 +61,12 @@ public class DepartmentRepositoryTest extends AbstractDepartmentInfo {
         Department departmentSavedInDb = departmentRepository.findByCode(getDepartmentInfo().getCode());
 
         System.out.println(departmentSavedInDb);
-        assertThat(departmentSavedInDb).isEqualTo(getDepartmentInfo().getCode());
+        assertThat(departmentSavedInDb.getCode()).isEqualTo(getDepartmentInfo().getCode());
     }
 
     @Test
     public void testfindByDepartmentId() {
-        Department departmentSavedInDb = departmentRepository.findByDepartmentId(31L);
+        Department departmentSavedInDb = departmentRepository.findByDepartmentId(3L);
         System.out.println(departmentSavedInDb);
         assertThat(departmentSavedInDb.getDepartmentName()).isEqualTo(getDepartmentInfo().getDepartmentName());
         assertThat(departmentSavedInDb.getCode()).isEqualTo(getDepartmentInfo().getCode());
@@ -72,8 +74,15 @@ public class DepartmentRepositoryTest extends AbstractDepartmentInfo {
 
     @Test
     public void testsearchDepartment() {
-        Department departmentSavedInDb = departmentRepository.searchDepartment(31L, getDepartmentInfo().getDepartmentName(), getDepartmentInfo().getCode(), getDepartmentInfo().getStatus());
+        Department departmentSavedInDb = departmentRepository.searchDepartment(3L, getDepartmentInfo().getDepartmentName(), getDepartmentInfo().getCode(), getDepartmentInfo().getStatus());
 
         assertThat(departmentSavedInDb).isNotNull();
+    }
+
+    @Test
+    public void testfetchDepartmentWithMinimalData(){
+        List<DepartmentResponseDTO> departmentResponseDTOS=departmentRepository.fetchDepartmentWithMinimalData();
+        System.out.println(departmentResponseDTOS);
+        assertNotNull(departmentResponseDTOS);
     }
 }

@@ -62,8 +62,8 @@ public class DepartmentUtils {
 
     public static Function<List<Object[]>,List<DepartmentResponseDTO>> convertObjectToDepartmentResponseDTO=(resultList) ->{
         List<DepartmentResponseDTO> departmentResponseDTOS=new ArrayList<>();
-        DepartmentResponseDTO departmentResponseDTO=new DepartmentResponseDTO();
         for (Object[] object: resultList){
+            DepartmentResponseDTO departmentResponseDTO=new DepartmentResponseDTO();
             departmentResponseDTO.setId(Long.parseLong(object[0].toString()));
             departmentResponseDTO.setDepartmentName(object[1].toString());
             departmentResponseDTO.setCode(object[2].toString());
