@@ -36,12 +36,13 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Optional<Department> createDepartment(DepartmentRequestDTO departmentRequestDto) {
-        if (departmentRequestDto != null)
+        if (departmentRequestDto != null){
             validateDepartmentName(departmentRequestDto.getDepartmentName());
         validateDepartmentCode(departmentRequestDto.getCode());
         Department department = DepartmentUtils.convertdepartmentRequestDtoToDepartment.apply(departmentRequestDto);
-        return Optional.ofNullable(Optional.ofNullable(saveDepartment(department))
-                .orElseThrow(() -> new BadRequestDataException(BAD_REQUEST)));
+        return Optional.ofNullable(saveDepartment(department));
+        }
+        throw new BadRequestDataException(BAD_REQUEST);
     }
 
     @Override

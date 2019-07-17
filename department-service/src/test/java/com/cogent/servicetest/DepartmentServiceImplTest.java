@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.cogent.utils.DepartmentUtils.convertdepartmentRequestDtoToDepartment;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -146,7 +147,7 @@ public class DepartmentServiceImplTest {
 
     @Test
     public void createDepartment_ShouldCreateData() {
-        Department department = DepartmentUtils.convertdepartmentRequestDtoToDepartment.apply(departmentRequestDto);
+        Department department = convertdepartmentRequestDtoToDepartment.apply(departmentRequestDto);
 
         given(departmentRepository.findByName(departmentRequestDto.getDepartmentName())).willReturn(null);
         given(departmentRepository.findByCode(departmentRequestDto.getCode())).willReturn(null);
