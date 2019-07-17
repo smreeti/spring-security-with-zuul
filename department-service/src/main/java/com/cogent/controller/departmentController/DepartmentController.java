@@ -21,7 +21,6 @@ import static org.springframework.http.ResponseEntity.ok;
 @Api(value = "Contoller used for crud")
 public class DepartmentController {
 
-
     @Autowired
     DepartmentService departmentService;
 

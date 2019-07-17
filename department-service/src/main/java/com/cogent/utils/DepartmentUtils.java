@@ -17,18 +17,17 @@ import java.util.function.Function;
 public class DepartmentUtils {
 
 
-    public static Function<DepartmentRequestDTO, Department> convertdepartmentRequestDtoToDepartment = (departmentRequestDto) -> {
-        Department department = Department.builder()
-                .id(null)
-                .departmentName(departmentRequestDto.getDepartmentName())
-                .code(departmentRequestDto.getCode())
-                .status(departmentRequestDto.getStatus())
-                .createdDate(new Date())
-                .createdById(1L)
-                .build();
-        return department;
-    };
-
+    public static Function<DepartmentRequestDTO, Department> convertdepartmentRequestDtoToDepartment =
+            (departmentRequestDto) -> {
+                return Department.builder()
+                        .id(null)
+                        .departmentName(departmentRequestDto.getDepartmentName())
+                        .code(departmentRequestDto.getCode())
+                        .status(departmentRequestDto.getStatus())
+                        .createdDate(new Date())
+                        .createdById(1L)
+                        .build();
+            };
 
     public static Function<Department, Department> convertDepartmentToDelete = (departmentToDelete) -> {
         Department department = Department.builder()

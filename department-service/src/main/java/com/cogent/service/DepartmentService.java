@@ -22,4 +22,6 @@ public interface DepartmentService {
     Department deleteDepartment(Long id);
 
     Department updateDepartment(DepartmentRequestDTO departmentRequestDto);
+
+    Department findById(Long id);
 }

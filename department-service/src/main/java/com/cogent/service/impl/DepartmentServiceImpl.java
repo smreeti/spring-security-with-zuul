@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.cogent.constants.ErrorMessageConstants.*;
@@ -59,7 +60,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Department deleteDepartment(Long id) {
-        Department departmentToDelete = departmentRepository.findByDepartmentId(id);
+        Department departmentToDelete = findById(id);
         validateDepartmentInfo(departmentToDelete);
         Department departmentToSave = DepartmentUtils.convertDepartmentToDelete.apply(departmentToDelete);
         return saveDepartment(departmentToSave);
@@ -67,24 +68,26 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Department updateDepartment(DepartmentRequestDTO departmentRequestDto) {
-        Department savedDepartment = departmentRepository.findByDepartmentId(departmentRequestDto.getId());
+        Department savedDepartment = findById(departmentRequestDto.getId());
         validateDepartmentInfo(savedDepartment);
         Department departmentToSave = DepartmentUtils.convertDepartmentToUpdate.apply(departmentRequestDto, savedDepartment);
         return saveDepartment(departmentToSave);
 
     }
 
-    public void validateDepartmentName(String name) {
-        if (departmentRepository.findByName(name) != null) {
-            throw new DataAlreadyExistsException(DEPARTMENT_ALREADY_EXISTS_WITH_NAME + name);
-        }
+    @Override
+    public Department findById(Long id) {
+      return  departmentRepository.findByDepartmentId(id);
+    }
 
+    public void validateDepartmentName(String name) {
+        if (departmentRepository.findByName(name) != null)
+            throw new DataAlreadyExistsException(DEPARTMENT_ALREADY_EXISTS_WITH_NAME + name);
     }
 
     public void validateDepartmentCode(String code) {
-        if (departmentRepository.findByCode(code) != null) {
+        if (departmentRepository.findByCode(code) != null)
             throw new DataAlreadyExistsException(DEPARTMENT_ALREADY_EXISTS_WITH_CODE + code);
-        }
     }
 
     public void validateDepartmentInfo(Department department) {
