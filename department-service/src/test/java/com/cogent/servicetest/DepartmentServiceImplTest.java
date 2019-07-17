@@ -26,6 +26,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -149,10 +150,10 @@ public class DepartmentServiceImplTest {
 
         given(departmentRepository.findByName(departmentRequestDto.getDepartmentName())).willReturn(null);
         given(departmentRepository.findByCode(departmentRequestDto.getCode())).willReturn(null);
-        given(departmentRepository.save(department)).willReturn(savedDepartment);
+        given(departmentRepository.save(any(Department.class))).willReturn(savedDepartment);
 
         assertThat(departmentService.createDepartment(departmentRequestDto)).isEqualTo(savedDepartment);
-        verify(departmentRepository).save(department);
+        verify(departmentRepository).save(any(Department.class));
     }
 
     @Test
@@ -218,10 +219,10 @@ public class DepartmentServiceImplTest {
         Department departmentToSave = DepartmentUtils.convertDepartmentToDelete.apply(savedDepartment);
 
         given(departmentRepository.findByDepartmentId(1L)).willReturn(savedDepartment);
-        given(departmentRepository.save(departmentToSave)).willReturn(departmentToSave);
+        given(departmentRepository.save(any(Department.class))).willReturn(departmentToSave);
 
         assertThat(departmentService.deleteDepartment(savedDepartment.getId())).isEqualTo(departmentToSave);
-        verify(departmentRepository).save(departmentToSave);
+        verify(departmentRepository).save(any(Department.class));
     }
 
     @Test
@@ -238,10 +239,10 @@ public class DepartmentServiceImplTest {
     public void updateDepartment_ShouldUpdateDepartment() {
         Department departmentToSave = DepartmentUtils.convertDepartmentToUpdate.apply(updatedDepartmentRequestDto, savedDepartment);
         given(departmentRepository.findByDepartmentId(updatedDepartmentRequestDto.getId())).willReturn(savedDepartment);
-        given(departmentRepository.save(departmentToSave)).willReturn(departmentToSave);
+        given(departmentRepository.save(any(Department.class))).willReturn(departmentToSave);
 
         assertThat(departmentService.updateDepartment(updatedDepartmentRequestDto)).isEqualTo(departmentToSave);
-        verify(departmentRepository).save(departmentToSave);
+        verify(departmentRepository).save(any(Department.class));
 
     }
 
