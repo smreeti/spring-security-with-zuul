@@ -5,6 +5,7 @@ import com.f1soft.profileservice.entities.ProfileMenu;
 import com.f1soft.profileservice.exceptions.DataDuplicationException;
 import com.f1soft.profileservice.exceptions.NoContentFoundException;
 import com.f1soft.profileservice.repository.ProfileRepository;
+import com.f1soft.profileservice.repository.ProfileRepositoryCustom;
 import com.f1soft.profileservice.requestDTO.ProfileDTO;
 import com.f1soft.profileservice.requestDTO.ProfileMenuRequestDTO;
 import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
@@ -14,6 +15,8 @@ import com.f1soft.profileservice.service.ProfileMenuService;
 import com.f1soft.profileservice.service.ProfileService;
 import com.f1soft.profileservice.utility.ProfileMenuUtils;
 import com.f1soft.profileservice.utility.ProfileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -30,9 +33,9 @@ import static com.f1soft.profileservice.constants.ErrorMessageConstants.*;
 @Transactional
 public class ProfileServiceImpl implements ProfileService {
 
-    private ProfileRepository profileRepository;
+    private final ProfileRepository profileRepository;
 
-    private ProfileMenuService profileMenuService;
+    private final ProfileMenuService profileMenuService;
 
     public ProfileServiceImpl(ProfileRepository profileRepository, ProfileMenuService profileMenuService) {
         this.profileRepository = profileRepository;
@@ -98,7 +101,8 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public List<ProfileMinimalResponseDTO> searchProfile(ProfileDTO profileDTO) {
-        return profileRepository.searchProfile(profileDTO);
+        return profileRepository.searchProfile(profileDTO).orElseThrow(
+                () -> new NoContentFoundException(NoRecordsFound.MESSAGE, NoRecordsFound.DEVELOPER_MESSAGE));
     }
 
     @Override

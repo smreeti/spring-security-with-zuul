@@ -11,9 +11,9 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Setter
 @ToString
-@Getter
 public class ProfileMinimalResponseDTO implements Serializable {
 
     private Long id;

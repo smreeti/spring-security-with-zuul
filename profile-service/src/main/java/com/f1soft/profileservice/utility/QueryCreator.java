@@ -33,6 +33,7 @@ public class QueryCreator {
             query += " AND p.sub_department_id=" + profileDTO.getDepartmentId();
 
         query += " ORDER BY p.id DESC";
+
         return query;
     });
 

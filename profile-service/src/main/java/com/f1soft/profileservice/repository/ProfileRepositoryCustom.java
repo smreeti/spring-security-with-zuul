@@ -4,19 +4,19 @@ import com.f1soft.profileservice.requestDTO.ProfileDTO;
 import com.f1soft.profileservice.responseDTO.ProfileDetailResponseDTO;
 import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author smriti on 7/10/19
  */
 @Repository
+@Qualifier("customRepo")
 public interface ProfileRepositoryCustom {
 
-    List<ProfileMinimalResponseDTO> searchProfile(ProfileDTO profileDTO);
+    Optional<List<ProfileMinimalResponseDTO>> searchProfile(ProfileDTO profileDTO);
 
-    ProfileDetailResponseDTO fetchAllProfileDetails (Long id);
-
+    ProfileDetailResponseDTO fetchAllProfileDetails(Long id);
 }

@@ -5,11 +5,14 @@ import com.f1soft.profileservice.entities.ProfileMenu;
 import com.f1soft.profileservice.exceptions.DataDuplicationException;
 import com.f1soft.profileservice.exceptions.NoContentFoundException;
 import com.f1soft.profileservice.repository.ProfileRepository;
+import com.f1soft.profileservice.requestDTO.ProfileDTO;
 import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
 import com.f1soft.profileservice.service.serviceImpl.ProfileMenuServiceImpl;
 import com.f1soft.profileservice.service.serviceImpl.ProfileServiceImpl;
 import com.f1soft.profileservice.utility.ProfileMenuUtils;
 import com.f1soft.profileservice.utility.ProfileUtils;
+import com.f1soft.profileservice.utils.ProfileResponseUtils;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,19 +21,28 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 import java.util.Optional;
 
 import static com.f1soft.profileservice.utils.ProfileRequestUtils.*;
+import static com.f1soft.profileservice.utils.ProfileResponseUtils.*;
+import static com.f1soft.profileservice.utils.ProfileResponseUtils.getProfileMinimalResponseList;
 import static java.math.BigInteger.ONE;
 import static java.math.BigInteger.ZERO;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author smriti on 7/2/19
@@ -42,10 +54,10 @@ public class ProfileServiceImplTest {
     private ProfileServiceImpl profileService;
 
     @Mock
-    private ProfileRepository profileRepository;
+    private ProfileMenuServiceImpl profileMenuService;
 
     @Mock
-    private ProfileMenuServiceImpl profileMenuService;
+    private ProfileRepository profileRepository;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -81,15 +93,23 @@ public class ProfileServiceImplTest {
 
     @Test
     public void deleteProfile() {
+        Should_ThrowException_When_ProfileIsNull();
+
         Should_ThrowException_When_ProfileIsNotFound();
+    }
+
+    @Test
+    public void searchProfile() {
+
+        Should_ThrowException_When_ProfileListIsEmpty();
+
+        Should_Successfully_ReturnProfileList();
     }
 
     @Test
     public void Should_ThrowException_When_ProfileNameExists() {
 
         ProfileRequestDTO requestDTO = getProfileRequestDTOThatThrowsException();
-
-        System.out.println(profileRepository.findProfileByName(requestDTO.getProfileDTO().getName()));
 
         given(profileRepository.findProfileByName(requestDTO.getProfileDTO().getName())).willReturn(ONE);
 
@@ -102,6 +122,8 @@ public class ProfileServiceImplTest {
     public void Should_ThrowException_When_UserMenusIsEmpty() {
 
         ProfileRequestDTO profileRequestDTO = getProfileRequestDTOThatThrowsException();
+
+        given(profileRepository.findProfileByName(profileRequestDTO.getProfileDTO().getName())).willReturn(ZERO);
 
         thrown.expect(NoContentFoundException.class);
 
@@ -252,6 +274,33 @@ public class ProfileServiceImplTest {
         profileService.deleteProfile(id);
 
         assertThat(profileRepository.save(profile).getStatus()).isEqualTo('D');
+    }
+
+    @Test
+    public void Should_ThrowException_When_ProfileListIsEmpty() {
+        given(profileRepository.searchProfile(getProfileDTO())).willReturn(Optional.ofNullable(null));
+
+        thrown.expect(NoContentFoundException.class);
+
+        profileService.searchProfile(getProfileDTO());
+    }
+
+    @Test
+    public void Should_Successfully_ReturnProfileList() {
+        given(profileRepository.searchProfile(any(ProfileDTO.class)))
+                .willReturn(Optional.of(getProfileMinimalResponseList()));
+
+        assertThat(profileService.searchProfile(getProfileDTO()), samePropertyValuesAs(getProfileMinimalResponseList()));
+
+        assertThat(profileService.searchProfile(getProfileDTO()), hasSize(getProfileMinimalResponseList().size()));
+    }
+
+    @Test
+    public void fetchProfileDetails(){
+        given(profileRepository.fetchAllProfileDetails(any(Long.class)))
+                .willReturn(getProfileDetailResponse());
+
+        assertNotNull(profileService.fetchAllProfileDetails(1L));
     }
 
 

@@ -27,8 +27,8 @@ public class ProfileRequestUtils {
     }
 
     public static ProfileDTO getProfileDTO() {
-        return new ProfileDTO(null, "Superadmin", "This is super admin profile",
-                'Y', 1L, 1L);
+        return new ProfileDTO(null, "", "This is super admin profile",
+                null, null, null);
     }
 
     public static List<ProfileMenuRequestDTO> getProfileMenuRequestDTO() {

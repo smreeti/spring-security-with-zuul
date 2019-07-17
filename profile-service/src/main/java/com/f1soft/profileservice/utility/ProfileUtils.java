@@ -7,10 +7,11 @@ import com.f1soft.profileservice.responseDTO.ProfileMenuResponseDTO;
 import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
 import com.f1soft.profileservice.responseDTO.ProfileResponseDTO;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author smriti on 7/8/19
@@ -55,26 +56,21 @@ public class ProfileUtils {
         ProfileDetailResponseDTO responseDTO = new ProfileDetailResponseDTO();
 
         objects.forEach(o -> {
-
             ProfileResponseDTO profileResponse = ProfileResponseDTO.builder()
                     .description(o[PROFILE_DESCRIPTION].toString())
                     .build();
 
             String[] profileDetails = o[PROFILE_MENU_DETAILS].toString().split(",");
 
-            List<ProfileMenuResponseDTO> profileMenuResponseDTOS = new ArrayList<>();
-
-            for (int i = 0; i < profileDetails.length; i++) {
-                String[] p = profileDetails[i].split("-");
-
-                ProfileMenuResponseDTO profileMenuResponseDTO = ProfileMenuResponseDTO.builder()
-                        .profileMenuId(Long.parseLong(p[0].toString()))
-                        .roleId(Long.parseLong(p[1].toString()))
-                        .userMenuId(Long.parseLong(p[2].toString()))
-                        .build();
-
-                profileMenuResponseDTOS.add(profileMenuResponseDTO);
-            }
+            List<ProfileMenuResponseDTO> profileMenuResponseDTOS = Arrays.stream(profileDetails)
+                    .map(profileMenu -> {
+                        String[] p = profileMenu.split("-");
+                        return ProfileMenuResponseDTO.builder()
+                                .profileMenuId(Long.parseLong(p[0].toString()))
+                                .roleId(Long.parseLong(p[1].toString()))
+                                .userMenuId(Long.parseLong(p[2].toString()))
+                                .build();
+                    }).collect(Collectors.toList());
 
             responseDTO.setProfileResponseDTO(profileResponse);
             responseDTO.setProfileMenuResponseDTOS(profileMenuResponseDTOS);

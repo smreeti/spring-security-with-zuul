@@ -3,8 +3,9 @@ package com.f1soft.profileservice.repository;
 import com.f1soft.profileservice.exceptions.NoContentFoundException;
 import com.f1soft.profileservice.repository.impl.ProfileRepositoryCustomImpl;
 import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
+import com.f1soft.profileservice.utility.ProfileUtils;
 import com.f1soft.profileservice.utility.QueryCreator;
-import com.f1soft.profileservice.utils.ProfileRequestUtils;
+import junit.framework.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -18,10 +19,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.persistence.Query;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
-import static com.f1soft.profileservice.utils.ProfileRequestUtils.*;
+import static com.f1soft.profileservice.utils.ProfileRequestUtils.getProfileDTO;
 import static com.f1soft.profileservice.utils.ProfileResponseUtils.getProfileMinimalResponseList;
+import static junit.framework.Assert.*;
 import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -55,11 +59,7 @@ public class ProfileRepositoryCustomTest {
         Query query = testEntityManager.getEntityManager().createNativeQuery(
                 QueryCreator.createQueryToSearchProfile.apply(getProfileDTO()));
 
-        profileRepositoryCustom.searchProfile(getProfileDTO());
-
         assertThat(query.getResultList()).isEqualTo(Collections.emptyList());
-
-        thrown.expect(NoContentFoundException.class);
     }
 
     @Test
@@ -68,12 +68,16 @@ public class ProfileRepositoryCustomTest {
         Query query = testEntityManager.getEntityManager().createNativeQuery(
                 QueryCreator.createQueryToSearchProfile.apply(getProfileDTO()));
 
-        List<ProfileMinimalResponseDTO> expected = profileRepositoryCustom.searchProfile(getProfileDTO());
-
         assertFalse(query.getResultList().isEmpty());
+    }
 
-        assertFalse(expected.isEmpty());
+    @Test
+    public void fetchProfileDetails() {
+        Query query = testEntityManager.getEntityManager().createNativeQuery
+                (QueryCreator.createQueryToFetchAllProfileDetails.apply(1L));
 
-        assertThat(expected).hasSize(getProfileMinimalResponseList().size());
+        List results = query.getResultList();
+
+        assertNotNull(results);
     }
 }

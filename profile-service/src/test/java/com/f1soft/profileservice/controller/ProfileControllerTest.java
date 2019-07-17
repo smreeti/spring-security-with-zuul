@@ -5,8 +5,6 @@ import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
 import com.f1soft.profileservice.service.ProfileService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Assertions;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -14,17 +12,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.regex.Matcher;
-
 import static com.f1soft.profileservice.constants.WebResourceKeyConstants.*;
 import static com.f1soft.profileservice.utils.ProfileRequestUtils.*;
-import static com.f1soft.profileservice.utils.ProfileResponseUtils.*;
-import static net.bytebuddy.matcher.ElementMatchers.is;
+import static com.f1soft.profileservice.utils.ProfileResponseUtils.getProfileDetailResponse;
+import static com.f1soft.profileservice.utils.ProfileResponseUtils.getProfileMinimalResponseList;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
