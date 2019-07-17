@@ -94,7 +94,7 @@ public class DepartmentServiceImplTest {
     public void createDepartment() {
         createDepartment_ShouldReturnNameExists();
         createDepartment_ShouldReturnCodeExists();
-        createDepartment_ShouldSaveData();
+        createDepartment_ShouldCreateData();
         createDepartment_ShouldReturnBadRequest();
     }
 
@@ -145,14 +145,14 @@ public class DepartmentServiceImplTest {
     }
 
     @Test
-    public void createDepartment_ShouldSaveData() {
+    public void createDepartment_ShouldCreateData() {
         Department department = DepartmentUtils.convertdepartmentRequestDtoToDepartment.apply(departmentRequestDto);
 
         given(departmentRepository.findByName(departmentRequestDto.getDepartmentName())).willReturn(null);
         given(departmentRepository.findByCode(departmentRequestDto.getCode())).willReturn(null);
-        given(departmentRepository.save(any(Department.class))).willReturn(savedDepartment);
+        given(departmentRepository.save(any(Department.class))).willReturn(department);
 
-        assertThat(departmentService.createDepartment(departmentRequestDto)).isEqualTo(savedDepartment);
+        assertThat(departmentService.createDepartment(departmentRequestDto)).isEqualTo(Optional.of(department));
         verify(departmentRepository).save(any(Department.class));
     }
 
@@ -221,7 +221,7 @@ public class DepartmentServiceImplTest {
         given(departmentRepository.findByDepartmentId(1L)).willReturn(savedDepartment);
         given(departmentRepository.save(any(Department.class))).willReturn(departmentToSave);
 
-        assertThat(departmentService.deleteDepartment(savedDepartment.getId())).isEqualTo(departmentToSave);
+        assertThat(departmentService.deleteDepartment(1L)).isEqualTo(departmentToSave);
         verify(departmentRepository).save(any(Department.class));
     }
 
@@ -239,6 +239,7 @@ public class DepartmentServiceImplTest {
     public void updateDepartment_ShouldUpdateDepartment() {
         Department departmentToSave = DepartmentUtils.convertDepartmentToUpdate.apply(updatedDepartmentRequestDto, savedDepartment);
         given(departmentRepository.findByDepartmentId(updatedDepartmentRequestDto.getId())).willReturn(savedDepartment);
+        given(departmentRepository.findByName(updatedDepartmentRequestDto.getDepartmentName())).willReturn(null);
         given(departmentRepository.save(any(Department.class))).willReturn(departmentToSave);
 
         assertThat(departmentService.updateDepartment(updatedDepartmentRequestDto)).isEqualTo(departmentToSave);
