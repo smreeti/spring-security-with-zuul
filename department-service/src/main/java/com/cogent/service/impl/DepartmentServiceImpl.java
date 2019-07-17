@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.cogent.constants.ErrorMessageConstants.*;
+import static com.cogent.utils.DepartmentUtils.convertdepartmentRequestDtoToDepartment;
 
 /**
  * @author Sauravi
@@ -39,8 +40,8 @@ public class DepartmentServiceImpl implements DepartmentService {
         if (departmentRequestDto != null){
             validateDepartmentName(departmentRequestDto.getDepartmentName());
         validateDepartmentCode(departmentRequestDto.getCode());
-        Department department = DepartmentUtils.convertdepartmentRequestDtoToDepartment.apply(departmentRequestDto);
-        return Optional.ofNullable(saveDepartment(department));
+        Department department = convertdepartmentRequestDtoToDepartment.apply(departmentRequestDto);
+        return Optional.of(saveDepartment(department));
         }
         throw new BadRequestDataException(BAD_REQUEST);
     }

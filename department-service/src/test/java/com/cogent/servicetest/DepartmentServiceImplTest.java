@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,10 +79,10 @@ public class DepartmentServiceImplTest {
         savedDepartment.setDepartmentName("Surgical");
         savedDepartment.setCode("SRG");
         savedDepartment.setStatus('Y');
-        savedDepartment.setCreatedDate(null);
+        savedDepartment.setCreatedDate(new Date());
         savedDepartment.setCreatedById(1L);
         savedDepartment.setLastModifiedDate(null);
-        savedDepartment.setModifiedById(1L);
+        savedDepartment.setModifiedById(null);
 
 
         limitedData = new DepartmentResponseDTO();
@@ -147,13 +148,11 @@ public class DepartmentServiceImplTest {
 
     @Test
     public void createDepartment_ShouldCreateData() {
-        Department department = convertdepartmentRequestDtoToDepartment.apply(departmentRequestDto);
-
         given(departmentRepository.findByName(departmentRequestDto.getDepartmentName())).willReturn(null);
         given(departmentRepository.findByCode(departmentRequestDto.getCode())).willReturn(null);
-        given(departmentRepository.save(any(Department.class))).willReturn(department);
+        given(departmentRepository.save(any(Department.class))).willReturn(savedDepartment);
 
-        assertThat(departmentService.createDepartment(departmentRequestDto)).isEqualTo(Optional.of(department));
+        assertThat(departmentService.createDepartment(departmentRequestDto)).isEqualTo(Optional.of(savedDepartment));
         verify(departmentRepository).save(any(Department.class));
     }
 
