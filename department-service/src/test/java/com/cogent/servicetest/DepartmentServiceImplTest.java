@@ -235,6 +235,7 @@ public class DepartmentServiceImplTest {
     }
 
 
+
     @Test
     public void updateDepartment_ShouldUpdateDepartment() {
         Department departmentToSave = DepartmentUtils.convertDepartmentToUpdate.apply(updatedDepartmentRequestDto, savedDepartment);
