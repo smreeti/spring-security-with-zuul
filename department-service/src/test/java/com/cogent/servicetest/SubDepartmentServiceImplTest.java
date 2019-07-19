@@ -20,6 +20,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Date;
 import java.util.Optional;
 
+import static com.cogent.utils.SubDepartmentData.getSubDepartmentInfo;
+import static com.cogent.utils.SubDepartmentData.getsubDepartmentRequestDto;
 import static com.cogent.utils.SubDepartmentUtlis.parsaToSubDepartment;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -46,34 +48,9 @@ public class SubDepartmentServiceImplTest {
     @InjectMocks
     SubDepartmentServiceImpl subDepartmentService;
 
-    private SubDepartmentRequestDTO subDepartmentRequestDTO;
-
-    private SubDepartment savedSubDepartment;
-
-    private Department department;
-
     @Before
     public void setUp(){
         subDepartmentService=new SubDepartmentServiceImpl(subDepartmentRepository,departmentService);
-        subDepartmentRequestDTO=SubDepartmentRequestDTO.builder()
-                .departmentId(1L)
-                .name("Billing")
-                .code("BILL")
-                .status('Y').build();
-        department=Department.builder()
-                .id(1L)
-                .departmentName("Account")
-                .code("ACC")
-                .status('Y').build();
-
-        savedSubDepartment=SubDepartment.builder()
-                .id(1L)
-                .departmentId(department)
-                .name("Billing")
-                .code("BILL")
-                .status('Y')
-                .createdDate(new Date())
-                .createdById(1L).build();
     }
 
     @Test
@@ -88,28 +65,35 @@ public class SubDepartmentServiceImplTest {
     public void createSubDepartment_ShouldReturnNameAlreadyExists(){
         thrown.expect(DataAlreadyExistsException.class);
 
-        given(subDepartmentRepository.findByName(subDepartmentRequestDTO.getName())).willReturn(1);
+        SubDepartmentRequestDTO requestDTO=getsubDepartmentRequestDto();
 
-        subDepartmentService.createSubDepartment(subDepartmentRequestDTO);
+        given(subDepartmentRepository.findByName(requestDTO.getName())).willReturn(1);
+
+        subDepartmentService.createSubDepartment(requestDTO);
     }
 
     @Test
     public void createSubDepartment_ShouldReturnCodeAlreadyExists(){
         thrown.expect(DataAlreadyExistsException.class);
 
-        given(subDepartmentRepository.findByName(subDepartmentRequestDTO.getName())).willReturn(0);
-        given(subDepartmentRepository.findByCode(subDepartmentRequestDTO.getCode())).willReturn(1);
+        SubDepartmentRequestDTO requestDTO=getsubDepartmentRequestDto();
 
-        subDepartmentService.createSubDepartment(subDepartmentRequestDTO);
+        given(subDepartmentRepository.findByName(requestDTO.getName())).willReturn(0);
+        given(subDepartmentRepository.findByCode(requestDTO.getCode())).willReturn(1);
+
+        subDepartmentService.createSubDepartment(getsubDepartmentRequestDto());
     }
 
     @Test
     public void createSubDepartment_ShouldReturnCreate(){
-        given(subDepartmentRepository.findByName(subDepartmentRequestDTO.getName())).willReturn(0);
-        given(subDepartmentRepository.findByCode(subDepartmentRequestDTO.getCode())).willReturn(0);
-        given(subDepartmentRepository.save(any(SubDepartment.class))).willReturn(savedSubDepartment);
+        SubDepartmentRequestDTO requestDTO=getsubDepartmentRequestDto();
 
-        assertThat(subDepartmentService.createSubDepartment(subDepartmentRequestDTO)).isEqualTo(Optional.of(savedSubDepartment));
+        given(subDepartmentRepository.findByName(requestDTO.getName())).willReturn(0);
+        given(subDepartmentRepository.findByCode(requestDTO.getCode())).willReturn(0);
+        given(subDepartmentRepository.save(any(SubDepartment.class))).willReturn(getSubDepartmentInfo());
+
+        assertThat(subDepartmentService.createSubDepartment(requestDTO).get().getId()).isEqualTo(getSubDepartmentInfo().getId());
+
         verify(subDepartmentRepository).save(any(SubDepartment.class));
     }
 

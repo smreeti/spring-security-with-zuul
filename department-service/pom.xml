@@ -33,6 +33,14 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!--MODELMAPPER-->
+		<dependency>
+			<groupId>org.modelmapper.extensions</groupId>
+			<artifactId>modelmapper-spring</artifactId>
+			<version>0.7.5</version>
+		</dependency>
+
+
 		<!--spring cloud-->
 
 		<!--<dependency>-->

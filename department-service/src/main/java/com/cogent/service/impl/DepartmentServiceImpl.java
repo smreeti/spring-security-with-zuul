@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static com.cogent.constants.ErrorMessageConstants.*;
@@ -37,12 +36,15 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Optional<Department> createDepartment(DepartmentRequestDTO departmentRequestDto) {
-        if (departmentRequestDto != null)
+        if (departmentRequestDto != null) {
             validateDepartmentName(departmentRequestDto.getDepartmentName());
-        validateDepartmentCode(departmentRequestDto.getCode());
-        Department department = DepartmentUtils.convertdepartmentRequestDtoToDepartment.apply(departmentRequestDto);
-        return Optional.ofNullable(Optional.ofNullable(saveDepartment(department))
-                .orElseThrow(() -> new BadRequestDataException(BAD_REQUEST)));
+            validateDepartmentCode(departmentRequestDto.getCode());
+            Department department = DepartmentUtils.convertdepartmentRequestDtoToDepartment.apply(departmentRequestDto);
+            return Optional.of(saveDepartment(department));
+        } else {
+            throw new BadRequestDataException(BAD_REQUEST);
+        }
+
     }
 
     @Override
@@ -63,6 +65,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         Department departmentToDelete = findById(id);
         validateDepartmentInfo(departmentToDelete);
         Department departmentToSave = DepartmentUtils.convertDepartmentToDelete.apply(departmentToDelete);
+
         return saveDepartment(departmentToSave);
     }
 
@@ -70,6 +73,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department updateDepartment(DepartmentRequestDTO departmentRequestDto) {
         Department savedDepartment = findById(departmentRequestDto.getId());
         validateDepartmentInfo(savedDepartment);
+        validateDepartmentName(departmentRequestDto.getDepartmentName());
         Department departmentToSave = DepartmentUtils.convertDepartmentToUpdate.apply(departmentRequestDto, savedDepartment);
         return saveDepartment(departmentToSave);
 
@@ -77,7 +81,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Department findById(Long id) {
-      return  departmentRepository.findByDepartmentId(id);
+        return departmentRepository.findByDepartmentId(id);
     }
 
     public void validateDepartmentName(String name) {

@@ -19,4 +19,8 @@ public interface SubDepartmentRepository extends JpaRepository<SubDepartment,Lon
 
     @Query(value = "SELECT COUNT(id) FROM sub_department WHERE code=:code AND status='Y'",nativeQuery = true)
     Integer findByCode(@Param("code") String code);
+
+    @Query(value = "SELECT * FROM sub_department WHERE name=:name AND status='Y'",nativeQuery = true)
+    SubDepartment findSubDepartment(@Param("name") String name);
+
 }

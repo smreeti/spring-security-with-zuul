@@ -23,9 +23,10 @@ public class DepartmentRepositoryCustomImpl implements DepartmentRepositoryCusto
 
     @Override
     public Optional<List<DepartmentResponseDTO>> fetchMinimalDepartmentData() {
-        String sql = createQueryTofetchMinimalDepartmentData();
-        List<Object[]> objects = entityManager.createNativeQuery(sql).getResultList();
-        List<DepartmentResponseDTO> departmentResponseDTO = DepartmentUtils.convertObjectToDepartmentResponseDTO.apply(objects);
+        List<Object[]> objects = entityManager.createNativeQuery(
+                createQueryTofetchMinimalDepartmentData.get()).getResultList();
+        List<DepartmentResponseDTO> departmentResponseDTO =
+                DepartmentUtils.convertObjectToDepartmentResponseDTO.apply(objects);
         return Optional.of(departmentResponseDTO);
     }
 }

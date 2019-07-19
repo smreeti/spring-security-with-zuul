@@ -30,6 +30,7 @@ import java.util.List;
 import static com.cogent.constants.WebResourceConstants.BASE_API;
 import static com.cogent.constants.WebResourceConstants.DepartmentController.BASE_API_DEPARTMENT;
 import static com.cogent.constants.WebResourceConstants.DepartmentController.DEPARTMENTCRUD.*;
+import static junit.framework.TestCase.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;

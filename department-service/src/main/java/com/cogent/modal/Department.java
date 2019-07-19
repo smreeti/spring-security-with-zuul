@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -42,7 +41,7 @@ public class Department implements Serializable {
     @ApiModelProperty(value = "Y, N and D are only used")
     private Character status;
 
-    @Column(name = "created_date", nullable = false)
+    @Column(name = "created_date")
     @ApiModelProperty
     private Date createdDate;
 

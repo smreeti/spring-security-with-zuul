@@ -13,18 +13,21 @@ import java.util.function.Function;
 
 public class SubDepartmentUtlis {
 
-    public static BiFunction<SubDepartmentRequestDTO,DepartmentService, SubDepartment> parsaToSubDepartment =
-            (subDepartmentRequestDTO,departmentService) -> {
+    public static SubDepartment parseToSubDepartment(SubDepartmentRequestDTO subDepartmentRequestDTO) {
+        return MapperUtility.map(subDepartmentRequestDTO, SubDepartment.class);
+    }
 
-      Department department = departmentService.findById(subDepartmentRequestDTO.getId());
+    public static BiFunction<SubDepartmentRequestDTO, DepartmentService, SubDepartment> parsaToSubDepartment =
+            (subDepartmentRequestDTO, departmentService) -> {
+
+                Department department = departmentService.findById(subDepartmentRequestDTO.getId());
+
                 return SubDepartment.builder()
                         .id(null)
                         .departmentId(department)
                         .name(subDepartmentRequestDTO.getName())
                         .code(subDepartmentRequestDTO.getCode())
                         .status(subDepartmentRequestDTO.getStatus())
-                        .createdDate(new Date())
-                        .createdById(1L)
                         .build();
             };
 }
