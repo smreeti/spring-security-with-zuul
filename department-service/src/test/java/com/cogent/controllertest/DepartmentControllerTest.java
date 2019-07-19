@@ -33,6 +33,7 @@ import static com.cogent.constants.WebResourceConstants.DepartmentController.DEP
 import static junit.framework.TestCase.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -163,17 +164,18 @@ public class DepartmentControllerTest {
                 .status('Y')
                 .build();
 
-        given(departmentService.updateDepartment(updatedDepartmentRequestDto)).willReturn(getDepartment());
+        given(departmentService.updateDepartment(any(DepartmentRequestDTO.class))).willReturn(getDepartment());
 
         System.out.println(getDepartment());
 
-        mockMvc.perform(MockMvcRequestBuilders.post(URL)
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post(URL)
                 .contentType(APPLICATION_JSON_UTF8)
                 .content(writeObjectToJson(updatedDepartmentRequestDto)))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        verify(departmentService).updateDepartment(updatedDepartmentRequestDto);
+        assertNotNull(mvcResult.getResponse());
+        verify(departmentService).updateDepartment(any(DepartmentRequestDTO.class));
 
     }
 

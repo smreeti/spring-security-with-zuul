@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -31,6 +33,7 @@ public class SubDepartment implements Serializable{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="department_id",referencedColumnName = "id")
+    @LazyToOne(LazyToOneOption.NO_PROXY)
     private Department departmentId;
 
     @Column(name = "name", nullable = false, length = 50)

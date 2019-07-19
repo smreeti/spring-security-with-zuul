@@ -26,13 +26,13 @@ public class SubDepartmentRepositoryTest {
     @Autowired
     SubDepartmentRepository subDepartmentRepository;
 
-    @Test
-    public void testSaveSubDepartment() {
-        SubDepartment subDepartmentToSave = getSubDepartmentInfoToSave();
-        SubDepartment subDepartment = testEntityManager.persist(subDepartmentToSave);
-        assertNotNull(subDepartment);
-
-    }
+//    @Test
+//    public void testSaveSubDepartment() {
+//        SubDepartment subDepartmentToSave = getSubDepartmentInfoToSave();
+//        SubDepartment subDepartment = testEntityManager.persist(subDepartmentToSave);
+//        assertNotNull(subDepartment);
+//
+//    }
 
     @Test
     public void testfindByName(){

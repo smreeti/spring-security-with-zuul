@@ -236,7 +236,7 @@ public class DepartmentServiceImplTest {
 
     @Test
     public void updateDepartment_ShouldReturnNameAlreadyExists() {
-        thrown.expect(DataNotFoundException.class);
+        thrown.expect(DataAlreadyExistsException.class);
 
         given(departmentRepository.findByDepartmentId(updatedDepartmentRequestDto.getId())).willReturn(savedDepartment);
         given(departmentRepository.findByName(updatedDepartmentRequestDto.getDepartmentName())).willReturn(savedDepartment);
