@@ -106,6 +106,8 @@ public class DepartmentControllerTest {
                 .andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
 
+        assertNotNull(mvcResult.getResponse());
+
         verify(departmentService).fetchAllDepartment();
     }
 
