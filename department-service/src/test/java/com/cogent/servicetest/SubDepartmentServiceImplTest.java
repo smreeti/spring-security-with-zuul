@@ -1,6 +1,6 @@
 package com.cogent.servicetest;
 
-import com.cogent.controller.subDepartmnetController.dto.requestDTO.SubDepartmentRequestDTO;
+import com.cogent.controller.subDepartmentController.dto.requestDTO.SubDepartmentRequestDTO;
 import com.cogent.exceptionHandler.BadRequestDataException;
 import com.cogent.exceptionHandler.DataAlreadyExistsException;
 import com.cogent.modal.Department;

@@ -1,6 +1,6 @@
 package com.cogent.service.impl;
 
-import com.cogent.controller.subDepartmnetController.dto.requestDTO.SubDepartmentRequestDTO;
+import com.cogent.controller.subDepartmentController.dto.requestDTO.SubDepartmentRequestDTO;
 import com.cogent.exceptionHandler.BadRequestDataException;
 import com.cogent.exceptionHandler.DataAlreadyExistsException;
 import com.cogent.modal.SubDepartment;
@@ -9,6 +9,8 @@ import com.cogent.service.DepartmentService;
 import com.cogent.service.SubDepartmentService;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -27,6 +29,9 @@ public class SubDepartmentServiceImpl implements SubDepartmentService {
         this.departmentService = departmentService;
     }
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Override
     public Optional<SubDepartment> createSubDepartment(SubDepartmentRequestDTO subDepartmentRequestDTO) {
         if (!Objects.isNull(subDepartmentRequestDTO)) {
@@ -37,6 +42,7 @@ public class SubDepartmentServiceImpl implements SubDepartmentService {
         }
         throw new BadRequestDataException(BAD_REQUEST);
     }
+
 
     public void validateSubDepartmentName(String name) {
         if (subDepartmentRepository.findByName(name) == 1)
@@ -51,5 +57,8 @@ public class SubDepartmentServiceImpl implements SubDepartmentService {
     public SubDepartment saveSubDepartment(SubDepartment subDepartment){
         return subDepartmentRepository.save(subDepartment);
     }
+
+
+
 
 }

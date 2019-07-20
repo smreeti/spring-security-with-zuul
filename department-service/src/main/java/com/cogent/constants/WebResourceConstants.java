@@ -16,6 +16,18 @@ public class WebResourceConstants {
 
         }
 
+        public static class SUBDepartmentController {
+            public static final String BASE_API_SUB_DEPARTMENT = "/subdepartment";
+
+            public interface SUBDEPARTMENTCRUD {
+                String SAVE = "/save";
+                String RETRIEVE = "/retrieve";
+                String RETRIEVE_MINIMAL_DATA = "/retrieveMinimalData";
+                String DELETE = "/delete/{id}";
+                String UPDATE = "/update";
+
+            }
+        }
 
     }
 }

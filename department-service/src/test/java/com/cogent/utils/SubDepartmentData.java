@@ -1,6 +1,6 @@
 package com.cogent.utils;
 
-import com.cogent.controller.subDepartmnetController.dto.requestDTO.SubDepartmentRequestDTO;
+import com.cogent.controller.subDepartmentController.dto.requestDTO.SubDepartmentRequestDTO;
 import com.cogent.modal.Department;
 import com.cogent.modal.SubDepartment;
 
@@ -24,12 +24,12 @@ public class SubDepartmentData {
     }
 
     public static SubDepartment getSubDepartmentInfoToSave(){
-        SubDepartment subDepartment=SubDepartment.builder()
+        SubDepartment subDepartment1=SubDepartment.builder()
                 .departmentId(Department.builder().id(1L).departmentName("Cash").code("CSH").status('Y').build())
                 .name("Billing")
                 .code("BILL")
                 .status('Y').build();
-        return subDepartment;
+        return subDepartment1;
     }
 
 }

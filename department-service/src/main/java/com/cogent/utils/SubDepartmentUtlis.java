@@ -1,15 +1,11 @@
 package com.cogent.utils;
 
-import com.cogent.controller.subDepartmnetController.dto.requestDTO.SubDepartmentRequestDTO;
+import com.cogent.controller.subDepartmentController.dto.requestDTO.SubDepartmentRequestDTO;
 import com.cogent.modal.Department;
 import com.cogent.modal.SubDepartment;
-import com.cogent.repository.DepartmentRepository;
 import com.cogent.service.DepartmentService;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public class SubDepartmentUtlis {
 

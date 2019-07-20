@@ -1,4 +1,4 @@
-package com.cogent.controller.subDepartmnetController.dto.requestDTO;
+package com.cogent.controller.subDepartmentController.dto.requestDTO;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
