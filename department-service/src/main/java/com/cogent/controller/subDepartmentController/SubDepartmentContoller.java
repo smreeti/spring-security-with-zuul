@@ -20,14 +20,5 @@ public class SubDepartmentContoller {
     @Autowired
     SubDepartmentRepository subDepartmentRepository;
 
-    @GetMapping(value = RETRIEVE)
-    @Transactional
-    public SubDepartment fetchSubDepartment() {
-        System.out.println("******************************************************");
-        System.out.println(subDepartmentRepository.findSubDepartment("Billing"));
-        System.out.println("******************************************************");
-        System.out.println(MapperUtility.map(subDepartmentRepository.findSubDepartment("Billing"), SubDepartment.class));
-        System.out.println("******************************************************");
-        return MapperUtility.map(subDepartmentRepository.findSubDepartment("Billing"), SubDepartment.class);
-    }
+
 }
