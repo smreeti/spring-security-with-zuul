@@ -12,14 +12,21 @@ spring:
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+
   jpa:
     properties:
-      hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+      hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: update
-      enable_lazy_load_no_trans: true
+      generate_statistics: true
+      format_sql: true
+      temp.use_jdbc_metadata_defaults: false
+
+
     show-sql: true
     generate-ddl: true
+    open-in-view: false
 
-
+  jackson:
+    deserialization.fail-on-unknown-properties: false
 

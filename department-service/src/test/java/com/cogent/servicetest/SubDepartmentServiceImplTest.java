@@ -3,6 +3,7 @@ package com.cogent.servicetest;
 import com.cogent.controller.subDepartmentController.dto.requestDTO.SubDepartmentRequestDTO;
 import com.cogent.exceptionHandler.BadRequestDataException;
 import com.cogent.exceptionHandler.DataAlreadyExistsException;
+import com.cogent.exceptionHandler.DataNotFoundException;
 import com.cogent.modal.Department;
 import com.cogent.modal.SubDepartment;
 import com.cogent.repository.SubDepartmentRepository;
@@ -17,12 +18,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 import static com.cogent.utils.SubDepartmentData.getSubDepartmentInfo;
 import static com.cogent.utils.SubDepartmentData.getsubDepartmentRequestDto;
 import static com.cogent.utils.SubDepartmentUtlis.parsaToSubDepartment;
+import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -92,9 +94,29 @@ public class SubDepartmentServiceImplTest {
         given(subDepartmentRepository.findByCode(requestDTO.getCode())).willReturn(0);
         given(subDepartmentRepository.save(any(SubDepartment.class))).willReturn(getSubDepartmentInfo());
 
-        assertThat(subDepartmentService.createSubDepartment(requestDTO).get().getId()).isEqualTo(getSubDepartmentInfo().getId());
+        assertNotNull(subDepartmentService.createSubDepartment(requestDTO));
 
         verify(subDepartmentRepository).save(any(SubDepartment.class));
+    }
+
+    @Test
+    public void fetchSubDepartments_ShouldReturnEmptyList(){
+        thrown.expect(DataNotFoundException.class);
+
+        given(subDepartmentRepository.fetchSubDepartments()).willReturn(Optional.empty());
+
+        subDepartmentService.fetchSubDepartments();
+    }
+
+    @Test
+    public void fetchSubDepartmens_ShouldReturnSubDepartments(){
+      List<SubDepartment> subDepartments=Arrays.asList(getSubDepartmentInfo());
+
+        given(subDepartmentRepository.fetchSubDepartments()).willReturn(Optional.of(subDepartments));
+
+        assertTrue(subDepartmentService.fetchSubDepartments().size()>0);
+//       verify(subDepartmentRepository).fetchSubDepartments();
+
     }
 
 

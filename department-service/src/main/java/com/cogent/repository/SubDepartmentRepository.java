@@ -8,12 +8,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
 /**
  * @author Sauravi
  */
 
 @Repository
-@Transactional
 public interface SubDepartmentRepository extends JpaRepository<SubDepartment, Long>, SubDepartmentRepositoryCustom {
 
     @Query(value = "SELECT COUNT(id) FROM sub_department WHERE name=:name AND status='Y'", nativeQuery = true)
@@ -22,12 +24,11 @@ public interface SubDepartmentRepository extends JpaRepository<SubDepartment, Lo
     @Query(value = "SELECT COUNT(id) FROM sub_department WHERE code=:code AND status='Y'", nativeQuery = true)
     Integer findByCode(@Param("code") String code);
 
-    @Query(value = "SELECT * FROM sub_department WHERE name=:name AND status='Y'", nativeQuery = true)
-    SubDepartment findSubDepartment(@Param("name") String name);
+    @Query(value = "SELECT sd FROM SubDepartment sd")
+    List<SubDepartment> findSubDepartment();
 
-    @Query(value = "SELECT sd FROM SubDepartment sd WHERE sd.name=:name AND sd.status='Y'")
-    SubDepartment findSubDepartmentByNameJPA(@Param("name") String name);
+    @Transactional(readOnly = true)
+    @Query(value = "SELECT * FROM sub_department WHERE status='Y'",nativeQuery = true)
+    Optional<List<SubDepartment>> fetchSubDepartments();
 
-
-    SubDepartment findSubDepartmentByName(String name);
 }

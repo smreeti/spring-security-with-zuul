@@ -10,7 +10,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+import java.util.Optional;
+
 import static com.cogent.utils.SubDepartmentData.getSubDepartmentInfoToSave;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
@@ -27,6 +31,7 @@ public class SubDepartmentRepositoryTest {
 //    public void testSaveSubDepartment() {
 //        SubDepartment subDepartmentToSave = getSubDepartmentInfoToSave();
 //        SubDepartment subDepartment = testEntityManager.persist(subDepartmentToSave);
+//        System.out.println(subDepartment);
 //        assertNotNull(subDepartment);
 //
 //    }
@@ -47,27 +52,15 @@ public class SubDepartmentRepositoryTest {
         assertTrue(countCode == 1);
     }
 
-
     @Test
-    public void testfetch() {
-//        SubDepartment subDepartmentToSearch = getSubDepartmentInfoToSave();
-        SubDepartment subDepartment2 = subDepartmentRepository.findSubDepartment("Billing");
-        System.out.println(subDepartment2);
+    public void testfetchSubDepartments(){
+        Optional<List<SubDepartment>> subDepartment=subDepartmentRepository.fetchSubDepartments();
+        System.out.println("***************************************");
+        System.out.println(subDepartment.isPresent());
+        System.out.println("***************************************");
+        assertTrue(subDepartment.get().size()>0);
     }
 
-    @Test
-    public void test() {
 
-        subDepartmentRepository.test();
-
-
-    }
-
-    @Test
-    public void testJpa() {
-        subDepartmentRepository.findSubDepartmentByName("Billing");
-
-        System.out.println(subDepartmentRepository.findSubDepartmentByName("Billing"));
-    }
 }
 

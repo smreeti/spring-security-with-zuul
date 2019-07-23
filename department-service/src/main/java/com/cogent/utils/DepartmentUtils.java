@@ -19,42 +19,41 @@ public class DepartmentUtils {
 
     public static Function<DepartmentRequestDTO, Department> convertdepartmentRequestDtoToDepartment =
             (departmentRequestDto) -> {
-                return Department.builder()
-                        .id(null)
-                        .departmentName(departmentRequestDto.getDepartmentName())
-                        .code(departmentRequestDto.getCode())
-                        .status(departmentRequestDto.getStatus())
-                        .createdDate(new Date())
-                        .createdById(1L)
-                        .build();
+                Department department = new Department();
+                department.setId(null);
+                department.setDepartmentName(departmentRequestDto.getDepartmentName());
+                department.setCode(departmentRequestDto.getCode());
+                department.setStatus(departmentRequestDto.getStatus());
+                department.setCreatedDate(new Date());
+                department.setCreatedById(1L);
+                return department;
+
             };
 
     public static Function<Department, Department> convertDepartmentToDelete = (departmentToDelete) -> {
-        Department department = Department.builder()
-                .id(departmentToDelete.getId())
-                .departmentName(departmentToDelete.getDepartmentName())
-                .code(departmentToDelete.getCode())
-                .status('D')
-                .createdDate(departmentToDelete.getCreatedDate())
-                .createdById(departmentToDelete.getCreatedById())
-                .lastModifiedDate(new Date())
-                .modifiedById(1L)
-                .build();
+        Department department = new Department();
+            department.setId(departmentToDelete.getId());
+            department.setDepartmentName(departmentToDelete.getDepartmentName());
+            department.setCode(departmentToDelete.getCode());
+            department.setStatus('D');
+            department.setCreatedDate(departmentToDelete.getCreatedDate());
+            department.setCreatedById(1L);
+            department.setLastModifiedDate(new Date());
+            department.setModifiedById(1L);
         return department;
     };
 
 
     public static BiFunction<DepartmentRequestDTO, Department, Department> convertDepartmentToUpdate = (departmentRequestDto, savedDepartment) -> {
-        Department department = Department.builder()
-                .id(savedDepartment.getId())
-                .departmentName(departmentRequestDto.getDepartmentName())
-                .code(departmentRequestDto.getCode())
-                .status(departmentRequestDto.getStatus())
-                .createdDate(savedDepartment.getCreatedDate())
-                .createdById(savedDepartment.getCreatedById())
-                .lastModifiedDate(new Date())
-                .modifiedById(1L)
-                .build();
+        Department department = new Department();
+            department.setId(savedDepartment.getId());
+            department.setDepartmentName(departmentRequestDto.getDepartmentName());
+            department.setCode(departmentRequestDto.getCode());
+            department.setStatus(departmentRequestDto.getStatus());
+            department.setCreatedDate(savedDepartment.getCreatedDate());
+            department.setCreatedById(savedDepartment.getCreatedById());
+            department.setLastModifiedDate(new Date());
+            department.setModifiedById(1L);
         return department;
     };
 

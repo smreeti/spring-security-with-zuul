@@ -3,6 +3,7 @@ package com.cogent.service;
 import com.cogent.controller.subDepartmentController.dto.requestDTO.SubDepartmentRequestDTO;
 import com.cogent.modal.SubDepartment;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -10,6 +11,7 @@ import java.util.Optional;
  */
 
 public interface SubDepartmentService {
-    Optional<SubDepartment> createSubDepartment(SubDepartmentRequestDTO subDepartmentRequestDTO);
+    SubDepartment createSubDepartment(SubDepartmentRequestDTO subDepartmentRequestDTO);
 
+    List<SubDepartment> fetchSubDepartments();
 }

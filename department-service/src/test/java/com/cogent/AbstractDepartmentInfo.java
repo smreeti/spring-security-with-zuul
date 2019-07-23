@@ -11,13 +11,13 @@ import java.util.Date;
 public abstract class AbstractDepartmentInfo {
 
     public Department getDepartmentInfo() {
-        return Department.builder()
-                .id(null)
-                .departmentName("Cash")
-                .code("CSH")
-                .status('Y')
-                .createdById(1L)
-                .createdDate(new Date())
-                .build();
+        Department department=new Department();
+            department.setId(null);
+            department.setDepartmentName("Cash");
+            department.setCode("CSH");
+            department.setStatus('Y');
+            department.setCreatedDate(new Date());
+            department.setCreatedById(1L);
+        return department;
     }
 }

@@ -25,6 +25,7 @@ public class DepartmentController {
     DepartmentService departmentService;
 
     @PostMapping(value = SAVE)
+    @ApiOperation("Api to save department's details")
     public ResponseEntity<?> save(@RequestBody DepartmentRequestDTO departmentRequestDto) {
         return ok(departmentService.createDepartment(departmentRequestDto));
     }

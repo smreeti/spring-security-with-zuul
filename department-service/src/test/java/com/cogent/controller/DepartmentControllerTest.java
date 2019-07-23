@@ -1,12 +1,10 @@
 package com.cogent.controller;
 
-
-
-
 import com.cogent.controller.departmentController.DTO.requestDTO.DepartmentRequestDTO;
 import com.cogent.controller.departmentController.DTO.responseDTO.DepartmentResponseDTO;
 import com.cogent.controller.departmentController.DepartmentController;
 import com.cogent.modal.Department;
+import com.cogent.modal.SubDepartment;
 import com.cogent.service.DepartmentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,11 +23,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.cogent.constants.WebResourceConstants.BASE_API;
 import static com.cogent.constants.WebResourceConstants.DepartmentController.BASE_API_DEPARTMENT;
 import static com.cogent.constants.WebResourceConstants.DepartmentController.DEPARTMENTCRUD.*;
+import static com.cogent.utils.SubDepartmentData.getSubDepartmentInfo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -39,7 +39,6 @@ public class DepartmentControllerTest {
 
     @Mock
     private DepartmentService departmentService;
-
 
     @InjectMocks
     private DepartmentController departmentController;
@@ -93,8 +92,7 @@ public class DepartmentControllerTest {
     @Test
     public void retrieve_ShouldRetrieveDepartments() throws Exception {
         String URL = BASE_API + BASE_API_DEPARTMENT + RETRIEVE;
-        List<Department> departmentList = new ArrayList<>();
-        departmentList.add(getDepartment());
+        List<Department> departmentList= Arrays.asList(getDepartment());
 
         given(departmentService.fetchAllDepartment()).willReturn((departmentList));
 
@@ -176,22 +174,20 @@ public class DepartmentControllerTest {
 
 
     public Department getDepartment() {
-        Department savedDepartment = Department.builder()
-                .id(1L)
-                .departmentName("Surgical")
-                .code("SRG")
-                .status('Y')
-                .build();
+        Department savedDepartment=new Department();
+            savedDepartment.setId(1L);
+            savedDepartment.setDepartmentName("Surgical");
+            savedDepartment.setCode("SRG");
+            savedDepartment.setStatus('Y');
         return savedDepartment;
     }
 
     public Department getDeletedDepartment() {
-        Department savedDepartment = Department.builder()
-                .id(1L)
-                .departmentName("Surgical")
-                .code("SRG")
-                .status('D')
-                .build();
+        Department savedDepartment = new Department();
+            savedDepartment.setId(1L);
+            savedDepartment.setDepartmentName("Surgical");
+            savedDepartment.setCode("SRG");
+            savedDepartment.setStatus('D');
         return savedDepartment;
     }
 

@@ -14,22 +14,30 @@ public class SubDepartmentData {
        return subDepartmentRequestDTO;
     }
     public static SubDepartment getSubDepartmentInfo(){
-        SubDepartment subDepartment=SubDepartment.builder()
-                .id(1L)
-                .departmentId(Department.builder().id(1L).departmentName("Cash").code("CSH").status('Y').build())
-                .name("Billing")
-                .code("BILL")
-                .status('Y').build();
+        SubDepartment subDepartment=new SubDepartment();
+        subDepartment.setId(1L);
+        subDepartment .setDepartment(null);
+        subDepartment.setName("Billing");
+        subDepartment.setCode("BILL");
+        subDepartment.setStatus('Y');
         return subDepartment;
     }
 
     public static SubDepartment getSubDepartmentInfoToSave(){
-        SubDepartment subDepartment1=SubDepartment.builder()
-                .departmentId(Department.builder().id(1L).departmentName("Cash").code("CSH").status('Y').build())
-                .name("Billing")
-                .code("BILL")
-                .status('Y').build();
-        return subDepartment1;
+        SubDepartment subDepartment=new SubDepartment();
+        subDepartment .setDepartment(getDepartmentInfo());
+        subDepartment.setName("Billing");
+        subDepartment.setCode("BILL");
+        subDepartment.setStatus('Y');
+        return subDepartment;
     }
 
+    public static Department getDepartmentInfo(){
+        Department department=new Department();
+        department.setId(1L);
+        department.setDepartmentName("Cash");
+        department.setCode("CSH");
+        department.setStatus('Y');
+        return department;
+    }
 }

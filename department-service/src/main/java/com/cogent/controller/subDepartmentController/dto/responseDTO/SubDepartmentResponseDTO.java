@@ -1,5 +1,6 @@
 package com.cogent.controller.subDepartmentController.dto.responseDTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -27,12 +28,14 @@ public class SubDepartmentResponseDTO implements Serializable {
     private Long departmentId;
 
     @ApiModelProperty(value = "Sub-Department  name should be unique")
-    private String departmentName;
+    private String name;
 
     @ApiModelProperty(value = "Sub-Department  Code should be unique")
     private String code;
 
     @ApiModelProperty(value = "Y, N and D are only used")
     private Character status;
+
+
 
 }
