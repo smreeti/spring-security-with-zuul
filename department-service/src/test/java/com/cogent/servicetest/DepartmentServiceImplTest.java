@@ -1,8 +1,8 @@
 package com.cogent.servicetest;
 
 
-import com.cogent.controller.departmentController.DTO.requestDTO.DepartmentRequestDTO;
-import com.cogent.controller.departmentController.DTO.responseDTO.DepartmentResponseDTO;
+import com.cogent.dto.request.Department.DepartmentRequestDTO;
+import com.cogent.dto.response.DepartmentResponseDTO;
 import com.cogent.exceptionHandler.BadRequestDataException;
 import com.cogent.exceptionHandler.DataAlreadyExistsException;
 import com.cogent.exceptionHandler.DataNotFoundException;

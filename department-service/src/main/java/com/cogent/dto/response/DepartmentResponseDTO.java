@@ -1,4 +1,4 @@
-package com.cogent.controller.departmentController.DTO.responseDTO;
+package com.cogent.dto.response;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,9 +11,7 @@ import java.io.Serializable;
  */
 
 
-@Getter
-@Setter
-@ToString
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

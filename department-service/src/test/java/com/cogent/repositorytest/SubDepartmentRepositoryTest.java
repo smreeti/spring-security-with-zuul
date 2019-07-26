@@ -1,5 +1,6 @@
 package com.cogent.repositorytest;
 
+import com.cogent.dto.response.SubDepartmentResponseDTO;
 import com.cogent.modal.SubDepartment;
 import com.cogent.repository.SubDepartmentRepository;
 import org.junit.Test;
@@ -54,13 +55,15 @@ public class SubDepartmentRepositoryTest {
 
     @Test
     public void testfetchSubDepartments(){
-        Optional<List<SubDepartment>> subDepartment=subDepartmentRepository.fetchSubDepartments();
-        System.out.println("***************************************");
-        System.out.println(subDepartment.isPresent());
-        System.out.println("***************************************");
-        assertTrue(subDepartment.get().size()>0);
+       List<SubDepartment> subDepartment=subDepartmentRepository.fetchSubDepartments();
+        assertTrue(subDepartment.size()>0);
     }
 
-
+    @Test
+    public void testfetchMinimalSubDepartmentData() {
+        List<SubDepartmentResponseDTO> subDepartmentResponseDTOS = subDepartmentRepository.fetchMinimalSubDepartmentData();
+        System.out.println(subDepartmentResponseDTOS);
+        assertTrue(subDepartmentResponseDTOS.size()>0);
+    }
 }
 

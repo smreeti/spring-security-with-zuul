@@ -1,10 +1,8 @@
 package com.cogent.controller;
 
-import com.cogent.controller.departmentController.DTO.requestDTO.DepartmentRequestDTO;
-import com.cogent.controller.departmentController.DTO.responseDTO.DepartmentResponseDTO;
-import com.cogent.controller.departmentController.DepartmentController;
+import com.cogent.dto.request.Department.DepartmentRequestDTO;
+import com.cogent.dto.response.DepartmentResponseDTO;
 import com.cogent.modal.Department;
-import com.cogent.modal.SubDepartment;
 import com.cogent.service.DepartmentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,7 +27,6 @@ import java.util.List;
 import static com.cogent.constants.WebResourceConstants.BASE_API;
 import static com.cogent.constants.WebResourceConstants.DepartmentController.BASE_API_DEPARTMENT;
 import static com.cogent.constants.WebResourceConstants.DepartmentController.DEPARTMENTCRUD.*;
-import static com.cogent.utils.SubDepartmentData.getSubDepartmentInfo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;

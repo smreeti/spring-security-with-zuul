@@ -1,8 +1,8 @@
-package com.cogent.controller.departmentController;
+package com.cogent.controller;
 
 
 
-import com.cogent.controller.departmentController.DTO.requestDTO.DepartmentRequestDTO;
+import com.cogent.dto.request.Department.DepartmentRequestDTO;
 import com.cogent.service.DepartmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

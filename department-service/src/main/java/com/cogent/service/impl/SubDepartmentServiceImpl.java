@@ -1,6 +1,7 @@
 package com.cogent.service.impl;
 
-import com.cogent.controller.subDepartmentController.dto.requestDTO.SubDepartmentRequestDTO;
+import com.cogent.dto.request.SubDepartment.SubDepartmentRequestDTO;
+import com.cogent.dto.response.SubDepartmentResponseDTO;
 import com.cogent.exceptionHandler.BadRequestDataException;
 import com.cogent.exceptionHandler.DataAlreadyExistsException;
 import com.cogent.exceptionHandler.DataNotFoundException;
@@ -16,7 +17,8 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.cogent.constants.ErrorMessageConstants.*;
-import static com.cogent.utils.SubDepartmentUtlis.parsaToSubDepartment;
+import static com.cogent.utils.SubDepartmentUtlis.parseToSubDepartment;
+import static com.cogent.utils.SubDepartmentUtlis.parseToSubDepartmentResponseDTO;
 
 @Service
 @Transactional
@@ -38,19 +40,29 @@ public class SubDepartmentServiceImpl implements SubDepartmentService {
             validateSubDepartmentName(subDepartmentRequestDTO.getName());
             validateSubDepartmentCode(subDepartmentRequestDTO.getCode());
             Department department = departmentService.findById(subDepartmentRequestDTO.getDepartmentId());
-            SubDepartment subDepartment = parsaToSubDepartment.apply(subDepartmentRequestDTO, department);
+            SubDepartment subDepartment = parseToSubDepartment.apply(subDepartmentRequestDTO, department);
             return saveSubDepartment(subDepartment);
         }
         throw new BadRequestDataException(BAD_REQUEST);
     }
 
     @Override
-    public List<SubDepartment> fetchSubDepartments() {
-        return subDepartmentRepository.fetchSubDepartments().orElseThrow(() ->
-                new DataNotFoundException(DEPARTMENT_NOT_FOUND));
-
+    public List<SubDepartmentResponseDTO> fetchSubDepartments() {
+        List<SubDepartment> subDepartments = subDepartmentRepository.fetchSubDepartments();
+        if (subDepartments == null) {
+            throw new DataNotFoundException(SUB_DEPARTMENT_NOT_FOUND);
+        }
+        List<SubDepartmentResponseDTO> subDepartmentResponseDTOS = parseToSubDepartmentResponseDTO.apply(subDepartments);
+        return subDepartmentResponseDTOS;
     }
 
+    @Override
+    public List<SubDepartmentResponseDTO> fetchMinimalSubDepartmentData() {
+        if (subDepartmentRepository.fetchMinimalSubDepartmentData() == null) {
+            throw new DataNotFoundException(SUB_DEPARTMENT_NOT_FOUND);
+        }
+        return subDepartmentRepository.fetchMinimalSubDepartmentData();
+    }
 
     public void validateSubDepartmentName(String name) {
         if (subDepartmentRepository.findByName(name) == 1)

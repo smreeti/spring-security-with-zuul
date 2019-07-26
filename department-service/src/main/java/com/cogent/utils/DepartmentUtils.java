@@ -1,7 +1,7 @@
 package com.cogent.utils;
 
-import com.cogent.controller.departmentController.DTO.requestDTO.DepartmentRequestDTO;
-import com.cogent.controller.departmentController.DTO.responseDTO.DepartmentResponseDTO;
+import com.cogent.dto.request.Department.DepartmentRequestDTO;
+import com.cogent.dto.response.DepartmentResponseDTO;
 import com.cogent.modal.Department;
 
 import java.util.ArrayList;

@@ -1,6 +1,7 @@
-package com.cogent.controller.subDepartmentController;
+package com.cogent.controller;
 
-import com.cogent.controller.subDepartmentController.dto.requestDTO.SubDepartmentRequestDTO;
+import com.cogent.dto.request.SubDepartment.SubDepartmentRequestDTO;
+import com.cogent.dto.response.SubDepartmentResponseDTO;
 import com.cogent.modal.SubDepartment;
 import com.cogent.service.SubDepartmentService;
 import io.swagger.annotations.Api;
@@ -13,8 +14,7 @@ import java.util.List;
 
 import static com.cogent.constants.WebResourceConstants.BASE_API;
 import static com.cogent.constants.WebResourceConstants.DepartmentController.SUBDepartmentController.BASE_API_SUB_DEPARTMENT;
-import static com.cogent.constants.WebResourceConstants.DepartmentController.SUBDepartmentController.SUBDEPARTMENTCRUD.RETRIEVE;
-import static com.cogent.constants.WebResourceConstants.DepartmentController.SUBDepartmentController.SUBDEPARTMENTCRUD.SAVE;
+import static com.cogent.constants.WebResourceConstants.DepartmentController.SUBDepartmentController.SUBDEPARTMENTCRUD.*;
 
 @RestController
 @RequestMapping(value = BASE_API + BASE_API_SUB_DEPARTMENT)
@@ -33,8 +33,15 @@ public class SubDepartmentContoller {
     @GetMapping(value = RETRIEVE)
     @ApiOperation("Api to retrieve sub-department's details")
     public ResponseEntity<?> fetchAllSubDepartments() {
-        List<SubDepartment> subDepartments = subDepartmentService.fetchSubDepartments();
-        return ResponseEntity.ok(subDepartmentService.fetchSubDepartments());
+        List<SubDepartmentResponseDTO> subDepartments = subDepartmentService.fetchSubDepartments();
+        return ResponseEntity.ok(subDepartments);
     }
 
+
+    @GetMapping(value = RETRIEVE_MINIMAL_DATA)
+    @ApiOperation("Api to retrieve sub-department's minimal details")
+    public ResponseEntity<?> fetchMinimalSubDepartmentData(){
+        List<SubDepartmentResponseDTO> subDepartmentResponseDTOS=subDepartmentService.fetchMinimalSubDepartmentData();
+        return ResponseEntity.ok(subDepartmentResponseDTOS);
+    }
 }

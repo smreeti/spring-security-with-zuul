@@ -1,7 +1,7 @@
 package com.cogent.controller;
 
-import com.cogent.controller.subDepartmentController.SubDepartmentContoller;
-import com.cogent.controller.subDepartmentController.dto.requestDTO.SubDepartmentRequestDTO;
+import com.cogent.dto.request.SubDepartment.SubDepartmentRequestDTO;
+import com.cogent.dto.response.SubDepartmentResponseDTO;
 import com.cogent.modal.SubDepartment;
 import com.cogent.service.SubDepartmentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,10 +27,8 @@ import java.util.List;
 
 import static com.cogent.constants.WebResourceConstants.BASE_API;
 import static com.cogent.constants.WebResourceConstants.DepartmentController.SUBDepartmentController.BASE_API_SUB_DEPARTMENT;
-import static com.cogent.constants.WebResourceConstants.DepartmentController.SUBDepartmentController.SUBDEPARTMENTCRUD.RETRIEVE;
-import static com.cogent.constants.WebResourceConstants.DepartmentController.SUBDepartmentController.SUBDEPARTMENTCRUD.SAVE;
-import static com.cogent.utils.SubDepartmentData.getSubDepartmentInfo;
-import static com.cogent.utils.SubDepartmentData.getsubDepartmentRequestDto;
+import static com.cogent.constants.WebResourceConstants.DepartmentController.SUBDepartmentController.SUBDEPARTMENTCRUD.*;
+import static com.cogent.utils.SubDepartmentData.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -79,7 +77,7 @@ public class SubDepartmentControllerTest {
     public void retrieve_ShouldFetchSubDepartments() throws Exception {
         String URL = BASE_API + BASE_API_SUB_DEPARTMENT + RETRIEVE;
         System.out.println(URL);
-        List<SubDepartment> subDepartments = Arrays.asList(getSubDepartmentInfo());
+        List<SubDepartmentResponseDTO> subDepartments = Arrays.asList(getSubDepartmentResponseDTO());
 
         given(subDepartmentService.fetchSubDepartments()).willReturn(subDepartments);
 
@@ -90,7 +88,24 @@ public class SubDepartmentControllerTest {
                 .andReturn();
 
         assertNotNull(mvcResult.getResponse());
-        verify(subDepartmentService,times(2)).fetchSubDepartments();
+        verify(subDepartmentService).fetchSubDepartments();
+    }
+
+    @Test
+    public void retrieveMinimalSubDepartmentData_ShouldFetchSubDepartments() throws Exception{
+        String URL = BASE_API + BASE_API_SUB_DEPARTMENT + RETRIEVE_MINIMAL_DATA;
+        System.out.println(URL);
+        List<SubDepartmentResponseDTO> subDepartmentResponseDTO = Arrays.asList(getSubDepartmentResponseDTO());
+
+        given(subDepartmentService.fetchMinimalSubDepartmentData()).willReturn(subDepartmentResponseDTO);
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(URL))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name",
+                        Matchers.is("Billing")))
+                .andReturn();
+
+        assertNotNull(mvcResult.getResponse());
+        verify(subDepartmentService).fetchMinimalSubDepartmentData();
     }
 
     private String writeObjectToJson(final Object obj) {

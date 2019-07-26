@@ -1,11 +1,10 @@
 package com.cogent.utils;
 
-import com.cogent.controller.departmentController.DTO.responseDTO.DepartmentResponseDTO;
-import com.cogent.controller.subDepartmentController.dto.requestDTO.SubDepartmentRequestDTO;
-import com.cogent.controller.subDepartmentController.dto.responseDTO.SubDepartmentResponseDTO;
+import com.cogent.dto.request.SubDepartment.SubDepartmentRequestDTO;
+import com.cogent.dto.response.DepartmentResponseDTO;
+import com.cogent.dto.response.SubDepartmentResponseDTO;
 import com.cogent.modal.Department;
 import com.cogent.modal.SubDepartment;
-import com.cogent.service.DepartmentService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +13,11 @@ import java.util.function.Function;
 
 public class SubDepartmentUtlis {
 
-    public static SubDepartment parseToSubDepartment(SubDepartmentRequestDTO subDepartmentRequestDTO) {
-        return MapperUtility.map(subDepartmentRequestDTO, SubDepartment.class);
-    }
+//    public static SubDepartment parseToSubDepartment(SubDepartmentRequestDTO subDepartmentRequestDTO) {
+//        return MapperUtility.map(subDepartmentRequestDTO, SubDepartment.class);
+//    }
 
-    public static BiFunction<SubDepartmentRequestDTO, Department, SubDepartment> parsaToSubDepartment =
+    public static BiFunction<SubDepartmentRequestDTO, Department, SubDepartment> parseToSubDepartment =
             (subDepartmentRequestDTO, department) -> {
                 SubDepartment subDepartment=new SubDepartment();
                 subDepartment.setId(null);
@@ -38,7 +37,22 @@ public class SubDepartmentUtlis {
                     subDepartmentResponseDTO.setName(objects.getName());
                     subDepartmentResponseDTO.setCode(objects.getCode());
                     subDepartmentResponseDTO.setStatus(objects.getStatus());
-                    subDepartmentResponseDTO.setDepartmentId(objects.getDepartment().getId());
+                    subDepartmentResponseDTO.setDepartment(objects.getDepartment().getId());
+                    subDepartmentResponseDTOS.add(subDepartmentResponseDTO);
+                });
+                return subDepartmentResponseDTOS;
+            };
+
+    public static Function<List<Object[]>, List<SubDepartmentResponseDTO>> parseObjectToSubDepartmentResponseDTO =
+            (resultList) -> {
+                List<SubDepartmentResponseDTO> subDepartmentResponseDTOS = new ArrayList<>();
+                resultList.forEach(objects -> {
+                    SubDepartmentResponseDTO  subDepartmentResponseDTO=new SubDepartmentResponseDTO();
+                    subDepartmentResponseDTO.setId(Long.parseLong(objects[0].toString()));
+                    subDepartmentResponseDTO.setName(objects[1].toString());
+                    subDepartmentResponseDTO.setCode(objects[2].toString());
+                    subDepartmentResponseDTO.setStatus(objects[3].toString().charAt(0));
+                    subDepartmentResponseDTO.setDepartment(Long.parseLong(objects[4].toString()));
                     subDepartmentResponseDTOS.add(subDepartmentResponseDTO);
                 });
                 return subDepartmentResponseDTOS;

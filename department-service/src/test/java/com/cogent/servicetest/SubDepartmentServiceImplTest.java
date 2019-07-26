@@ -1,10 +1,10 @@
 package com.cogent.servicetest;
 
-import com.cogent.controller.subDepartmentController.dto.requestDTO.SubDepartmentRequestDTO;
+import com.cogent.dto.request.SubDepartment.SubDepartmentRequestDTO;
+import com.cogent.dto.response.SubDepartmentResponseDTO;
 import com.cogent.exceptionHandler.BadRequestDataException;
 import com.cogent.exceptionHandler.DataAlreadyExistsException;
 import com.cogent.exceptionHandler.DataNotFoundException;
-import com.cogent.modal.Department;
 import com.cogent.modal.SubDepartment;
 import com.cogent.repository.SubDepartmentRepository;
 import com.cogent.service.DepartmentService;
@@ -18,11 +18,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static com.cogent.utils.SubDepartmentData.getSubDepartmentInfo;
-import static com.cogent.utils.SubDepartmentData.getsubDepartmentRequestDto;
-import static com.cogent.utils.SubDepartmentUtlis.parsaToSubDepartment;
+import static com.cogent.utils.SubDepartmentData.*;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -51,12 +50,12 @@ public class SubDepartmentServiceImplTest {
     SubDepartmentServiceImpl subDepartmentService;
 
     @Before
-    public void setUp(){
-        subDepartmentService=new SubDepartmentServiceImpl(subDepartmentRepository,departmentService);
+    public void setUp() {
+        subDepartmentService = new SubDepartmentServiceImpl(subDepartmentRepository, departmentService);
     }
 
     @Test
-    public void createSubDepartment_ShouldReturnBadRequest(){
+    public void createSubDepartment_ShouldReturnBadRequest() {
         thrown.expect(BadRequestDataException.class);
 
         subDepartmentService.createSubDepartment(null);
@@ -64,10 +63,10 @@ public class SubDepartmentServiceImplTest {
     }
 
     @Test
-    public void createSubDepartment_ShouldReturnNameAlreadyExists(){
+    public void createSubDepartment_ShouldReturnNameAlreadyExists() {
         thrown.expect(DataAlreadyExistsException.class);
 
-        SubDepartmentRequestDTO requestDTO=getsubDepartmentRequestDto();
+        SubDepartmentRequestDTO requestDTO = getsubDepartmentRequestDto();
 
         given(subDepartmentRepository.findByName(requestDTO.getName())).willReturn(1);
 
@@ -75,10 +74,10 @@ public class SubDepartmentServiceImplTest {
     }
 
     @Test
-    public void createSubDepartment_ShouldReturnCodeAlreadyExists(){
+    public void createSubDepartment_ShouldReturnCodeAlreadyExists() {
         thrown.expect(DataAlreadyExistsException.class);
 
-        SubDepartmentRequestDTO requestDTO=getsubDepartmentRequestDto();
+        SubDepartmentRequestDTO requestDTO = getsubDepartmentRequestDto();
 
         given(subDepartmentRepository.findByName(requestDTO.getName())).willReturn(0);
         given(subDepartmentRepository.findByCode(requestDTO.getCode())).willReturn(1);
@@ -87,8 +86,8 @@ public class SubDepartmentServiceImplTest {
     }
 
     @Test
-    public void createSubDepartment_ShouldReturnCreate(){
-        SubDepartmentRequestDTO requestDTO=getsubDepartmentRequestDto();
+    public void createSubDepartment_ShouldReturnCreate() {
+        SubDepartmentRequestDTO requestDTO = getsubDepartmentRequestDto();
 
         given(subDepartmentRepository.findByName(requestDTO.getName())).willReturn(0);
         given(subDepartmentRepository.findByCode(requestDTO.getCode())).willReturn(0);
@@ -100,24 +99,63 @@ public class SubDepartmentServiceImplTest {
     }
 
     @Test
-    public void fetchSubDepartments_ShouldReturnEmptyList(){
+    public void fetchSubDepartments_ShouldReturnEmptyList() {
         thrown.expect(DataNotFoundException.class);
 
-        given(subDepartmentRepository.fetchSubDepartments()).willReturn(Optional.empty());
+        given(subDepartmentRepository.fetchSubDepartments()).willReturn(null);
 
         subDepartmentService.fetchSubDepartments();
     }
 
     @Test
-    public void fetchSubDepartmens_ShouldReturnSubDepartments(){
-      List<SubDepartment> subDepartments=Arrays.asList(getSubDepartmentInfo());
+    public void fetchSubDepartments_ShouldReturnSubDepartments() {
+        List<SubDepartment> subDepartments = new ArrayList<>();
+        subDepartments.add(getSubDepartmentInfo());
 
-        given(subDepartmentRepository.fetchSubDepartments()).willReturn(Optional.of(subDepartments));
+        List<SubDepartmentResponseDTO> subDepartmentResponseDTOS = new ArrayList<>();
+        subDepartmentResponseDTOS.add(getSubDepartmentResponseDTO());
 
-        assertTrue(subDepartmentService.fetchSubDepartments().size()>0);
-//       verify(subDepartmentRepository).fetchSubDepartments();
+
+        given(subDepartmentRepository.fetchSubDepartments()).willReturn(subDepartments);
+
+        assertThat(subDepartmentService.fetchSubDepartments()).isEqualTo(subDepartmentResponseDTOS);
+
+        assertTrue(subDepartmentService.fetchSubDepartments().size() > 0);
+        verify(subDepartmentRepository, times(2)).fetchSubDepartments();
 
     }
+
+    @Test
+    public void fetchMinimalSubDepartmentData_ShouldReturnEmptyList() {
+        thrown.expect(DataNotFoundException.class);
+
+        given(subDepartmentRepository.fetchMinimalSubDepartmentData()).willReturn(null);
+
+        subDepartmentService.fetchMinimalSubDepartmentData();
+
+    }
+
+    @Test
+    public void fetchMinimalSubDepartmentData_ShouldReturnSubDepartments() {
+        List<SubDepartmentResponseDTO> subDepartmentResponseDTOS = new ArrayList<>();
+        subDepartmentResponseDTOS.add(getSubDepartmentResponseDTO());
+
+        given(subDepartmentRepository.fetchMinimalSubDepartmentData()).willReturn(subDepartmentResponseDTOS);
+
+        assertTrue(subDepartmentService.fetchMinimalSubDepartmentData().size() > 0);
+
+        verify(subDepartmentRepository,times(2)).fetchMinimalSubDepartmentData();
+
+
+    }
+
+//    @Test
+//    public void fetchSubDepartmentName_ShouldReturnEmptyList(){
+//        given(subDepartmentRepository.findSubDepartmentNames()).willReturn(getSubDepartmentNames());
+//
+//        assertTrue(subDepartmentService.fetchSubDepartmentNames().size()>0);
+//
+//    }
 
 
 }

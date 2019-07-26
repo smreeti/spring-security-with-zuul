@@ -46,7 +46,6 @@ public class SubDepartment implements Serializable{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="department_id")
-    @JsonIgnore
     private Department department;
 
 //    @Column(name = "created_date", nullable = false)
