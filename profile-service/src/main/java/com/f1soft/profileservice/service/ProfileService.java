@@ -1,12 +1,11 @@
 package com.f1soft.profileservice.service;
 
-import com.f1soft.profileservice.requestDTO.ProfileDTO;
-import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
-import com.f1soft.profileservice.responseDTO.ProfileDetailResponseDTO;
-import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
+import com.f1soft.profileservice.dto.requestDTO.ProfileDTO;
+import com.f1soft.profileservice.dto.requestDTO.ProfileRequestDTO;
+import com.f1soft.profileservice.dto.responseDTO.ProfileDetailResponseDTO;
+import com.f1soft.profileservice.dto.responseDTO.ProfileMinimalResponseDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author smriti on 7/2/19

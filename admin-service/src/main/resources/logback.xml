@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name="PROD_HOME" value="${application.home:-.}/logging-setup/logs"/>
+
+    <!--console output-->
+    <appender name="CONSULE_OUTPUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>
+                %d{yyyy-MM-dd HH:MM:ss} [%thread] %-5level %logger{36} -%msg%n
+            </pattern>
+        </layout>
+
+    </appender>
+
+    <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${PROD_HOME}/info.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} -%msg%n
+            </pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${PROD_HOME}/archived/debug.%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize><!-- archive at this file size -->
+                <!--<maxHistory>60</maxHistory> &lt;!&ndash; maximum number of archive files to keep &ndash;&gt;-->
+                <!--<totalSizeCap>1GB</totalSizeCap>  &lt;!&ndash; maximum size of all logs &ndash;&gt;-->
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${PROD_HOME}/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${PROD_HOME}/archived/error.%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize><!-- archive at this file size -->
+                <!--<maxHistory>60</maxHistory> &lt;!&ndash; maximum number of archive files to keep &ndash;&gt;-->
+                <!--<totalSizeCap>1GB</totalSizeCap>  &lt;!&ndash; maximum size of all logs &ndash;&gt;-->
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} -%msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+
+    <appender name="FILE_ROOT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${PROD_HOME}/root.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${PROD_HOME}/archived/root.%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize><!-- archive at this file size -->
+                <!--<maxHistory>60</maxHistory> &lt;!&ndash; maximum number of archive files to keep &ndash;&gt;-->
+                <!--<totalSizeCap>1GB</totalSizeCap>  &lt;!&ndash; maximum size of all logs &ndash;&gt;-->
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} -%msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${PROD_HOME}/log.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>
+                ${PROD_HOME}/archived/log.%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize><!-- archive at this file size -->
+                <!--<maxHistory>60</maxHistory> &lt;!&ndash; maximum number of archive files to keep &ndash;&gt;-->
+                <!--<totalSizeCap>1GB</totalSizeCap>  &lt;!&ndash; maximum size of all logs &ndash;&gt;-->
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} -%msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!--send info logs to file-->
+    <logger name="com.cogent.adminservice.service.impl" level="INFO" additivity="false">
+        <appender-ref ref="FILE_INFO"/>
+        <appender-ref ref="CONSULE_OUTPUT"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+    <!--<logger name="com.smriti.emailservice.service" level="ERROR" additivity="false">-->
+        <!--<appender-ref ref="FILE_ERROR"/>-->
+        <!--<appender-ref ref="FILE"/>-->
+    <!--</logger>-->
+    <root level="WARN">
+        <appender-ref ref="FILE_ROOT"/>
+        <appender-ref ref="FILE"/>
+    </root>
+    <!--A logger is associated with a package or sometimes with a particular class. -->
+    <!--Package/class of a logger is defined by the attribute "name". -->
+    <!--A logger logs messages in its package and also in all the child packages and their classes. -->
+    <!--The only exception is the root logger that logs messages for the all classes in the application.-->
+</configuration>

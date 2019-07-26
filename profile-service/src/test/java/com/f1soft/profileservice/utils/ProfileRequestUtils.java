@@ -2,9 +2,9 @@ package com.f1soft.profileservice.utils;
 
 import com.f1soft.profileservice.entities.Profile;
 import com.f1soft.profileservice.entities.ProfileMenu;
-import com.f1soft.profileservice.requestDTO.ProfileDTO;
-import com.f1soft.profileservice.requestDTO.ProfileMenuRequestDTO;
-import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
+import com.f1soft.profileservice.dto.requestDTO.ProfileDTO;
+import com.f1soft.profileservice.dto.requestDTO.ProfileMenuRequestDTO;
+import com.f1soft.profileservice.dto.requestDTO.ProfileRequestDTO;
 
 import java.util.ArrayList;
 import java.util.Arrays;

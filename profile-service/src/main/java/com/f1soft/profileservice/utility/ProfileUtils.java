@@ -1,11 +1,11 @@
 package com.f1soft.profileservice.utility;
 
 import com.f1soft.profileservice.entities.Profile;
-import com.f1soft.profileservice.requestDTO.ProfileDTO;
-import com.f1soft.profileservice.responseDTO.ProfileDetailResponseDTO;
-import com.f1soft.profileservice.responseDTO.ProfileMenuResponseDTO;
-import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
-import com.f1soft.profileservice.responseDTO.ProfileResponseDTO;
+import com.f1soft.profileservice.dto.requestDTO.ProfileDTO;
+import com.f1soft.profileservice.dto.responseDTO.ProfileDetailResponseDTO;
+import com.f1soft.profileservice.dto.responseDTO.ProfileMenuResponseDTO;
+import com.f1soft.profileservice.dto.responseDTO.ProfileMinimalResponseDTO;
+import com.f1soft.profileservice.dto.responseDTO.ProfileResponseDTO;
 
 import java.util.Arrays;
 import java.util.List;
@@ -49,18 +49,19 @@ public class ProfileUtils {
         return profile;
     };
 
-    public static Function<List<Object[]>, ProfileDetailResponseDTO> convertObjectToProfileDetailResponse = (objects) -> {
+    public static Function<List<Object[]>, ProfileDetailResponseDTO>
+            convertObjectToProfileDetailResponseDTO = (objects) -> {
         final Integer PROFILE_MENU_DETAILS = 0;
         final Integer PROFILE_DESCRIPTION = 1;
 
         ProfileDetailResponseDTO responseDTO = new ProfileDetailResponseDTO();
 
-        objects.forEach(o -> {
+        objects.forEach(object -> {
             ProfileResponseDTO profileResponse = ProfileResponseDTO.builder()
-                    .description(o[PROFILE_DESCRIPTION].toString())
+                    .description(object[PROFILE_DESCRIPTION].toString())
                     .build();
 
-            String[] profileDetails = o[PROFILE_MENU_DETAILS].toString().split(",");
+            String[] profileDetails = object[PROFILE_MENU_DETAILS].toString().split(",");
 
             List<ProfileMenuResponseDTO> profileMenuResponseDTOS = Arrays.stream(profileDetails)
                     .map(profileMenu -> {

@@ -1,7 +1,7 @@
 package com.f1soft.profileservice.controller;
 
-import com.f1soft.profileservice.requestDTO.ProfileDTO;
-import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
+import com.f1soft.profileservice.dto.requestDTO.ProfileDTO;
+import com.f1soft.profileservice.dto.requestDTO.ProfileRequestDTO;
 import com.f1soft.profileservice.service.ProfileService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,7 +27,6 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-//import javax.inject.Inject;
 
 /**
  * @author smriti on 7/2/19

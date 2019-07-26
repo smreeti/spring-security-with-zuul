@@ -1,7 +1,7 @@
 package com.f1soft.profileservice.controller;
 
-import com.f1soft.profileservice.requestDTO.ProfileDTO;
-import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
+import com.f1soft.profileservice.dto.requestDTO.ProfileDTO;
+import com.f1soft.profileservice.dto.requestDTO.ProfileRequestDTO;
 import com.f1soft.profileservice.service.ProfileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

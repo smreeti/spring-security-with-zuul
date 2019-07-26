@@ -1,7 +1,7 @@
 package com.f1soft.profileservice.utility;
 
 import com.f1soft.profileservice.entities.ProfileMenu;
-import com.f1soft.profileservice.requestDTO.ProfileMenuRequestDTO;
+import com.f1soft.profileservice.dto.requestDTO.ProfileMenuRequestDTO;
 
 import java.util.List;
 import java.util.function.BiFunction;

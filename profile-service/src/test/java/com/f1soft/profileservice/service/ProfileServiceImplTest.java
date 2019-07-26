@@ -5,14 +5,12 @@ import com.f1soft.profileservice.entities.ProfileMenu;
 import com.f1soft.profileservice.exceptions.DataDuplicationException;
 import com.f1soft.profileservice.exceptions.NoContentFoundException;
 import com.f1soft.profileservice.repository.ProfileRepository;
-import com.f1soft.profileservice.requestDTO.ProfileDTO;
-import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
-import com.f1soft.profileservice.service.serviceImpl.ProfileMenuServiceImpl;
-import com.f1soft.profileservice.service.serviceImpl.ProfileServiceImpl;
+import com.f1soft.profileservice.dto.requestDTO.ProfileDTO;
+import com.f1soft.profileservice.dto.requestDTO.ProfileRequestDTO;
+import com.f1soft.profileservice.service.impl.ProfileMenuServiceImpl;
+import com.f1soft.profileservice.service.impl.ProfileServiceImpl;
 import com.f1soft.profileservice.utility.ProfileMenuUtils;
 import com.f1soft.profileservice.utility.ProfileUtils;
-import com.f1soft.profileservice.utils.ProfileResponseUtils;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,28 +19,24 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 import java.util.Optional;
 
 import static com.f1soft.profileservice.utils.ProfileRequestUtils.*;
-import static com.f1soft.profileservice.utils.ProfileResponseUtils.*;
+import static com.f1soft.profileservice.utils.ProfileResponseUtils.getProfileDetailResponse;
 import static com.f1soft.profileservice.utils.ProfileResponseUtils.getProfileMinimalResponseList;
 import static java.math.BigInteger.ONE;
 import static java.math.BigInteger.ZERO;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * @author smriti on 7/2/19
@@ -95,7 +89,7 @@ public class ProfileServiceImplTest {
     public void deleteProfile() {
         Should_ThrowException_When_ProfileIsNull();
 
-        Should_ThrowException_When_ProfileIsNotFound();
+        Should_SuccessFully_DeleteProfile();
     }
 
     @Test
@@ -111,7 +105,7 @@ public class ProfileServiceImplTest {
 
         ProfileRequestDTO requestDTO = getProfileRequestDTOThatThrowsException();
 
-        given(profileRepository.findProfileByName(requestDTO.getProfileDTO().getName())).willReturn(ONE);
+        given(profileRepository.findProfileCountByName(requestDTO.getProfileDTO().getName())).willReturn(ONE);
 
         thrown.expect(DataDuplicationException.class);
 
@@ -123,7 +117,7 @@ public class ProfileServiceImplTest {
 
         ProfileRequestDTO profileRequestDTO = getProfileRequestDTOThatThrowsException();
 
-        given(profileRepository.findProfileByName(profileRequestDTO.getProfileDTO().getName())).willReturn(ZERO);
+        given(profileRepository.findProfileCountByName(profileRequestDTO.getProfileDTO().getName())).willReturn(ZERO);
 
         thrown.expect(NoContentFoundException.class);
 
@@ -145,7 +139,7 @@ public class ProfileServiceImplTest {
     }
 
     public void saveProfile(ProfileRequestDTO requestDTO, Profile expected) {
-        given(profileRepository.findProfileByName(requestDTO.getProfileDTO().getName())).willReturn(ZERO);
+        given(profileRepository.findProfileCountByName(requestDTO.getProfileDTO().getName())).willReturn(ZERO);
 
         given(profileRepository.save(expected)).willReturn(getProfileInfo());
     }
@@ -191,7 +185,7 @@ public class ProfileServiceImplTest {
 
         given(profileRepository.findById(requestDTO.getProfileDTO().getId())).willReturn(Optional.of(getProfileInfo()));
 
-        given(profileRepository.findProfileByIdAndName(requestDTO.getProfileDTO().getId(),
+        given(profileRepository.findProfileCountByIdAndName(requestDTO.getProfileDTO().getId(),
                 requestDTO.getProfileDTO().getName())).willReturn(ONE);
 
         thrown.expect(DataDuplicationException.class);
@@ -218,7 +212,7 @@ public class ProfileServiceImplTest {
 
         given(profileRepository.findById(requestDTO.getProfileDTO().getId())).willReturn(Optional.of(savedProfile));
 
-        given(profileRepository.findProfileByIdAndName(requestDTO.getProfileDTO().getId(),
+        given(profileRepository.findProfileCountByIdAndName(requestDTO.getProfileDTO().getId(),
                 requestDTO.getProfileDTO().getName())).willReturn(ZERO);
 
         given(profileRepository.save(updatedProfile)).willReturn(getUpdatedProfileInfo());
@@ -296,7 +290,7 @@ public class ProfileServiceImplTest {
     }
 
     @Test
-    public void fetchProfileDetails(){
+    public void fetchProfileDetails() {
         given(profileRepository.fetchAllProfileDetails(any(Long.class)))
                 .willReturn(getProfileDetailResponse());
 

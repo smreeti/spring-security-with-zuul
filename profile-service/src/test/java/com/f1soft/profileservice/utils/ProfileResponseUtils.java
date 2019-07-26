@@ -1,13 +1,9 @@
 package com.f1soft.profileservice.utils;
 
-import com.f1soft.profileservice.entities.Profile;
-import com.f1soft.profileservice.requestDTO.ProfileDTO;
-import com.f1soft.profileservice.requestDTO.ProfileMenuRequestDTO;
-import com.f1soft.profileservice.requestDTO.ProfileRequestDTO;
-import com.f1soft.profileservice.responseDTO.ProfileDetailResponseDTO;
-import com.f1soft.profileservice.responseDTO.ProfileMenuResponseDTO;
-import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
-import com.f1soft.profileservice.responseDTO.ProfileResponseDTO;
+import com.f1soft.profileservice.dto.responseDTO.ProfileDetailResponseDTO;
+import com.f1soft.profileservice.dto.responseDTO.ProfileMenuResponseDTO;
+import com.f1soft.profileservice.dto.responseDTO.ProfileMinimalResponseDTO;
+import com.f1soft.profileservice.dto.responseDTO.ProfileResponseDTO;
 
 import java.util.Arrays;
 import java.util.List;

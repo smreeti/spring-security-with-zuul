@@ -5,6 +5,7 @@ import com.f1soft.loginservice.requestDTO.LoginRequestDTO;
 import com.f1soft.loginservice.service.LoginService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +26,10 @@ public class LoginController {
 
     @PostMapping(value = WebResourceKeyConstants.LOGIN)
     @ApiOperation(value = "This is login api", notes = "Request contains username and password")
-    public ResponseEntity<?> loginUser(@RequestBody LoginRequestDTO requestDTO, HttpServletRequest request) {
-        return ok(loginService.login(requestDTO, request));
+    public ResponseEntity<String> loginUser(@RequestBody LoginRequestDTO requestDTO, HttpServletRequest request) {
+
+        String token = loginService.login(requestDTO, request);
+        return ok().body(loginService.login(requestDTO, request));
     }
 
     @GetMapping("/test")

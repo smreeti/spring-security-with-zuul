@@ -11,6 +11,7 @@ public class UnauthorisedException extends RuntimeException {
 
     public UnauthorisedException(String message, String developerMessage) {
         super(message);
+
         errorResponse = new ErrorResponse();
 
         errorResponse.setDeveloperMsg(developerMessage);

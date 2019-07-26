@@ -1,11 +1,7 @@
 package com.f1soft.profileservice.repository;
 
-import com.f1soft.profileservice.exceptions.NoContentFoundException;
 import com.f1soft.profileservice.repository.impl.ProfileRepositoryCustomImpl;
-import com.f1soft.profileservice.responseDTO.ProfileMinimalResponseDTO;
-import com.f1soft.profileservice.utility.ProfileUtils;
 import com.f1soft.profileservice.utility.QueryCreator;
-import junit.framework.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -17,13 +13,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.Query;
+import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static com.f1soft.profileservice.utils.ProfileRequestUtils.getProfileDTO;
-import static com.f1soft.profileservice.utils.ProfileResponseUtils.getProfileMinimalResponseList;
-import static junit.framework.Assert.*;
+import static java.math.BigInteger.ONE;
+import static java.math.BigInteger.ZERO;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,6 +41,20 @@ public class ProfileRepositoryCustomTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
+
+    @Test
+    public void findProfileCountByName() {
+        findProfileCountByName_Should_Return_0();
+
+        findProfileCountByName_Should_Return_1();
+    }
+
+    @Test
+    public void findProfileCountByIdAndName(){
+        findProfileCountByIdAndName_Should_Return_0();
+
+        findProfileCountByIdAndName_Should_Return_1();
+    }
 
     @Test
     public void searchProfile() {
@@ -74,10 +84,35 @@ public class ProfileRepositoryCustomTest {
     @Test
     public void fetchProfileDetails() {
         Query query = testEntityManager.getEntityManager().createNativeQuery
-                (QueryCreator.createQueryToFetchAllProfileDetails.apply(1L));
+                (QueryCreator.fetchAllProfileDetails.apply(1L));
 
         List results = query.getResultList();
 
         assertNotNull(results);
     }
+
+    @Test
+    public void findProfileCountByName_Should_Return_0() {
+        BigInteger result = profileRepositoryCustom.findProfileCountByName("F1soft1");
+        assertThat(result).isEqualTo(ZERO);
+    }
+
+    @Test
+    public void findProfileCountByName_Should_Return_1() {
+        BigInteger result = profileRepositoryCustom.findProfileCountByName("Cogent");
+        assertThat(result).isEqualTo(ONE);
+    }
+
+    @Test
+    public void findProfileCountByIdAndName_Should_Return_0() {
+        BigInteger result = profileRepositoryCustom.findProfileCountByIdAndName(1L, "F1soft");
+        assertThat(result).isEqualTo(ZERO);
+    }
+
+    @Test
+    public void findProfileCountByIdAndName_Should_Return_1() {
+        BigInteger result = profileRepositoryCustom.findProfileCountByIdAndName(2L, "F1soft Profile");
+        assertThat(result).isEqualTo(ONE);
+    }
+
 }

@@ -31,18 +31,18 @@ public class ProfileRepositoryTest {
     @Autowired
     private ProfileRepository profileRepository;
 
-    @Test
-    public void saveProfile() {
-
-        Profile expected = new Profile(null, "Cogent123", "This is f1soft profile", 'Y',
-                1L, 1L);
-
-        Profile actual = testEntityManager.persist(expected);
-
-        assertNotNull(actual);
-
-        assertThat(expected).isEqualTo(actual);
-    }
+//    @Test
+//    public void saveProfile() {
+//
+//        Profile expected = new Profile(null, "Cogent123", "This is f1soft profile", 'Y',
+//                1L, 1L);
+//
+//        Profile actual = testEntityManager.persist(expected);
+//
+//        assertNotNull(actual);
+//
+//        assertThat(expected).isEqualTo(actual);
+//    }
 
     public String queryToFindProfileByName() {
         return "SELECT * FROM profile p WHERE p.name='F1soft'";
@@ -61,31 +61,6 @@ public class ProfileRepositoryTest {
 
         assertThat(profile.getName()).isEqualTo(getProfileInfo().getName());
     }
-
-    @Test
-    public void fetchProfileByName_Should_Return_0() {
-        BigInteger result = profileRepository.findProfileByName("F1soft");
-        assertThat(result).isEqualTo(ZERO);
-    }
-
-    @Test
-    public void fetchProfileByName_Should_Return_1() {
-        BigInteger result = profileRepository.findProfileByName("F1soft Profile");
-        assertThat(result).isEqualTo(ONE);
-    }
-
-    @Test
-    public void fetchProfileByIdAndName_Should_Return_0() {
-        BigInteger result = profileRepository.findProfileByIdAndName(1L, "F1soft");
-        assertThat(result).isEqualTo(ZERO);
-    }
-
-    @Test
-    public void fetchProfileByIdAndName_Should_Return_1() {
-        BigInteger result = profileRepository.findProfileByIdAndName(2L, "F1soft Profile");
-        assertThat(result).isEqualTo(ONE);
-    }
-
 
 }
 

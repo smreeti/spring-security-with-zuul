@@ -46,6 +46,11 @@ public class ErrorMessageConstants {
     //O
 
     //P
+
+    public interface ProfileServiceMessage {
+
+    }
+
     public interface ProfileNameDuplication {
         String DEVELOPER_MESSAGE = "Profile with given name already exists.";
         String MESSAGE = "Profile entity returned not null.";

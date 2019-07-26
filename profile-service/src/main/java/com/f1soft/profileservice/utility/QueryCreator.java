@@ -1,9 +1,10 @@
 package com.f1soft.profileservice.utility;
 
-import com.f1soft.profileservice.requestDTO.ProfileDTO;
+import com.f1soft.profileservice.dto.requestDTO.ProfileDTO;
 import org.springframework.util.ObjectUtils;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * @author smriti on 7/9/19
@@ -37,7 +38,7 @@ public class QueryCreator {
         return query;
     });
 
-    public static Function<Long, String> createQueryToFetchAllProfileDetails = (id) -> {
+    public static Function<Long, String> fetchAllProfileDetails = (id) -> {
         return " SELECT" +
                 " GROUP_CONCAT((CONCAT(pm.id, '-', pm.role_id,'-',pm.user_menu_id)) SEPARATOR ',')" +
                 " AS profile_menu_details," +                                                   //[0]
@@ -51,4 +52,9 @@ public class QueryCreator {
                 " GROUP BY p.id";
     };
 
+    public static Supplier<String> createQueryToFindProfileCountByName = () ->
+            "SELECT COUNT(p.id) FROM profile p WHERE p.name =:name AND p.status = 'Y'";
+
+    public static Supplier<String> createQueryToFindProfileCountByIdAndName = () ->
+            "SELECT COUNT(p.id) FROM profile p WHERE p.id != :id AND p.name = :name AND p.status = 'Y'";
 }
