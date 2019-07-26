@@ -1,6 +1,6 @@
 package com.cogent.profileservice.repository;
 
-import com.f1soft.profileservice.entities.ProfileMenu;
+import com.cogent.profileservice.entities.ProfileMenu;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,7 @@
 package com.cogent.adminservice.controller;
 
-import com.cogent.adminservice.requestDTO.AdminRequestDTO;
-import com.cogent.adminservice.responseDTO.ResponseDTO;
+import com.cogent.adminservice.dto.request.AdminRequestDTO;
+import com.cogent.adminservice.dto.response.ResponseDTO;
 import com.cogent.adminservice.service.AdminService;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;

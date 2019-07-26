@@ -1,9 +1,8 @@
-package com.f1soft.profileservice.controller;
+package com.cogent.profileservice.controller;
 
-import com.cogent.profileservice.controller.ProfileController;
-import com.f1soft.profileservice.dto.requestDTO.ProfileDTO;
-import com.f1soft.profileservice.dto.requestDTO.ProfileRequestDTO;
-import com.f1soft.profileservice.service.ProfileService;
+import com.cogent.profileservice.dto.requestDTO.ProfileDTO;
+import com.cogent.profileservice.dto.requestDTO.ProfileRequestDTO;
+import com.cogent.profileservice.service.ProfileService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -17,12 +16,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static com.cogent.profileservice.constants.WebResourceKeyConstants.BASE_API;
-import static com.cogent.profileservice.constants.WebResourceKeyConstants.SAVE;
-import static com.f1soft.profileservice.constants.WebResourceKeyConstants.*;
-import static com.f1soft.profileservice.utils.ProfileRequestUtils.*;
-import static com.f1soft.profileservice.utils.ProfileResponseUtils.getProfileDetailResponse;
-import static com.f1soft.profileservice.utils.ProfileResponseUtils.getProfileMinimalResponseList;
+import static com.cogent.profileservice.constants.WebResourceKeyConstants.*;
+import static com.cogent.profileservice.utils.ProfileRequestUtils.*;
+import static com.cogent.profileservice.utils.ProfileResponseUtils.getProfileDetailResponse;
+import static com.cogent.profileservice.utils.ProfileResponseUtils.getProfileMinimalResponseList;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;

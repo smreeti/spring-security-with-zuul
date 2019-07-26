@@ -1,16 +1,14 @@
 package com.cogent.profileservice.controller;
 
-import com.f1soft.profileservice.dto.requestDTO.ProfileDTO;
-import com.f1soft.profileservice.dto.requestDTO.ProfileRequestDTO;
-import com.f1soft.profileservice.service.ProfileService;
+import com.cogent.profileservice.dto.requestDTO.ProfileDTO;
+import com.cogent.profileservice.dto.requestDTO.ProfileRequestDTO;
+import com.cogent.profileservice.service.ProfileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.cogent.profileservice.constants.WebResourceKeyConstants.BASE_API;
-import static com.cogent.profileservice.constants.WebResourceKeyConstants.SAVE;
-import static com.f1soft.profileservice.constants.WebResourceKeyConstants.*;
+import static com.cogent.profileservice.constants.WebResourceKeyConstants.*;
 import static org.springframework.http.ResponseEntity.ok;
 
 /**
