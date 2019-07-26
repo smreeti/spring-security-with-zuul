@@ -1,0 +1,32 @@
+
+server:
+  port: 7071
+
+spring:
+  application:
+    name: Department-Setup
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/database_test
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+  jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+      generate_statistics: true
+      format_sql: true
+      temp.use_jdbc_metadata_defaults: false
+
+
+    show-sql: true
+    generate-ddl: true
+    open-in-view: false
+
+  jackson:
+    deserialization.fail-on-unknown-properties: false
+

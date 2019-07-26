@@ -5,17 +5,14 @@ import com.cogent.adminservice.dto.request.AdminRequestDTO;
 import com.cogent.adminservice.dto.response.AdminResponseDTO;
 import com.cogent.adminservice.dto.response.ResponseDTO;
 
+import java.util.List;
+
 /**
  * @author smriti
  */
 public interface AdminService {
 
     void saveAdmin(AdminRequestDTO requestDTO);
-
-
-
-
-
 
     AdminResponseDTO searchAdmin(AdminRequestDTO requestDTO);
 
@@ -28,4 +25,6 @@ public interface AdminService {
 
     ResponseDTO adminsToSendEmails();
 
+
+    List<Admin> fetchAllAdmins();
 }
