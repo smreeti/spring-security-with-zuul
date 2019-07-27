@@ -33,7 +33,7 @@ public class DepartmentController {
     @GetMapping(value = RETRIEVE)
     @ApiOperation("Api to retrieve all departments")
     public ResponseEntity<?> retrieve() {
-        return ok(departmentService.fetchAllDepartment());
+        return ok(departmentService.fetchDepartmentDataWithpagination());
     }
 
     @GetMapping(value = RETRIEVE_MINIMAL_DATA)

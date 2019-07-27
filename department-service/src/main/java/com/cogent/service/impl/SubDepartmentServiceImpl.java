@@ -64,6 +64,7 @@ public class SubDepartmentServiceImpl implements SubDepartmentService {
         return subDepartmentRepository.fetchMinimalSubDepartmentData();
     }
 
+
     public void validateSubDepartmentName(String name) {
         if (subDepartmentRepository.findByName(name) == 1)
             throw new DataAlreadyExistsException(SUB_DEPARTMENT_ALREADY_EXISTS_WITH_NAME + name);

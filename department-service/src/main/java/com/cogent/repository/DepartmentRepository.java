@@ -2,6 +2,8 @@ package com.cogent.repository;
 
 import com.cogent.modal.Department;
 import com.cogent.repository.customRepository.DepartmentRepositoryCustom;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,4 +30,7 @@ public interface DepartmentRepository extends JpaRepository<Department, Long>, D
 
     @Query(value = "SELECT * FROM department WHERE id=:id AND status='Y'", nativeQuery = true)
     Department findByDepartmentId(@Param("id") Long id);
+
+    @Override
+    Page<Department> findAll(Pageable pageable);
 }

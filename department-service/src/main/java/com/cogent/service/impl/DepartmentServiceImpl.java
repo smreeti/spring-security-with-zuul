@@ -10,9 +10,13 @@ import com.cogent.repository.DepartmentRepository;
 import com.cogent.service.DepartmentService;
 import com.cogent.utils.DepartmentUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Time;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,6 +86,18 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public Department findById(Long id) {
         return departmentRepository.findByDepartmentId(id);
+    }
+
+    @Override
+    public Page<Department> fetchDepartmentDataWithpagination() {
+        PageRequest pageable = PageRequest.of(0, 6, Sort.by("departmentName"));
+//        departmen long startTime = System.nanoTime()tRepository.findAll(pageable);
+       long startTime =System.currentTimeMillis();
+        departmentRepository.findAll(pageable);
+        log.info("Execution took {}ms", (System.currentTimeMillis() - startTime));
+       return departmentRepository.findAll(pageable);
+
+
     }
 
     public void validateDepartmentName(String name) {
