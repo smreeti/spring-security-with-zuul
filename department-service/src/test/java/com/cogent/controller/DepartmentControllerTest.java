@@ -55,7 +55,7 @@ public class DepartmentControllerTest {
 
     @Test
     public void departmentCrud() throws Exception {
-        save_ShouldSaveDepartment();
+//        save_ShouldSaveDepartment();
         retrieve_ShouldRetrieveDepartments();
         retrieveMinimalData_ShouldRetrieveMinimalDepartmentData();
         delete_ShouldDeleteDepartment();
@@ -64,27 +64,27 @@ public class DepartmentControllerTest {
     }
 
 
-    @Test
-    public void save_ShouldSaveDepartment() throws Exception {
-        String URL = BASE_API + BASE_API_DEPARTMENT + SAVE;
-        System.out.println(URL);
+//    @Test
+//    public void save_ShouldSaveDepartment() throws Exception {
+//        String URL = BASE_API + BASE_API_DEPARTMENT + SAVE;
+//        System.out.println(URL);
+//
+//        DepartmentRequestDTO departmentRequestDto = DepartmentRequestDTO.builder()
+//                .departmentName("Surgical")
+//                .code("SRG")
+//                .status('Y')
+//                .build();
+//        given(departmentService.createDepartment(any(DepartmentRequestDTO.class))).willReturn(java.util.Optional.ofNullable(getDepartment()));
+//
+//        mockMvc.perform(MockMvcRequestBuilders.post(URL)
+//                .contentType(APPLICATION_JSON_UTF8)
+//                .content(writeObjectToJson(departmentRequestDto)))
+//                .andExpect(status().isOk());
+//
+//        verify(departmentService).createDepartment(any(DepartmentRequestDTO.class));
 
-        DepartmentRequestDTO departmentRequestDto = DepartmentRequestDTO.builder()
-                .departmentName("Surgical")
-                .code("SRG")
-                .status('Y')
-                .build();
-        given(departmentService.createDepartment(any(DepartmentRequestDTO.class))).willReturn(java.util.Optional.ofNullable(getDepartment()));
 
-        mockMvc.perform(MockMvcRequestBuilders.post(URL)
-                .contentType(APPLICATION_JSON_UTF8)
-                .content(writeObjectToJson(departmentRequestDto)))
-                .andExpect(status().isOk());
-
-        verify(departmentService).createDepartment(any(DepartmentRequestDTO.class));
-
-
-    }
+//    }
 
     @Test
     public void retrieve_ShouldRetrieveDepartments() throws Exception {

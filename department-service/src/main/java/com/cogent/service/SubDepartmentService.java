@@ -2,9 +2,7 @@ package com.cogent.service;
 
 import com.cogent.dto.request.SubDepartment.SubDepartmentRequestDTO;
 import com.cogent.dto.response.SubDepartmentResponseDTO;
-import com.cogent.modal.SubDepartment;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 /**
@@ -12,7 +10,7 @@ import java.util.List;
  */
 
 public interface SubDepartmentService {
-    SubDepartment createSubDepartment(SubDepartmentRequestDTO subDepartmentRequestDTO);
+    void createSubDepartment(SubDepartmentRequestDTO subDepartmentRequestDTO);
 
     List<SubDepartmentResponseDTO> fetchSubDepartments();
 

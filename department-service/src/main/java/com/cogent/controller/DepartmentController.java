@@ -25,10 +25,11 @@ public class DepartmentController {
     DepartmentService departmentService;
 
     @PostMapping(value = SAVE)
-    @ApiOperation("Api to save department's details")
-    public ResponseEntity<?> save(@RequestBody DepartmentRequestDTO departmentRequestDto) {
-        return ok(departmentService.createDepartment(departmentRequestDto));
+    @ApiOperation("Api to soave department's details")
+    public void save(@RequestBody DepartmentRequestDTO departmentRequestDto) {
+        departmentService.createDepartment(departmentRequestDto);
     }
+
 
     @GetMapping(value = RETRIEVE)
     @ApiOperation("Api to retrieve all departments")
@@ -39,7 +40,7 @@ public class DepartmentController {
     @GetMapping(value = RETRIEVE_MINIMAL_DATA)
     @ApiOperation("Api to retrieve all departments with minimal datas")
     public ResponseEntity<?> retrieveMinimalDepartmentData() {
-        return ok(departmentService.fetchMinimalDepartmentData());
+        return ok(departmentService.fetchAllDepartment());
     }
 
     @PostMapping(value = DELETE)

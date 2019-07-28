@@ -7,6 +7,7 @@ import com.cogent.service.SubDepartmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +27,8 @@ public class SubDepartmentContoller {
 
     @PostMapping(value = SAVE)
     @ApiOperation("Api to save sub-department's details")
-    public ResponseEntity<?> save(@RequestBody SubDepartmentRequestDTO subDepartmentRequestDTO) {
-        return ResponseEntity.ok(subDepartmentService.createSubDepartment(subDepartmentRequestDTO));
+    public void save(@RequestBody SubDepartmentRequestDTO subDepartmentRequestDTO) {
+        subDepartmentService.createSubDepartment(subDepartmentRequestDTO);
     }
 
     @GetMapping(value = RETRIEVE)

@@ -73,23 +73,23 @@ public class SubDepartmentControllerTest {
 
     }
 
-    @Test
-    public void retrieve_ShouldFetchSubDepartments() throws Exception {
-        String URL = BASE_API + BASE_API_SUB_DEPARTMENT + RETRIEVE;
-        System.out.println(URL);
-        List<SubDepartmentResponseDTO> subDepartments = Arrays.asList(getSubDepartmentResponseDTO());
-
-        given(subDepartmentService.fetchSubDepartments()).willReturn(subDepartments);
-
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(URL))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name",
-                        Matchers.is("Billing")))
-                .andReturn();
-
-        assertNotNull(mvcResult.getResponse());
-        verify(subDepartmentService).fetchSubDepartments();
-    }
+//    @Test
+//    public void retrieve_ShouldFetchSubDepartments() throws Exception {
+//        String URL = BASE_API + BASE_API_SUB_DEPARTMENT + RETRIEVE;
+//        System.out.println(URL);
+//        List<SubDepartmentResponseDTO> subDepartments = Arrays.asList(getSubDepartmentResponseDTO());
+//
+//        given(subDepartmentService.fetchSubDepartments()).willReturn(subDepartments);
+//
+//        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(URL))
+//                .andExpect(status().isOk())
+//                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name",
+//                        Matchers.is("Billing")))
+//                .andReturn();
+//
+//        assertNotNull(mvcResult.getResponse());
+//        verify(subDepartmentService).fetchSubDepartments();
+//    }
 
     @Test
     public void retrieveMinimalSubDepartmentData_ShouldFetchSubDepartments() throws Exception{

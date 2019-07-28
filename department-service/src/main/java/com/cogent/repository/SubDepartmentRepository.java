@@ -2,6 +2,8 @@ package com.cogent.repository;
 
 import com.cogent.modal.SubDepartment;
 import com.cogent.repository.customRepository.SubDepartmentRepositoryCustom;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -9,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Sauravi
@@ -24,12 +25,13 @@ public interface SubDepartmentRepository extends JpaRepository<SubDepartment, Lo
     @Query(value = "SELECT COUNT(id) FROM sub_department WHERE code=:code AND status='Y'", nativeQuery = true)
     Integer findByCode(@Param("code") String code);
 
-    @Query(value = "SELECT sd.name FROM SubDepartment sd WHERE sd.status='Y'")
-    List<String> findSubDepartmentNames();
+    @Query(value = "SELECT sd FROM SubDepartment sd WHERE sd.status='Y'")
+    List<SubDepartment> findSubDepartmentNames(Pageable pageable );
 
     @Transactional(readOnly = true)
     @Query(value = "SELECT * FROM sub_department WHERE status='Y'",nativeQuery = true)
     List<SubDepartment> fetchSubDepartments();
+
 
 
 

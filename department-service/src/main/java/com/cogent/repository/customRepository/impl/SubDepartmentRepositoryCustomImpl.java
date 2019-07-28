@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -26,11 +27,30 @@ public class SubDepartmentRepositoryCustomImpl implements SubDepartmentRepositor
 
     @Override
     public List<SubDepartmentResponseDTO> fetchMinimalSubDepartmentData() {
-        List<Object[]> objects = entityManager.createNativeQuery(
-                createQueryTofetchMinimalSubDepartmentData.get()).getResultList();
+
+        Query query=entityManager.createNativeQuery(createQueryTofetchMinimalSubDepartmentData.get());
+        query.setFirstResult(0);
+        query.setMaxResults(50);
+        List<Object[]> objects = query.getResultList();
 
         List<SubDepartmentResponseDTO> subDepartmentResponseDTOS= SubDepartmentUtlis.parseObjectToSubDepartmentResponseDTO.apply(objects);
     return subDepartmentResponseDTOS;
     }
+
+    @Override
+    public List<SubDepartmentResponseDTO> fetchSubDepartmentData() {
+
+        String optimizedSQL = "SELECT NEW SubDepartment(s.id, s.name, s.status, s.code, s.department) FROM SubDepartment s WHERE s.status = :status";
+//        String sql= "SELECT sd FROM SubDepartment sd WHERE sd.status='Y'";
+        Query query=entityManager.createQuery(optimizedSQL);
+        query.setParameter("status", 'Y');
+        query.setFirstResult(0);
+        query.setMaxResults(50);
+        List<SubDepartment> objects = query.getResultList();
+
+        List<SubDepartmentResponseDTO> subDepartmentResponseDTOS= SubDepartmentUtlis.parsePaginationToSubDepartmentResponseDTO.apply(objects);
+        return subDepartmentResponseDTOS;
+    }
+
 
 }

@@ -33,6 +33,4 @@ public class SubDepartmentResponseDTO implements Serializable {
     @ApiModelProperty(value = "Y, N and D are only used")
     private Character status;
 
-
-
 }

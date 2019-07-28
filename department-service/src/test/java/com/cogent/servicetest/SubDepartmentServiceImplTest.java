@@ -85,69 +85,69 @@ public class SubDepartmentServiceImplTest {
         subDepartmentService.createSubDepartment(getsubDepartmentRequestDto());
     }
 
-    @Test
-    public void createSubDepartment_ShouldReturnCreate() {
-        SubDepartmentRequestDTO requestDTO = getsubDepartmentRequestDto();
+//    @Test
+//    public void createSubDepartment_ShouldReturnCreate() {
+//        SubDepartmentRequestDTO requestDTO = getsubDepartmentRequestDto();
+//
+//        given(subDepartmentRepository.findByName(requestDTO.getName())).willReturn(0);
+//        given(subDepartmentRepository.findByCode(requestDTO.getCode())).willReturn(0);
+//        given(subDepartmentRepository.save(any(SubDepartment.class))).willReturn(getSubDepartmentInfo());
+//
+//        assertNotNull(subDepartmentService.createSubDepartment(requestDTO));
+//
+//        verify(subDepartmentRepository).save(any(SubDepartment.class));
+//    }
 
-        given(subDepartmentRepository.findByName(requestDTO.getName())).willReturn(0);
-        given(subDepartmentRepository.findByCode(requestDTO.getCode())).willReturn(0);
-        given(subDepartmentRepository.save(any(SubDepartment.class))).willReturn(getSubDepartmentInfo());
+//    @Test
+//    public void fetchSubDepartments_ShouldReturnEmptyList() {
+//        thrown.expect(DataNotFoundException.class);
+//
+//        given(subDepartmentRepository.fetchSubDepartments()).willReturn(null);
+//
+//        subDepartmentService.fetchSubDepartments();
+//    }
 
-        assertNotNull(subDepartmentService.createSubDepartment(requestDTO));
+//    @Test
+//    public void fetchSubDepartments_ShouldReturnSubDepartments() {
+//        List<SubDepartment> subDepartments = new ArrayList<>();
+//        subDepartments.add(getSubDepartmentInfo());
+//
+//        List<SubDepartmentResponseDTO> subDepartmentResponseDTOS = new ArrayList<>();
+//        subDepartmentResponseDTOS.add(getSubDepartmentResponseDTO());
+//
+//
+//        given(subDepartmentRepository.fetchSubDepartments()).willReturn(subDepartments);
+//
+//        assertThat(subDepartmentService.fetchSubDepartments()).isEqualTo(subDepartmentResponseDTOS);
+//
+//        assertTrue(subDepartmentService.fetchSubDepartments().size() > 0);
+//        verify(subDepartmentRepository, times(2)).fetchSubDepartments();
 
-        verify(subDepartmentRepository).save(any(SubDepartment.class));
-    }
+//    }
 
-    @Test
-    public void fetchSubDepartments_ShouldReturnEmptyList() {
-        thrown.expect(DataNotFoundException.class);
+//    @Test
+//    public void fetchMinimalSubDepartmentData_ShouldReturnEmptyList() {
+//        thrown.expect(DataNotFoundException.class);
+//
+//        given(subDepartmentRepository.fetchMinimalSubDepartmentData()).willReturn(null);
+//
+//        subDepartmentService.fetchMinimalSubDepartmentData();
+//
+//    }
 
-        given(subDepartmentRepository.fetchSubDepartments()).willReturn(null);
-
-        subDepartmentService.fetchSubDepartments();
-    }
-
-    @Test
-    public void fetchSubDepartments_ShouldReturnSubDepartments() {
-        List<SubDepartment> subDepartments = new ArrayList<>();
-        subDepartments.add(getSubDepartmentInfo());
-
-        List<SubDepartmentResponseDTO> subDepartmentResponseDTOS = new ArrayList<>();
-        subDepartmentResponseDTOS.add(getSubDepartmentResponseDTO());
-
-
-        given(subDepartmentRepository.fetchSubDepartments()).willReturn(subDepartments);
-
-        assertThat(subDepartmentService.fetchSubDepartments()).isEqualTo(subDepartmentResponseDTOS);
-
-        assertTrue(subDepartmentService.fetchSubDepartments().size() > 0);
-        verify(subDepartmentRepository, times(2)).fetchSubDepartments();
-
-    }
-
-    @Test
-    public void fetchMinimalSubDepartmentData_ShouldReturnEmptyList() {
-        thrown.expect(DataNotFoundException.class);
-
-        given(subDepartmentRepository.fetchMinimalSubDepartmentData()).willReturn(null);
-
-        subDepartmentService.fetchMinimalSubDepartmentData();
-
-    }
-
-    @Test
-    public void fetchMinimalSubDepartmentData_ShouldReturnSubDepartments() {
-        List<SubDepartmentResponseDTO> subDepartmentResponseDTOS = new ArrayList<>();
-        subDepartmentResponseDTOS.add(getSubDepartmentResponseDTO());
-
-        given(subDepartmentRepository.fetchMinimalSubDepartmentData()).willReturn(subDepartmentResponseDTOS);
-
-        assertTrue(subDepartmentService.fetchMinimalSubDepartmentData().size() > 0);
-
-        verify(subDepartmentRepository,times(2)).fetchMinimalSubDepartmentData();
-
-
-    }
+//    @Test
+//    public void fetchMinimalSubDepartmentData_ShouldReturnSubDepartments() {
+//        List<SubDepartmentResponseDTO> subDepartmentResponseDTOS = new ArrayList<>();
+//        subDepartmentResponseDTOS.add(getSubDepartmentResponseDTO());
+//
+//        given(subDepartmentRepository.fetchMinimalSubDepartmentData()).willReturn(subDepartmentResponseDTOS);
+//
+//        assertTrue(subDepartmentService.fetchMinimalSubDepartmentData().size() > 0);
+//
+//        verify(subDepartmentRepository,times(2)).fetchMinimalSubDepartmentData();
+//
+//
+//    }
 
 //    @Test
 //    public void fetchSubDepartmentName_ShouldReturnEmptyList(){

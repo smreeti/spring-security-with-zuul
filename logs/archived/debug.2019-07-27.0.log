@@ -1,0 +1,21 @@
+2019-07-27 20:28:59 [restartedMain] INFO  c.c.DepartmentserviceApplication -Starting DepartmentserviceApplication on f1soft-sauravi with PID 3192 (/home/f1soft/Documents/cogent-workspace/spring-security-with-zuul/department-service/target/classes started by f1soft in /home/f1soft/Documents/cogent-workspace/spring-security-with-zuul)
+2019-07-27 20:28:59 [restartedMain] INFO  c.c.DepartmentserviceApplication -No active profile set, falling back to default profiles: default
+2019-07-27 20:29:04 [restartedMain] INFO  c.c.DepartmentserviceApplication -Started DepartmentserviceApplication in 6.404 seconds (JVM running for 7.368)
+2019-07-27 20:34:00 [http-nio-7071-exec-3] INFO  c.c.s.impl.SubDepartmentServiceImpl -Execution took 22ms
+2019-07-27 20:34:03 [http-nio-7071-exec-4] INFO  c.c.s.impl.SubDepartmentServiceImpl -Execution took 6ms
+2019-07-27 20:34:54 [http-nio-7071-exec-5] INFO  c.c.s.impl.SubDepartmentServiceImpl -Execution took 2ms
+2019-07-27 20:35:10 [restartedMain] INFO  c.c.DepartmentserviceApplication -Starting DepartmentserviceApplication on f1soft-sauravi with PID 3428 (/home/f1soft/Documents/cogent-workspace/spring-security-with-zuul/department-service/target/classes started by f1soft in /home/f1soft/Documents/cogent-workspace/spring-security-with-zuul)
+2019-07-27 20:35:10 [restartedMain] INFO  c.c.DepartmentserviceApplication -No active profile set, falling back to default profiles: default
+2019-07-27 20:35:17 [restartedMain] INFO  c.c.DepartmentserviceApplication -Started DepartmentserviceApplication in 7.244 seconds (JVM running for 8.243)
+2019-07-27 20:35:19 [http-nio-7071-exec-1] INFO  c.c.s.impl.SubDepartmentServiceImpl -Execution took 6ms
+2019-07-27 20:35:21 [http-nio-7071-exec-2] INFO  c.c.s.impl.SubDepartmentServiceImpl -Execution took 84ms
+2019-07-27 20:36:44 [restartedMain] INFO  c.c.DepartmentserviceApplication -Starting DepartmentserviceApplication on f1soft-sauravi with PID 3615 (/home/f1soft/Documents/cogent-workspace/spring-security-with-zuul/department-service/target/classes started by f1soft in /home/f1soft/Documents/cogent-workspace/spring-security-with-zuul)
+2019-07-27 20:36:44 [restartedMain] INFO  c.c.DepartmentserviceApplication -No active profile set, falling back to default profiles: default
+2019-07-27 20:36:51 [restartedMain] INFO  c.c.DepartmentserviceApplication -Started DepartmentserviceApplication in 7.991 seconds (JVM running for 9.034)
+2019-07-27 20:36:54 [http-nio-7071-exec-2] INFO  c.c.s.impl.SubDepartmentServiceImpl -Execution took 155ms
+2019-07-27 20:36:59 [http-nio-7071-exec-1] INFO  c.c.s.impl.SubDepartmentServiceImpl -Execution took 13ms
+2019-07-27 20:37:40 [restartedMain] INFO  c.c.DepartmentserviceApplication -Starting DepartmentserviceApplication on f1soft-sauravi with PID 3784 (/home/f1soft/Documents/cogent-workspace/spring-security-with-zuul/department-service/target/classes started by f1soft in /home/f1soft/Documents/cogent-workspace/spring-security-with-zuul)
+2019-07-27 20:37:40 [restartedMain] INFO  c.c.DepartmentserviceApplication -No active profile set, falling back to default profiles: default
+2019-07-27 20:37:46 [restartedMain] INFO  c.c.DepartmentserviceApplication -Started DepartmentserviceApplication in 6.682 seconds (JVM running for 7.668)
+2019-07-27 20:37:46 [http-nio-7071-exec-1] INFO  c.c.s.impl.SubDepartmentServiceImpl -Execution took 355ms
+2019-07-27 20:37:50 [http-nio-7071-exec-4] INFO  c.c.s.impl.SubDepartmentServiceImpl -Execution took 40ms

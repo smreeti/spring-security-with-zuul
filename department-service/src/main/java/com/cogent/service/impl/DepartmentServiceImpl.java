@@ -39,20 +39,33 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Optional<Department> createDepartment(DepartmentRequestDTO departmentRequestDto) {
-        if (departmentRequestDto != null) {
-            validateDepartmentName(departmentRequestDto.getDepartmentName());
-            validateDepartmentCode(departmentRequestDto.getCode());
-            Department department = DepartmentUtils.convertdepartmentRequestDtoToDepartment.apply(departmentRequestDto);
-            return Optional.of(saveDepartment(department));
-        } else {
+    public void createDepartment(DepartmentRequestDTO departmentRequestDto) {
+        if (departmentRequestDto == null) {
+//            validateDepartmentName(departmentRequestDto.getDepartmentName());
             throw new BadRequestDataException(BAD_REQUEST);
+//            validateDepartmentCode(departmentRequestDto.getCode());
         }
+        for(int i =0;i<=1000;i++) {
+            Department department = DepartmentUtils.convertdepartmentRequestDtoToDepartment.apply(departmentRequestDto);
+            saveDepartment(department);
+        }
+    }
 
+    @Override
+    public Page<Department> fetchDepartmentDataWithpagination() {
+        PageRequest pageable = PageRequest.of(0, 10, Sort.by("departmentName"));
+//        departmen long startTime = System.nanoTime()tRepository.findAll(pageable);
+        long startTime =System.currentTimeMillis();
+        departmentRepository.findAll(pageable);
+        log.info("Execution took {}ms", (System.currentTimeMillis() - startTime));
+        return departmentRepository.findAll(pageable);
     }
 
     @Override
     public List<Department> fetchAllDepartment() {
+        long startTime =System.currentTimeMillis();
+        departmentRepository.fetchAllDepartment();
+        log.info("Execution took {}ms", (System.currentTimeMillis() - startTime));
         return departmentRepository.fetchAllDepartment().orElseThrow(() ->
                 new DataNotFoundException(DEPARTMENT_NOT_FOUND));
     }
@@ -88,17 +101,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentRepository.findByDepartmentId(id);
     }
 
-    @Override
-    public Page<Department> fetchDepartmentDataWithpagination() {
-        PageRequest pageable = PageRequest.of(0, 6, Sort.by("departmentName"));
-//        departmen long startTime = System.nanoTime()tRepository.findAll(pageable);
-       long startTime =System.currentTimeMillis();
-        departmentRepository.findAll(pageable);
-        log.info("Execution took {}ms", (System.currentTimeMillis() - startTime));
-       return departmentRepository.findAll(pageable);
 
-
-    }
 
     public void validateDepartmentName(String name) {
         if (departmentRepository.findByName(name) != null)

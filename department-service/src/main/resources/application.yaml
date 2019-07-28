@@ -7,7 +7,7 @@ spring:
     name: Department-Setup
 
   datasource:
-    url: jdbc:mysql://localhost:3306/database_test
+    url: jdbc:mysql://localhost:3306/database_testperformance
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver

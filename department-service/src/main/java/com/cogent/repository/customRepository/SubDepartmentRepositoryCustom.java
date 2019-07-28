@@ -13,4 +13,5 @@ import java.util.List;
 @Qualifier("subDepartmentRepositoryCustom")
 public interface SubDepartmentRepositoryCustom {
     List<SubDepartmentResponseDTO> fetchMinimalSubDepartmentData();
+    List<SubDepartmentResponseDTO> fetchSubDepartmentData();
 }

@@ -4,5 +4,5 @@ import java.util.function.Supplier;
 
 public class SubDepartment {
     public static Supplier<String> createQueryTofetchMinimalSubDepartmentData = () ->
-            "SELECT id,name,code,status,department_id FROM sub_department";
+            "SELECT id,name,code,status,department_id FROM sub_department WHERE status='Y'";
 }
