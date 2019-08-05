@@ -51,4 +51,6 @@ public class Department implements Serializable {
 
     @Column(name = "last_modified_by_id")
     private Long modifiedById;
+
+
 }

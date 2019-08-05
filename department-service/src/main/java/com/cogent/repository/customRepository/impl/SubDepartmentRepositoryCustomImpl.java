@@ -40,7 +40,7 @@ public class SubDepartmentRepositoryCustomImpl implements SubDepartmentRepositor
     @Override
     public List<SubDepartmentResponseDTO> fetchSubDepartmentData() {
 
-        String optimizedSQL = "SELECT NEW SubDepartment(s.id, s.name, s.status, s.code, s.department) FROM SubDepartment s WHERE s.status = :status";
+        String optimizedSQL = "SELECT s FROM SubDepartment s WHERE s.status = :status";
 //        String sql= "SELECT sd FROM SubDepartment sd WHERE sd.status='Y'";
         Query query=entityManager.createQuery(optimizedSQL);
         query.setParameter("status", 'Y');

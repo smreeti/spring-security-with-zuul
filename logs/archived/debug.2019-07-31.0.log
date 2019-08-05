@@ -1,0 +1,2 @@
+2019-07-31 12:11:54 [restartedMain] INFO  c.c.DepartmentserviceApplication -Starting DepartmentserviceApplication on f1soft-sauravi with PID 30149 (/home/f1soft/Documents/cogent-workspace/spring-security-with-zuul/department-service/target/classes started by f1soft in /home/f1soft/Documents/cogent-workspace/spring-security-with-zuul)
+2019-07-31 12:11:54 [restartedMain] INFO  c.c.DepartmentserviceApplication -No active profile set, falling back to default profiles: default

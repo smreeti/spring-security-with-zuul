@@ -1,3 +1,4 @@
-2019-07-28 16:46:42 [main] INFO  c.c.r.SubDepartmentRepositoryTest -Starting SubDepartmentRepositoryTest on f1soft-sauravi with PID 7964 (started by f1soft in /home/f1soft/Documents/cogent-workspace/spring-security-with-zuul/department-service)
-2019-07-28 16:46:42 [main] INFO  c.c.r.SubDepartmentRepositoryTest -No active profile set, falling back to default profiles: default
-2019-07-28 16:46:46 [main] INFO  c.c.r.SubDepartmentRepositoryTest -Started SubDepartmentRepositoryTest in 4.962 seconds (JVM running for 6.773)
+2019-08-01 12:12:54 [main] INFO  c.c.r.DepartmentRepositoryTest -Starting DepartmentRepositoryTest on f1soft-sauravi with PID 11167 (started by f1soft in /home/f1soft/Documents/cogent-workspace/spring-security-with-zuul/department-service)
+2019-08-01 12:12:54 [main] INFO  c.c.r.DepartmentRepositoryTest -No active profile set, falling back to default profiles: default
+2019-08-01 12:13:01 [main] INFO  c.c.r.DepartmentRepositoryTest -Starting DepartmentRepositoryTest on f1soft-sauravi with PID 11167 (started by f1soft in /home/f1soft/Documents/cogent-workspace/spring-security-with-zuul/department-service)
+2019-08-01 12:13:01 [main] INFO  c.c.r.DepartmentRepositoryTest -No active profile set, falling back to default profiles: default

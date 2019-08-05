@@ -55,7 +55,6 @@ public class DepartmentRepositoryTest extends AbstractDepartmentInfo {
         System.out.println(departmentResponseDTOS);
         assertNotNull(departmentResponseDTOS);
     }
-
     @Test
     public void testfindByName() {
         Department departmentSavedInDb = departmentRepository.findByName(getDepartmentInfo().getDepartmentName());

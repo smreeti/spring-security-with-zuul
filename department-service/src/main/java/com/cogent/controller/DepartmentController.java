@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 import static com.cogent.constants.WebResourceConstants.BASE_API;
 import static com.cogent.constants.WebResourceConstants.DepartmentController.BASE_API_DEPARTMENT;
 import static com.cogent.constants.WebResourceConstants.DepartmentController.DEPARTMENTCRUD.*;
@@ -31,28 +33,32 @@ public class DepartmentController {
     }
 
 
-    @GetMapping(value = RETRIEVE)
-    @ApiOperation("Api to retrieve all departments")
-    public ResponseEntity<?> retrieve() {
-        return ok(departmentService.fetchDepartmentDataWithpagination());
-    }
+//    @GetMapping(value = RETRIEVE)
+//    @ApiOperation("Api to retrieve all departments")
+//    public ResponseEntity<?> retrieve() {
+//        return ok(departmentService.fetchDepartmentDataWithpagination());
+//    }
+//
+//    @GetMapping(value = RETRIEVE_MINIMAL_DATA)
+//    @ApiOperation("Api to retrieve all departments with minimal datas")
+//    public ResponseEntity<?> retrieveMinimalDepartmentData() {
+//        return ok(departmentService.fetchAllDepartment());
+//    }
+//
+//    @PostMapping(value = DELETE)
+//    public ResponseEntity<?> delete(@ApiParam(value = "contains the department id to delete") @PathVariable Long id) {
+//        return ok(departmentService.deleteDepartment(id));
+//    }
+//
+//    @PostMapping(value = UPDATE)
+//    @ApiOperation("Api to update department")
+//    public ResponseEntity<?> update(@RequestBody DepartmentRequestDTO departmentRequestDto) {
+//        return ok(departmentService.updateDepartment(departmentRequestDto));
+//    }
 
-    @GetMapping(value = RETRIEVE_MINIMAL_DATA)
-    @ApiOperation("Api to retrieve all departments with minimal datas")
-    public ResponseEntity<?> retrieveMinimalDepartmentData() {
-        return ok(departmentService.fetchAllDepartment());
+    @GetMapping(value = "/download")
+    public void download() throws IOException {
+        departmentService.executeGridObjectListDemo();
     }
-
-    @PostMapping(value = DELETE)
-    public ResponseEntity<?> delete(@ApiParam(value = "contains the department id to delete") @PathVariable Long id) {
-        return ok(departmentService.deleteDepartment(id));
-    }
-
-    @PostMapping(value = UPDATE)
-    @ApiOperation("Api to update department")
-    public ResponseEntity<?> update(@RequestBody DepartmentRequestDTO departmentRequestDto) {
-        return ok(departmentService.updateDepartment(departmentRequestDto));
-    }
-
 
 }

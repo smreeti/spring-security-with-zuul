@@ -24,8 +24,6 @@ public class DepartmentUtils {
                 department.setDepartmentName(departmentRequestDto.getDepartmentName());
                 department.setCode(departmentRequestDto.getCode());
                 department.setStatus(departmentRequestDto.getStatus());
-                department.setCreatedDate(new Date());
-                department.setCreatedById(1L);
                 return department;
 
             };
@@ -36,10 +34,7 @@ public class DepartmentUtils {
             department.setDepartmentName(departmentToDelete.getDepartmentName());
             department.setCode(departmentToDelete.getCode());
             department.setStatus('D');
-            department.setCreatedDate(departmentToDelete.getCreatedDate());
-            department.setCreatedById(1L);
-            department.setLastModifiedDate(new Date());
-            department.setModifiedById(1L);
+
         return department;
     };
 
@@ -49,11 +44,7 @@ public class DepartmentUtils {
             department.setId(savedDepartment.getId());
             department.setDepartmentName(departmentRequestDto.getDepartmentName());
             department.setCode(departmentRequestDto.getCode());
-            department.setStatus(departmentRequestDto.getStatus());
-            department.setCreatedDate(savedDepartment.getCreatedDate());
-            department.setCreatedById(savedDepartment.getCreatedById());
-            department.setLastModifiedDate(new Date());
-            department.setModifiedById(1L);
+
         return department;
     };
 
