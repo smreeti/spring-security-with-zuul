@@ -1,6 +1,6 @@
 package com.cogent.adminservice.utility;
 
-import com.cogent.adminservice.requestDTO.AdminRequestDTO;
+import com.cogent.adminservice.dto.request.AdminRequestDTO;
 
 import java.util.Objects;
 import java.util.function.Function;

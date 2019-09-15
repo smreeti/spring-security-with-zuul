@@ -38,8 +38,6 @@ public class AdminServiceImplTest {
         Should_ThrowException_When_UsernameAlreadyExists();
 
         Should_ThrowException_When_EmailAddressAlreadyExists();
-
-
     }
 
     @Test
